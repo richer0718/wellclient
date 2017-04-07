@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+
+<head>
+	<meta charset="utf-8">
+	<link rel="stylesheet" href="public/css/well-client.css">
+	<script src="public/js/jquery-1.11.3.min.js"></script>
+	<script src="public/js/websocket-suport.min.js"></script>
+	<script src="public/js/well-client.js"></script>
+	<script src="public/js/well-client-ui.js"></script>
+</head>
+
+<body>
+
+<div id="well-client" class="well-client">
+	<button class="well-btn well-show-state">
+		<span id="well-device" title="当前分机号">分机号</span>
+	</button>
+	<button id="well-answer" class="well-btn well-answer well-answer-on well-disabled">应答</button>
+	<button id="well-drop" class="well-btn well-drop well-drop-on well-disabled">挂断</button>
+	<button id="well-hold" class="well-btn well-hold well-hold-on well-disabled">保持</button>
+	<input id="well-input" class="" type="" name="" placeholder="输入号码" maxlength="15">
+	<button id="well-make" class="well-btn well-make well-make-on well-disabled">拨打</button>
+	<button id="well-consult" class="well-btn well-consult well-consult-on well-disabled">咨询</button>
+	<button id="well-conference" class="well-btn well-conference well-conference-on well-disabled">会议</button>
+	<button id="well-transfer" class="well-btn well-transfer well-transfer-on well-disabled">转接</button>
+	<button id="well-cancel" class="well-btn well-cancel well-cancel-on well-disabled">接回</button>
+	<button id="well-single" title="直接转需要先输入对方的号码" class="well-btn well-single well-single-on well-disabled">直接转</button>
+
+	<button id="well-dest" class="well-dest well-btn well-disabled">
+		转接到 <i class="well-select-icon"></i>
+		<div class="well-transfer-dest">
+			<ul>      
+				<li value="8003">转4008205555</li>
+				<li value="8003">转客户金卡维护</li>
+				<li value="8003">转客户普卡维护</li>
+			</ul>
+		</div>
+	</button>
+
+	<button class="well-btn well-show-state">
+		<span id="well-now-state" title="当前坐席状态">通话中</span>
+	</button>
+
+	<button id="well-changestate" class="well-changestate well-btn well-state-not-ready well-disabled">
+		&nbsp; <i class="well-select-icon-state"></i>
+		<div class="well-agent-states">
+			<ul>
+				<li data-state="Ready"><img src="./public/img/ready.png"> &nbsp;&nbsp;就绪</li>
+				<li data-state="NotReady"><img src="./public/img/not-ready.png"> &nbsp;&nbsp;示忙</li>
+				<li data-state="NotReady"><img src="./public/img/not-ready.png"> &nbsp;&nbsp;培训会议</li>
+				<li data-state="NotReady"><img src="./public/img/not-ready.png"> &nbsp;&nbsp;培训就餐</li>
+				<li data-state="NotReady"><img src="./public/img/not-ready.png"> &nbsp;&nbsp;培训小休</li>
+			</ul>
+		</div>
+	</button>
+
+	<button id="well-logout" class="well-btn well-logout" title="签出"></button>
+</div>
+
+
+<div>
+	<p>工号：<input type="text" id="code" value="50010087"></p>
+	<p>密码：<input type="text" id="password" value="000000"></p>
+	<p>域名：<input type="text" id="namespace" value="sinosig.test"></p>
+	<p>分机号：<input type="text" id="deviceId" value="8011"></p>
+
+	<button id="login">登录</button>
+</div>
+
+<script type="text/javascript">
+	$('#login').click(function(){
+		var $login = $('#login');
+
+		var code = $('#code').val();
+		var password = $('#password').val();
+		var namespace = $('#namespace').val();
+		var deviceId = $('#deviceId').val();
+
+		if(!code || !password || !namespace || !deviceId){
+			alert('工号，密码，域名，分机号都是必填项');
+			return;
+		}
+
+		$login.attr('disabled', 'disabled');
+
+		wellClient.login(code, password, namespace, deviceId)
+		.done(function(res){
+			if(!window.localStorage){return;}
+			localStorage.setItem('code', code);
+			localStorage.setItem('password', password);
+			localStorage.setItem('password', password);
+			localStorage.setItem('namespace', namespace);
+			localStorage.setItem('namespace', namespace);
+			localStorage.setItem('deviceId', deviceId);
+		})
+		.always(function(){
+			$login.removeAttr('disabled');
+		});
+
+		$('#tip').text('');
+	});
+</script>
+
+<div>
+	<h2>如果需要配置，首先请配置一下</h2>
+	<p>SDK地址：<input type="text" id="sdk" value="cmbyc.wellcloud.cc"></p>
+	<p>SDK端口：<input type="text" id="port" value="8088"></p>
+	<p>TIP地址及端口：<input type="text" id="tpi" value="cmbyc.wellcloud.cc:5003/login"></p>
+
+	<button id="config">配置</button> <span id="tip"></span>
+</div>
+
+<script type="text/javascript">
+(function(){
+	if(!window.localStorage){return;}
+
+	var code = localStorage.getItem('code');
+	if(code){
+		$('#code').val(code);
+	}
+
+	var password = localStorage.getItem('password');
+	if(password){
+		$('#password').val(password);
+	}
+
+	var namespace = localStorage.getItem('namespace');
+	if(namespace){
+		$('#namespace').val(namespace);
+	}
+
+	var deviceId = localStorage.getItem('deviceId');
+	if(deviceId){
+		$('#deviceId').val(deviceId);
+	}
+})();
+
+
+	$('#config').click(function(){
+		var $login = $('#config');
+
+		var sdk = $('#sdk').val();
+		var port = $('#port').val();
+		var tpi = $('#tpi').val();
+
+		if(!sdk || !port || !tpi){
+			alert('配置信息都是必填项');
+			return;
+		}
+
+		var config = {
+			SDK: sdk,
+			cstaPort: port,
+			eventPort: port,
+			TPI: tpi
+		};
+
+		wellClient.setConfig(config);
+		$('#tip').text('配置成功');
+
+		setTimeout(function(){
+			$('#tip').text('');
+		},2000);
+	});
+</script>
+
+
+</body>
+</html>
