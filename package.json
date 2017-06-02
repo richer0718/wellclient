@@ -1,0 +1,13 @@
+{
+  "name": "wellClient",
+  "scripts": {
+    "start": "node ./bin/www",
+    "build": "node ./bin/www"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "gulp": "^3.9.1",
+    "gulp-rename": "^1.2.2",
+    "gulp-uglify": "^2.1.2"
+  }
+}
