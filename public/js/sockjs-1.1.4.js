@@ -1677,7 +1677,13 @@ module.exports = global.EventSource;
 var Driver = global.WebSocket || global.MozWebSocket;
 if (Driver) {
 	module.exports = function WebSocketBrowserDriver(url) {
+		//wdd
+	    try{
 		return new Driver(url);
+	    }
+	    catch(e){
+	      console.log(e);
+	    }
 	};
 } else {
 	module.exports = undefined;
