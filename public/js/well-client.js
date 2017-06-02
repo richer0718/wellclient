@@ -429,7 +429,7 @@ var wellClient = (function($) {
                 type: 'post',
                 data: Data,
                 dataType: "json",
-                contentType: 'application/x-www-form-urlencoded',
+                contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 success: function(data) {
                     var okMsg = {
                         url: url,
