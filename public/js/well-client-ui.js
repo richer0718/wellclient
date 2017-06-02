@@ -1,28 +1,159 @@
+(function(){
+	// this part is use to config the user info and other config
+	// for the test and dev environment
+	// you can just remove it, or just ignore it
+	var href = location.href;
+	var needUseLocalStorage = /file:|coding/.test(href);
+	if(!window.localStorage){return;}
+	if(!needUseLocalStorage){return;}
+
+	var code = localStorage.getItem('code');
+	if(code){
+		$('#well-code').val(code);
+	}
+
+	var password = localStorage.getItem('password');
+	if(password){
+		$('#well-password').val(password);
+	}
+
+	var namespace = localStorage.getItem('namespace');
+	if(namespace){
+		$('#well-namespace').val(namespace);
+	}
+
+	var deviceId = localStorage.getItem('deviceId');
+	if(deviceId){
+		$('#well-deviceId').val(deviceId);
+	}
+
+	var sdk = localStorage.getItem('sdk');
+	if(sdk){
+		$('#sdk').val(sdk);
+	}
+
+	var port = localStorage.getItem('port');
+	if(port){
+		$('#port').val(port);
+	}
+
+	var tpi = localStorage.getItem('tpi');
+	if(tpi){
+		$('#tpi').val(tpi);
+	}
+})();
+
 (function($, wellClient){
+
 var $document = $(document);
 var callModel = [];
 var activeDeviceId = '';
 
-$document.on('click', '.well-agent-states>ul>li', function(event){
-	var $btn = $(event.currentTarget);
-	var state = $btn.data('state');
+// set agent Mode
+$document.on('change', '#well-changestate', function(event){
+	var $select = $(this);
+	var state = $select.val();
+	var mode = '';
+	var reason = '';
 
-	var $parent = $('#well-changestate');
-	if($parent.hasClass('well-disabled')){
+	if($select.hasClass('well-disabled') || state === ''){
 		return;
 	}
 
-	wellClient.setAgentMode(state);
+	mode = state.split(':')[0];
+	reason = state.split(':')[1];
+
+	wellClient.setAgentMode(mode, reason)
+	.fail(function(res){
+		if(res.status === 460){
+			wellClient.ui.status.renderAgentStatus();
+		}
+	});
+	$select.val('');
 });
 
 //**************************************************************************************************
 //事件驱动ui
 wellClient.ui = {};
+wellClient.ui.status = {
+	agentStatus: '',
+	deviceStatus: '',
+	mixStatus: '',
+	statusList:{
+		// agent status
+		'agentReady': '就绪',
+		'agentNotReady': '示忙',
+		'agentWorkingAfterCall': '话后处理',
+		'agentLoggedOff': '未登录',
+		'agentAllocated': '预占中',
+		'agentLoggedOn': '已登录',
+
+		// device status
+		'originated': '呼出中',
+		'delivered': '振铃中',
+		'established': '通话中',
+		'held':'保持中',
+		'conferenced': '会议中',
+		'retrieved': '通话中'
+	},
+	renderAgentStatus: function(reason){
+		if(this.agentStatus === 'agentNotReady'){
+			if(reason === '2'){
+				wellClient.ui.manualCallOut();
+			}
+			else{
+				wellClient.ui.setAgentStateNotReady();
+			}
+		}
+		else if(this.agentStatus === 'agentReady'){
+			wellClient.ui.setAgentStateReady();
+		}
+		else if(this.agentStatus === 'agentWorkingAfterCall'){
+			wellClient.ui.setAgentStateNotReady();
+		}
+	},
+	receiveEvent: function(eventName, reason){
+		if(/agent/.test(eventName)){
+			this.agentStatus = eventName;
+			this.mixStatus =  eventName;
+		}
+		else if(eventName === 'connectionCleared'){
+			this.deviceStatus = eventName;
+			this.mixStatus = this.agentStatus;
+		}
+		else{
+			this.deviceStatus = eventName;
+			this.mixStatus = this.deviceStatus;
+		}
+		this.renderCurrentStatus();
+		this.renderAgentStatus(reason);
+	},
+	transferStatus: function(status){
+		if(this.statusList[status]){
+			return this.statusList[status];
+		}
+		else{
+			return '';
+		}
+	},
+	renderCurrentStatus: function(){
+		var status = this.mixStatus;
+		status = this.transferStatus(status);
+		wellClient.ui.setAgentNowState(status);
+	}
+};
+
 wellClient.ui.getCallModel = function(){
 	return callModel;
 };
+
 wellClient.ui.removeOneCall = function(i){
 	callModel.splice(i, 1);
+};
+
+wellClient.ui.manualCallOut = function(){
+	$('#well-changestate').val('NotReady:2');
+	this.setAgentNowState('手工外呼');
 };
 
 wellClient.ui.main = function(event){
@@ -32,8 +163,29 @@ wellClient.ui.main = function(event){
 	}
 };
 
+wellClient.ui.setPendingMode = function(event){
+	console.log('come in wellClient.ui.setPendingMode');
+	$('#well-changestate').addClass('well-pending');
+};
+
+wellClient.ui.removePendingMode = function(){
+	$('#well-changestate').removeClass('well-pending');
+};
+
+wellClient.ui.wsDisconnected = function(event){
+	this.setAgentNowState('WebSocket已断开');
+};
+
+wellClient.ui.agentAllocated = function(event){
+	this.status.receiveEvent(event.eventName);
+};
+
 wellClient.ui.setAgentNowState = function(agentStatus){
 	$('#well-now-state').text(agentStatus);
+};
+
+wellClient.ui.getAgentNowState = function(){
+	return $('#well-now-state').text();
 };
 
 wellClient.ui.getBtns = function(btnIdList){
@@ -51,14 +203,17 @@ wellClient.ui.clearPhoneNumber = function(){
 };
 
 wellClient.ui.getPhoneNumber = function(){
-	var $dest = $('#well-input');
+	// var $dest = $('#well-input');
+	var $dest = $('#well-phone-number');
 	var phoneNumber = $dest.val();
 	phoneNumber = $.trim(phoneNumber);
 
-	if(!/^\d{1,15}$/.test(phoneNumber)){
-		$dest.val('号码格式错误');
+	if(phoneNumber === ''){
+		// $dest.val('号码格式错误');
+		this.createWebNotification('未选择对方号码');
 		return false;
 	}
+	$dest.val('');
 
 	return phoneNumber;
 };
@@ -97,7 +252,7 @@ wellClient.ui.refreshButtonStatus = function(){
 	}
 	else if(length === 1){
 		// 一条线路在通话中
-		if(call.state === 'established' || call.state === 'held'){	
+		if(call.state === 'established' || call.state === 'held'){
 			this.enableBtn(['drop','hold','consult','single','dest']);
 			this.disabledBtn(['answer','make','conference','transfer','cancel']);
 		}
@@ -134,15 +289,9 @@ wellClient.ui.getActiveCall = function(){
 };
 
 wellClient.ui.setAgentStateReady = function(){
-	var $btn = this.getBtns(['changestate']);
-
-	if(!$btn.hasClass('well-state-ready')){
-		$btn.addClass('well-state-ready');
-	}
-
-	if($btn.hasClass('well-state-not-ready')){
-		$btn.removeClass('well-state-not-ready');
-	}
+	this.removePendingMode();
+	var $select = $('#well-changestate')
+	$select.val('Ready:');
 };
 
 wellClient.ui.retrieveCall = function(){
@@ -155,76 +304,60 @@ wellClient.ui.retrieveCall = function(){
 };
 
 wellClient.ui.setAgentStateNotReady = function(){
-	var $btn = this.getBtns(['changestate']);
-
-	if($btn.hasClass('well-state-ready')){
-		$btn.removeClass('well-state-ready');
-	}
-
-	if(!$btn.hasClass('well-state-not-ready')){
-		$btn.addClass('well-state-not-ready');
-	}
+	this.removePendingMode();
+	var $select = $('#well-changestate')
+	$select.val('NotReady:1');
 };
 
+// from event
 wellClient.ui.agentLoggedOn = function(event){
 	this.enableBtn(['make', 'changestate']);
-	this.setAgentNowState('已登录');
+
+	this.status.receiveEvent(event.eventName);
 
 	event.deviceId = typeof event.deviceId === 'string' ? event.deviceId.split('@')[0] : '';
-
 	$('#well-device').text(event.deviceId);
+	$('#well-login-info').hide();
+	$('#well-login').hide();
+	$('#well-logout').removeClass('well-dn');
 };
 
 wellClient.ui.agentReady = function(event){
 	this.setAgentStateReady();
-	this.setAgentNowState('就绪');
+	this.status.receiveEvent(event.eventName);
 };
 
 wellClient.ui.agentNotReady = function(event){
 	this.setAgentStateNotReady();
-	this.setAgentNowState('未就绪');
+	this.status.receiveEvent(event.eventName, event.reason);
 };
 
-wellClient.ui.agentLoggedOff = function(){
-	this.setAgentNowState('已登出');
+wellClient.ui.agentLoggedOff = function(event){
 	callModel = [];
-	this.setAgentNowState('无通话');
+	this.removePendingMode();
+	this.status.receiveEvent(event.eventName);
 	wellClient.ui.disabledBtn(['answer','drop','hold','make','consult','conference','transfer','cancel','single']);
-};
-
-wellClient.ui.originated = function(event){
-	this.setAgentNowState('呼出中');
-
-	callModel.push({
-		state:'originated',
-		callId: event.callId,
-		deviceId: event.deviceId,
-		isCalling: true
-	});
+	$('#well-login-info').show();
+	$('#well-login').show();
+	$('#well-logout').addClass('well-dn');
 };
 
 wellClient.ui.delivered = function(event){
-	this.setAgentNowState('振铃中');
+	this.status.receiveEvent(event.eventName);
 
-	if(event.isCalling){
-		// this.enableBtn(['drop']);
-		var call = wellClient.findItem(callModel, 'deviceId', event.deviceId);
-		if(call === -1){return;}
-		call = callModel[call];
-		call.state = 'delivered';
+	callModel.push({
+		state: 'delivered',
+		callId: event.callId,
+		deviceId: event.deviceId,
+		isCalling: event.isCalling
+	});
 
+	if(!event.isCalling && event.autoAnswer){
+		wellClient.ctrl.answerCall();
 	}
 	else{
-		this.enableBtn(['answer','drop']);
-		callModel.push({
-			state: 'delivered',
-			callId: event.callId,
-			deviceId: event.deviceId,
-			isCalling: false
-		});
+		this.refreshButtonStatus();
 	}
-
-	this.refreshButtonStatus();
 };
 
 wellClient.ui.established = function(event){
@@ -234,7 +367,7 @@ wellClient.ui.established = function(event){
 	call = callModel[call];
 
 	call.state = 'established';
-	this.setAgentNowState('通话中');
+	this.status.receiveEvent(event.eventName);
 
 	this.refreshButtonStatus();
 
@@ -244,7 +377,6 @@ wellClient.ui.established = function(event){
 
 wellClient.ui.clearAllCalls = function(){
 	callModel = [];
-	this.setAgentNowState('无通话');
 	this.refreshButtonStatus();
 };
 
@@ -254,7 +386,8 @@ wellClient.ui.connectionCleared = function(event){
 
 	this.removeOneCall(call);
 	if(callModel.length !== 2){
-		this.setAgentNowState('无通话');
+
+		this.status.receiveEvent(event.eventName);
 	}
 
 	this.refreshButtonStatus();
@@ -276,7 +409,7 @@ wellClient.ui.held = function(event){
 	call = callModel[call];
 	call.state = 'held';
 
-	this.setAgentNowState('保持中');
+	this.status.receiveEvent(event.eventName);
 
 	if(call.deviceId === activeCall.deviceId){
 		$('#well-hold').text('取回');
@@ -291,8 +424,8 @@ wellClient.ui.retrieved = function(event){
 
 	call = callModel[call];
 	call.state = 'established';
+	this.status.receiveEvent(event.eventName);
 
-	this.setAgentNowState('通话中');
 	$('#well-hold').text('保持');
 	this.refreshButtonStatus();
 };
@@ -304,12 +437,35 @@ wellClient.ui.conferenced = function(event){
 		callModel[i].state = 'conferenced';
 	}
 
-	this.setAgentNowState('会议中');
+	this.status.receiveEvent(event.eventName);
 	this.refreshButtonStatus();
 };
 
-wellClient.ui.agentWorkingAfterCall = function(){
-	this.setAgentNowState('话后处理');
+wellClient.ui.agentWorkingAfterCall = function(event){
+
+	this.removePendingMode();
+	this.status.receiveEvent(event.eventName);
+};
+
+wellClient.ui.createWebNotification = function(msg){
+    if(!window.Notification){
+        return;
+    }
+
+
+    Notification.requestPermission( function(status) {
+        console.log(status); // 仅当值为 "granted" 时显示通知
+        wellClient.ui.webNotification = new Notification(msg, {
+            body: "wellClient 提醒",
+            icon:"public/img/warning.png",
+            tag:'wellClient'
+        }); // 显示通知
+
+        wellClient.ui.webNotification.onclick = function(){
+            wellClient.ui.webNotification.close();
+            wellClient.ui.webNotification = null;
+        };
+    });
 };
 
 //**************************************************************************************************
@@ -322,6 +478,48 @@ $document.on('click','.well-btn', function(event){
 		return;
 	}
 
+	if(!id){
+		return;
+	}
+
+	wellClient.ctrl.beforeDeliver(id);
+});
+
+// $document.on('click', '.well-transfer-dest', function(event){
+$document.on('change', '#well-dest', function(event){
+	$select = $('#well-dest');
+
+	if($select.hasClass('well-disabled')){
+		return;
+	}
+
+	var phoneNumber = $select.val();
+	phoneNumber = $.trim(phoneNumber);
+
+	if(!phoneNumber){return;}
+
+	var call = wellClient.ui.getActiveCall();
+	if(call === -1){return;}
+
+	wellClient.singleStepTransfer(call.callId, phoneNumber);
+	$select.val('');
+
+});
+
+wellClient.ctrl = {};
+
+wellClient.ctrl.beforeDeliver = function(id){
+	clearTimeout(wellClient.ctrl.timeoutId);
+
+	(function(id){
+		wellClient.ctrl.timeoutId = setTimeout(function(){
+				wellClient.ctrl.deliverMethod(id);
+		}, 500);
+	})(id);
+};
+
+wellClient.ctrl.deliverMethod = function(id){
+
 	switch(id){
 		case 'well-make': return wellClient.ctrl.makeCall();
 		case 'well-answer': return wellClient.ctrl.answerCall();
@@ -333,23 +531,10 @@ $document.on('click','.well-btn', function(event){
 		case 'well-transfer': return wellClient.ctrl.transferCall();
 		case 'well-conference': return wellClient.ctrl.conferenceCall();
 		case 'well-logout': return wellClient.ctrl.logout();
+		case 'well-login': return wellClient.ctrl.login();
 		default: return;
 	}
-});
-
-$document.on('click', '.well-transfer-dest>ul>li', function(event){
-	var phoneNumber = $(event.currentTarget).val();
-	phoneNumber = $.trim(phoneNumber);
-
-	if(!phoneNumber){return;}
-
-	var call = wellClient.ui.getActiveCall();
-	if(call === -1){return;}
-
-	wellClient.singleStepTransfer(call.callId, phoneNumber);
-});
-
-wellClient.ctrl = {};
+};
 
 wellClient.ctrl.makeCall = function(){
 	var phoneNumber = wellClient.ui.getPhoneNumber();
@@ -440,8 +625,60 @@ wellClient.ctrl.conferenceCall = function(){
 };
 
 wellClient.ctrl.logout = function(){
-	wellClient.ui.agentLoggedOff();
 	wellClient.logout();
 };
+
+wellClient.ctrl.login = function(){
+	var $login = $('#well-login');
+	var $loading = $('#well-loading');
+
+	var code = $('#well-code').val();
+	var password = $('#well-password').val();
+	var namespace = $('#well-namespace').val();
+	var deviceId = $('#well-deviceId').val();
+
+	if(!code || !password || !namespace || !deviceId){
+		alert('工号，密码，域名，分机号都是必填项');
+		return;
+	}
+
+	$loading.removeClass('well-dn');
+	$login.hide();
+
+	wellClient.agentLogin({
+		jobNumber: code,
+		password: password,
+		domain: namespace,
+		ext: deviceId,
+		agentMode: 'NotReady',
+		loginMode: 'force'
+	})
+	.done(function(res){
+		if(!window.localStorage){return;}
+		localStorage.setItem('code', code);
+		localStorage.setItem('password', password);
+		localStorage.setItem('namespace', namespace);
+		localStorage.setItem('deviceId', deviceId);
+	})
+	.fail(function(res){
+		var errorMsg = {
+			eventName: 'loginFailed',
+			status: res.status,
+			responseText: res.responseText,
+		};
+
+		// console.log(JSON.stringify(res));
+
+		wellClient.triggerInnerOn(errorMsg);
+	})
+	.always(function(){
+		if(!wellClient.isLogined()){
+			$login.show();
+		}
+		$loading.addClass('well-dn');
+		$login.removeAttr('disabled');
+	});
+};
+
 
 })($, wellClient);

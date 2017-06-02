@@ -1,6 +1,6 @@
 .well-client{
 	background: #f1f2ed;
-	padding: 10px;
+	padding: 0px 10px;
 }
 .well-client ul{
 	padding-left: 0px;
@@ -126,6 +126,8 @@
 	padding-left: 20px;
 	border-radius: 4px;
 	background-color: #2f94eb;
+	display: inline-block;
+	
 }
 .well-select-icon{
 	width: 0px;
@@ -155,6 +157,13 @@
 	border-radius: 4px;
 	cursor: pointer;
 }
+.well-login{
+	background: url(../img/login.png) no-repeat 4px 4px;
+	color: #fff;
+	padding-left: 20px;
+	border-radius: 4px;
+	cursor: pointer;
+}
 .well-agent-states{
 	background: #f1f2ed;
 }
@@ -174,4 +183,21 @@
 	position: relative;
 	top: 10px;
 	left: 20px;
+}
+.well-dn{
+	display: none!important;
+}
+.well-login-info{
+	width: 80px;
+}
+.well-loading{
+	background: url(../img/loading.gif) no-repeat 4px 4px;
+	color: #fff;
+	padding-left: 20px;
+	border-radius: 4px;
+	cursor: pointer;
+}
+.well-pending{
+	border: 1px solid #ffa500;
+	outline: none;
 }

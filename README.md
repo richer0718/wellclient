@@ -1,14 +1,17 @@
 [TOC]
 
-## -1 分支说明
-- **master**: 改动最大的分支，不稳定，用于定制化
-- **basic**: 提供基础的接口和界面
+## -1: 请注意事项
+1. 不经本人同意，请不要修改well-client.js, well-client-ui.js的任何代码。擅自修改源代码，很可能导致意外的问题。
+2. 请使用在`wellClient`方法说明中含有的方法，使用没有说明文档的方法，并不能保证这些方法的功能稳定性。
+3. 如果你需要一个方法，但是wellClient并没有提供，你可以在[讨论页面](https://coding.net/u/wangduanduan/p/wellClient/topic)
+提出你的需求。
 
 ## 0 运行项目
 直接用浏览器打开根目录下的index.html。或者你也可以访问[在线的demo](http://wangduanduan.coding.me/wellClient/)
 
 然后在浏览器里打开： 可以看到如下basic分支的界面。
 ![image](./public/img/demo2.jpg)
+
 
 
 ## 1 依赖项
@@ -25,11 +28,15 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="public/css/well-client.css">
   <script src="public/js/jquery-1.11.3.min.js"></script>
-  <script src="public/js/websocket-suport.min.js"></script>
+  <script src="public/js/websocket-support.min.js"></script>
   <script src="public/js/well-client.js"></script>
   <script src="public/js/well-client-ui.js"></script>
 </head>
 ```
+
+### 1.1 注意事项：
+1. websocket-support.min.js 是 sockjs.js 和 stomp.js 合并并压缩在一起的。你也可以用sockjs.js和stomp.js来代替websocket-support.min.js
+2. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
 
 ## 2 wellClient方法说明
 ### 2.1 wellClient.setConfig(config)：设置配置信息
@@ -46,6 +53,7 @@ useWsLog | boolean | 否 | true | 是否输出详细的websocket信息
 clickCallClass | string | 否 | well-canBeCalled | 设置点击呼叫的类,例如某个span标签包裹一串数字“8001sd12”,当这个类被点击的时候，首先会把这个字符串里的非数字部分剔除，然后对数字部分800112拨号。
 hideButton | array | 否 |　［］| 设置隐藏某个按钮。例如['sConf','conf']，代表隐藏单步会议与会议按钮,
 enableAlert | boolean | 否 | false | 决定是否启用alert。如果是ture，那么某些异常会用alert的形式弹出。默认不使用alert提示错误信息。
+autoAnswer | boolean | 是 | true | 自动接听默认为true。即当有电话呼入时，软电话会自动接听这个电话。设置为false时，需要手动点击接听按钮才能接听。
 
 `Example`
 
@@ -57,42 +65,48 @@ wellClient.setConfig({host:'192.168.2.233',debug:false});
 
 名称 | id
 --- | ---
-设置坐席状态 | setMode
-号码输入框 | number
-拨号按钮 | make
-接听按钮 | answer
-保持按钮 | hold
-单步转移按钮 | sTran
-单步会议按钮 | sConf
-咨询按钮 | ask
-会议按钮 | conf
-挂断按钮 | dropCon
-登出按钮 | logout
-登录按钮 | login
+设置座席状态 | well-changestate
+号码输入框 | well-input
+拨号按钮 | well-make
+接听按钮 | well-answer
+保持按钮 | well-hold
+单步转移按钮 | well-single
+咨询按钮 | well-consult
+会议按钮 | well-conference
+挂断按钮 | well-drop
+登出按钮 | well-logout
 
-### 2.2 wellClient.login(jobNumber, password, domain, ext, loginMode)：坐席登录
 
+### 2.2 wellClient.agentLogin(agent): 座席登录
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
-jobNumber | string | 是 |  | 工号
-password | string | 是 |  | 密码
-domain | string | 是 |  | 域名
-ext | string | 是 |  | 分机号
-loginMode | string | 否 | 'ask' | 登录模式。ask: 询问过后决定是否登录；force: 强制登录，无需询问；stop: 不做处理。以上三种情况必须是座席忘记登出或者异地登录时才会起作用。其他情况的报错将直接报错，不做任何处理。
+agent.jobNumber | string | 是 |  | 工号
+agent.password | string | 是 |  | 密码
+agent.domain | string | 是 |  | 域名
+agent.ext | string | 是 |  | 分机号
+agent.loginMode | string | 否 | 'force' | 登录模式。ask: 询问过后决定是否登录；force: 强制登录，无需询问；stop: 不做处理。以上三种情况必须是座席忘记登出或者异地登录时才会起作用。其他情况的报错将直接报错，不做任何处理。
+agent.agentMode | string | 否 | 'NotReady' | 坐席登录后的状态。NotReady为未就绪，Ready为就绪
 
 `Example`
 
 ```
-wellClient.login('5001','123456','test.com','8001')
+wellClient.agentLogin({
+  jobNumber: '5001',
+  password: '123456',
+  domain: 'test.cc',
+  ext: '8001',
+  loginMode: 'ask',
+  agentMode: 'Ready'
+})
 .done(function(res){
-	console.log('登录成功');
+  console.log('登录成功');
 })
 .fail(function(res){
-	console.log('登录失败');
+  console.log('登录失败');
 });
 ```
 
-### 2.3 wellClient.logout()：坐席登出
+### 2.3 wellClient.logout()：座席登出
 
 `Example`
 
@@ -106,7 +120,7 @@ wellClient.logout()
 })
 ```
 
-### 2.4 wellClient.setAgentMode(mode)：设置坐席状态
+### 2.4 wellClient.setAgentMode(mode)：设置座席状态
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
@@ -124,16 +138,17 @@ wellClient.setAgentMode('Ready')
 })
 ```
 
-### 2.5 wellClient.makeCall(phoneNumber)：拨打电话
+### 2.5 wellClient.makeCall(phoneNumber, oprtions)：拨打电话
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
 phoneNumber | string | 是 |  | 被叫方号码
+options.prefix | string | 否 | 号码前缀, 例如有的分机拨打外线是加上9
 
 `Example`
 
 ```
-wellClient.makeCall('8007')
+wellClient.makeCall('8007',{prefix: '9'})
 .done(function(res){
 	console.log('拨号请求成功');
 })
@@ -164,7 +179,7 @@ wellClient.answerCall('6aee1dda-d4a2-4d3c-8fab-df7782a6c10f')
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
-callId | string | 是 |  | 电话的callId
+callId | string | 否 |  | 电话的callId；如果不传callId,那么默认挂掉当前的通话（仅当有一通通话时可用）。
 
 `Example`
 
@@ -343,10 +358,29 @@ var data = [{key:'agentId', value:'8001'},{key:'customerId', value:'19099092'}];
 
 wellClient.setCallData('6aee1dda-d4a2-4d3c-8fab-df7782a6c10f',data)
 .done(function(res){
-	console.log('设置随路数据成功');
+  console.log('设置随路数据成功');
 })
 .fail(function(res){
-	console.log('设置随路数据失败');
+  console.log('设置随路数据失败');
+})
+```
+
+### 2.17 wellClient.getCallData(callId)：获取随路数据
+
+参数 | 类型 | 是否必须 |  默认值 | 描述
+---|---|---|---|---
+callId | string | 是 |  | callId
+
+`Example`
+
+```
+
+wellClient.getCallData('6aee1dda-d4a2-4d3c-8fab-df7782a6c10f')
+.done(function(res){
+	console.log('获取数据成功');
+})
+.fail(function(res){
+	console.log('获取路数据失败');
 })
 ```
 
@@ -369,7 +403,84 @@ wellClient.on('serviceInitiated',function(data){
 });
 ```
 
-### 3.2 wellClient.exports=function(event){}: 所有事件的回调函数
+### 3.2 wellClient.innerOn(evnentName, callback(data){}): 订阅内部事件
+
+#### 3.2.1 订阅挂断事件：connectionCleared
+
+参数 | 类型 | 是否必须 |  默认值 | 描述
+---|---|---|---|---
+eventName | string | 是 |  | 必须是合法的事件名称
+callback | function | 是 |  | 事件的回调函数
+data.isEstatblished | boolean | | | 挂断前，该通话是否处于通话中。如果处于通话中，则为true。如果振铃未接等情况，则为false
+data.createTimeId | int | | | 呼叫产生时间戳
+data.data | object | | | 原始的event对象
+data.eventName | string | | | 事件类型名
+data.partyDevice | string | | | 相对于座席的对方号码。注意：在三方或者三方以上通话时，该值为空字符串
+data.isCaller | boolean | | | 呼叫类型，如果该值为true,那么就是呼出; 如果该值为false, 那么就是呼出。注意：在三方或者三方以上的通话时，该值为空字符串。
+data.isOutCall | boolean | | | 是否是外线挂断。true为是外线挂断，false 为内线挂断
+
+`Example`
+
+```
+wellClient.innerOn('connectionCleared', function(data){
+  console.log(data);
+});
+```
+![image](./public/img/innerOn2.jpg)
+
+#### 3.2.2 订阅登录失败事件：loginFailed
+事件字段 | 类型 | 描述
+---|---|---
+eventName | string | 事件名
+status | int | 状态码
+responseText | string | 原因短语（原因短语是原始的英文短语）
+
+
+`Example`
+
+```
+wellClient.innerOn('loginFailed', function(data){
+  console.log(data);
+});
+```
+
+状态码 | 备注
+--- | ---
+401 | 密码不匹配
+452 | 非法坐席工号
+453 | 非法分机号
+454 | 坐席已登录
+455 | 分机已被登录
+456 | 分机状态
+457 | 未授权分机
+458 | 坐席已登出
+461 | 坐席登陆的个数已达最大数
+
+#### 3.2.3 订阅websocket断开事件：wsDisconnected
+
+`注意`：websocket断开后，不会立即调用这个事件处理函数。因为wellClient会去尝试重连，最多重连5次，每隔1秒钟
+去重连1次。如果5次都重连失败，那么会发送wsDisconnect事件，调用wsDisconnect的事件处理函数。
+
+事件字段 | 类型 | 描述
+---|---|---
+eventName | string | 事件名
+msg | string | 原因短语
+
+`Example`
+
+```
+wellClient.innerOn('wsDisconnected', function(data){
+  console.log(data);
+  // data like this:
+  //{
+  //  eventName: 'wsDisconnected',
+  //  msg: 'websocket disconnect'
+  //}
+});
+```
+
+
+### 3.3 wellClient.exports=function(event){}: 所有事件的回调函数
 第三方自行实现这个函数后，一旦收到事件，就会调用这个函数。
 
 ```
@@ -378,7 +489,7 @@ wellClient.exports = function(event){
     console.log(event);
 };
 ```
-### 3.3 wellClient.onLog=function(msg){}: 所有日志的回调函数
+### 3.4 wellClient.onLog=function(msg){}: 所有日志的回调函数
 msg结构
 
 字段 | 类型 | 含义
@@ -438,7 +549,7 @@ wellClient.forceJoin('8001@test.cc', '6aee1dda-d4a2-4d3c-8fab-df7782a6c10f', '80
 ```
 
 ### 4.3 wellClient.forceTake(deviceId, callId, phoneNumber): 接管
-> 接管通过的坐席，让通话转接到指定的设备上。必须保证被接管的设备在通话中才可以进行接管。
+> 接管通过的座席，让通话转接到指定的设备上。必须保证被接管的设备在通话中才可以进行接管。
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
@@ -597,8 +708,39 @@ phoneNumber | string | 是 |  | 变量名
 wellClient.isPhoneNumber('144124');
 ```
 
+
+### 5.5 事件日志方法
+
+- 事件日志最多记录2500行日志, 超出会自动覆盖
+- 事件记录是异步的记录，降低对页面其他业务的影响
+- 日志功能默认开启
+- 可以通过wellClient.disableLog()关闭日志记录功能。
+- 每次登出后，日志会自动清空
+
+
+#### 5.5.1 wellClient.getLog(): 获取所有事件日志, 日志会在控制台输出
+#### 5.5.2 wellClient.downloadLog()：下载所有事件日志，日志文件会以txt格式下载
+#### 5.5.3 wellClient.enableLog(): 启用事件日志记录功能
+#### 5.5.4 wellClient.disableLog(): 禁用事件日志记录功能
+
+示例：
+
+```
+> wellClient.getEventLog()
+08:00:00.000 "---- Session started: Wed May 17 2017 19:46:46 GMT+0800 (中国标准时间) ----
+
+[2017-05-17 19:46:53]: {"eventName":"agentLoggedOn","eventTime":"2017.05.17 19:46:53","eventType":"agent","serial":8343236,"params":{"_amqpTopic":"event.csta.zhen04.cc","agent":"5006@zhen04.cc","subscriptionId":"http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"},"_type":"component.cti.event.AgentLoggedOnEvent","topics":["agentLoggedOn","agent:5006@zhen04.cc","device:8006@zhen04.cc","agent:zhen04.cc","CtiRouter_ctirouter-757zm","agent","csta"],"namespace":"zhen04.cc","srcDeviceId":"8006@zhen04.cc","deviceId":"8006@zhen04.cc","agentId":"5006@zhen04.cc","agentMode":"NotReady","devices":{"Voice":"8006@zhen04.cc"}}
+
+[2017-05-17 19:46:53]: {"eventName":"agentNotReady","eventTime":"2017.05.17 19:46:53","eventType":"agent","serial":8343237,"params":{"_amqpTopic":"event.csta.zhen04.cc","agent":"5006@zhen04.cc","subscriptionId":"http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"},"_type":"component.cti.event.AgentNotReadyEvent","topics":["agent:5006@zhen04.cc","device:8006@zhen04.cc","agent:zhen04.cc","CtiRouter_ctirouter-757zm","agent","agentNotReady","csta"],"namespace":"zhen04.cc","srcDeviceId":"8006@zhen04.cc","deviceId":"8006@zhen04.cc","agentId":"5006@zhen04.cc","agentMode":"NotReady","devices":{"Voice":"8006@zhen04.cc"}}
+
+
+---- Log retrieved: Wed May 17 2017 19:47:01 GMT+0800 (中国标准时间) ----
+---- Session duration: 00:00:15 ----"
+```
+
+
 ## 6 事件名及其数据结构
-### 6.1 agentLoggedOn：坐席登录事件
+### 6.1 agentLoggedOn：座席登录事件
 `数据模型`
 ```
 AgentLoggedOnEvent {
@@ -610,8 +752,8 @@ AgentLoggedOnEvent {
 	namespace (string, optional): 命名空间 ,
 	srcDeviceId (string, optional): 订阅事件的设备 ,
 	deviceId (string, optional): 分机号 ,
-	agentId (string, optional): 坐席号 ,
-	agentMode (string, optional): 坐席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
+	agentId (string, optional): 座席号 ,
+	agentMode (string, optional): 座席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
 	devices (object, optional): 登录设备 ,
 	queueId (string, optional): 队列ID ,
 	propertyNames (Array[string], optional),
@@ -651,7 +793,7 @@ AgentLoggedOnEvent {
 }
 ```
 
-### 6.2 agentLoggedOff：坐席登出事件
+### 6.2 agentLoggedOff：座席登出事件
 `数据模型`
 ```
 AgentLoggedOffEvent {
@@ -663,8 +805,8 @@ AgentLoggedOffEvent {
 	namespace (string, optional): 命名空间 ,
 	srcDeviceId (string, optional): 订阅事件的设备 ,
 	deviceId (string, optional): 分机号 ,
-	agentId (string, optional): 坐席号 ,
-	agentMode (string, optional): 坐席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
+	agentId (string, optional): 座席号 ,
+	agentMode (string, optional): 座席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
 	devices (object, optional): 登录设备 ,
 	queueId (string, optional): 队列ID ,
 	propertyNames (Array[string], optional),
@@ -703,7 +845,7 @@ AgentLoggedOffEvent {
   }
 }
 ```
-### 6.3 agentReady：坐席就绪事件
+### 6.3 agentReady：座席就绪事件
 `数据模型`
 ```
 AgentReadyEvent {
@@ -715,8 +857,8 @@ AgentReadyEvent {
 	namespace (string, optional): 命名空间 ,
 	srcDeviceId (string, optional): 订阅事件的设备 ,
 	deviceId (string, optional): 分机号 ,
-	agentId (string, optional): 坐席号 ,
-	agentMode (string, optional): 坐席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
+	agentId (string, optional): 座席号 ,
+	agentMode (string, optional): 座席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
 	devices (object, optional): 登录设备 ,
 	propertyNames (Array[string], optional),
 	eventTopics (Array[string], optional)
@@ -755,7 +897,7 @@ AgentReadyEvent {
   }
 }
 ```
-### 6.4 agentNotReady：坐席离席事件
+### 6.4 agentNotReady：座席离席事件
 `数据模型`
 ```
 AgentNotReadyEvent {
@@ -767,8 +909,8 @@ AgentNotReadyEvent {
 	namespace (string, optional): 命名空间 ,
 	srcDeviceId (string, optional): 订阅事件的设备 ,
 	deviceId (string, optional): 分机号 ,
-	agentId (string, optional): 坐席号 ,
-	agentMode (string, optional): 坐席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
+	agentId (string, optional): 座席号 ,
+	agentMode (string, optional): 座席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
 	devices (object, optional): 登录设备 ,
 	reason (string, optional): 离席原因 ,
 	propertyNames (Array[string], optional),
@@ -824,7 +966,7 @@ ServiceInitiatedEvent {
 	callId (string, optional): 呼叫ID ,
 	deviceId (string, optional): 发生变化的设备 ,
 	localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-	agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+	agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 	originCallInfo (OriginCallInfo, optional),
 	connectionId (string, optional),
 	initiatedDevice (string, optional): 摘机设备 ,
@@ -888,7 +1030,7 @@ OriginatedEvent {
 	callId (string, optional): 呼叫ID ,
 	deviceId (string, optional): 发生变化的设备 ,
 	localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-	agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+	agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 	originCallInfo (OriginCallInfo, optional),
 	connectionId (string, optional),
 	callingDevice (string, optional): 主叫号 ,
@@ -952,6 +1094,7 @@ OriginCallInfo {
 判断是否本设备的呼叫只需要关注alertingDevice与srcDeviceId相同，相同则表明当前设备在振铃。
 
 `数据模型`
+
 ```
 DeliveredEvent {
 	eventName (string, optional): 事件名称 ,
@@ -964,7 +1107,7 @@ DeliveredEvent {
 	callId (string, optional): 呼叫ID ,
 	deviceId (string, optional): 发生变化的设备 ,
 	localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-	agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+	agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 	originCallInfo (OriginCallInfo, optional),
 	connectionId (string, optional),
 	alertingDevice (string, optional): 振铃设备 ,
@@ -987,40 +1130,82 @@ OriginCallInfo {
 }
 UserData {}
 ```
-`示例`
+
+`示例1`: 无通话时，座席呼出
+
 ```
 {
   "eventName": "delivered",
-  "eventSrc": "8002@zhen04.cc",
-  "eventTime": "2017.03.18 14:13:33",
+  "eventSrc": "8003@test0016.cc",
+  "eventTime": "2017.06.01 11:22:25",
   "eventType": "csta",
-  "serial": 121027,
+  "serial": 401,
   "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
+    "_amqpTopic": "event.csta.test0016.cc",
+    "log": "false",
+    "agent": "5006@test0016.cc",
+    "subscriptionId": "http%3A%2F%2Fservices_sdkserver_1%3A58080%2Fevent-sink%2Fcsta"
   },
   "_type": "component.cti.event.DeliveredEvent",
   "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
     "delivered",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "device:8002@zhen04.cc",
-    "csta"
+    "csta",
+    "device:8003@test0016.cc",
+    "extension",
+    "crossRefId:504",
+    "CtiWorker_a22b27648fb4",
+    "agent:5006@test0016.cc"
   ],
-  "namespace": "zhen04.cc",
-  "srcDeviceId": "8002@zhen04.cc",
-  "callId": "37db6efe-57cc-4053-b0ce-24c96eba66b0",
-  "deviceId": "8002@zhen04.cc",
+  "namespace": "test0016.cc",
+  "srcDeviceId": "8003@test0016.cc",
+  "callId": "c7ed6c7b-4f03-4e2e-8e0b-0970a340d48c",
+  "deviceId": "8004@test0016.cc",
   "localState": "Alerting",
-  "connectionId": "8002@zhen04.cc|37db6efe-57cc-4053-b0ce-24c96eba66b0",
-  "alertingDevice": "8002@zhen04.cc",
-  "callingDevice": "8001@zhen04.cc",
-  "calledDevice": "8002@zhen04.cc"
+  "connectionId": "8003@test0016.cc|c7ed6c7b-4f03-4e2e-8e0b-0970a340d48c",
+  "alertingDevice": "8004@test0016.cc",
+  "callingDevice": "8003@test0016.cc",
+  "calledDevice": "8004@test0016.cc"
 }
 ```
+
+`实例2`: 无通话时，有电话呼入
+
+```
+{
+  "eventName": "delivered",
+  "eventSrc": "8003@test0016.cc",
+  "eventTime": "2017.06.01 11:26:24",
+  "eventType": "csta",
+  "serial": 421,
+  "params": {
+    "_amqpTopic": "event.csta.test0016.cc",
+    "log": "false",
+    "agent": "5006@test0016.cc",
+    "subscriptionId": "http%3A%2F%2Fservices_sdkserver_1%3A58080%2Fevent-sink%2Fcsta"
+  },
+  "_type": "component.cti.event.DeliveredEvent",
+  "topics": [
+    "delivered",
+    "csta",
+    "device:8003@test0016.cc",
+    "extension",
+    "crossRefId:504",
+    "CtiWorker_a22b27648fb4",
+    "agent:5006@test0016.cc"
+  ],
+  "namespace": "test0016.cc",
+  "srcDeviceId": "8003@test0016.cc",
+  "callId": "17383bbc-467a-11e7-b3a5-39e394a1c1de",
+  "deviceId": "8003@test0016.cc",
+  "localState": "Alerting",
+  "connectionId": "8003@test0016.cc|17383bbc-467a-11e7-b3a5-39e394a1c1de",
+  "alertingDevice": "8003@test0016.cc",
+  "callingDevice": "8004@test0016.cc",
+  "calledDevice": "8003@test0016.cc"
+}
+```
+
+
 ### 6.8 established：接通事件
 
 接通事件在通话建立时产生，在呼叫中的每一个设备都会收到一个接通事件。
@@ -1051,7 +1236,7 @@ EstablishedEvent {
 	callId (string, optional): 呼叫ID ,
 	deviceId (string, optional): 发生变化的设备 ,
 	localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-	agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+	agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 	originCallInfo (OriginCallInfo, optional),
 	connectionId (string, optional),
 	answeringDevice (string, optional): 接通设备 ,
@@ -1170,7 +1355,7 @@ TransferredEvent {
     callId (string, optional): 呼叫ID ,
     deviceId (string, optional): 发生变化的设备 ,
     localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-    agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+    agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
     originCallInfo (OriginCallInfo, optional),
     connectionId (string, optional),
     primaryOldCall (string, optional): 转移前被保持的呼叫 ,
@@ -1216,7 +1401,7 @@ OriginCallInfo {
   "deviceId": "8002@zhen04.cc",
   "localState": "Queued",
   "originCallInfo": {
-    
+
   },
   "connectionId": "8002@zhen04.cc|10549a5f-41c8-4309-a1ad-faa61c8f3777",
   "primaryOldCall": "0",
@@ -1231,6 +1416,20 @@ OriginCallInfo {
 
 形成会议时产生此事件，在会议中的所有设备都将收到此事件。如果有新的设备加入到会议中，会议中的所有设备也将收到此事件。
 
+外线A->坐席B->咨询坐席C-> 进入会议中：
+
+如果B先挂断：那么收到一个挂断事件，releasingDevice是坐席自己，其他两方都会挂断;
+b一共收到1个挂断事件
+
+
+如果C先挂断：那么先收到的一个挂断事件,releasingDevice是C;然后B挂断，还会收到一次挂断事件，这时releasingDevice都是坐席自己;
+b一共收到2个挂断事件；
+
+
+如果C先挂断：那么先收到的一个挂断事件,releasingDevice是C;然后A挂断，还会收到一次挂断事件，这时releasingDevice都是A自己；
+然后收到一个挂断事件，这是releasingDevice是坐席自己；B一共收到3个挂断事件。
+
+
 `数据模型`
 ```
 ConferencedEvent {
@@ -1244,7 +1443,7 @@ srcDeviceId (string, optional): 订阅事件的设备 ,
 callId (string, optional): 呼叫ID ,
 deviceId (string, optional): 发生变化的设备 ,
 localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 originCallInfo (OriginCallInfo, optional),
 connectionId (string, optional),
 primaryOldCall (string, optional): 会议前的被保持的呼叫 ,
@@ -1315,7 +1514,7 @@ srcDeviceId (string, optional): 订阅事件的设备 ,
 callId (string, optional): 呼叫ID ,
 deviceId (string, optional): 发生变化的设备 ,
 localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 originCallInfo (OriginCallInfo, optional),
 connectionId (string, optional),
 retrievingDevice (string, optional): 取回设备 ,
@@ -1379,7 +1578,7 @@ srcDeviceId (string, optional): 订阅事件的设备 ,
 callId (string, optional): 呼叫ID ,
 deviceId (string, optional): 发生变化的设备 ,
 localState (string, optional): 事件发生后设备的状态 = ['Connect', 'Initiate', 'Alerting', 'Hold', 'None', 'Queued', 'Fail', 'Idle'],
-agentStatus (string, optional): 坐席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
+agentStatus (string, optional): 座席状态 = ['NotReady', 'WorkNotReady', 'Idle', 'OnCallIn', 'OnCallOut', 'Logout', 'Ringing', 'OffHook', 'CallInternal', 'Dailing', 'Ringback', 'Conference', 'OnHold', 'Other'],
 originCallInfo (OriginCallInfo, optional),
 connectionId (string, optional),
 holdingDevice (string, optional): 保持设备 ,
@@ -1425,7 +1624,7 @@ calledDevice (string, optional)
 }
 ```
 
-### 6.14  agentWorkingAfterCall：坐席话后处理事件
+### 6.14  agentWorkingAfterCall：座席话后处理事件
 `数据模型`
 ```
 AgentWorkingAfterCallEvent {
@@ -1437,8 +1636,8 @@ serial (integer, optional): 序号 ,
 namespace (string, optional): 命名空间 ,
 srcDeviceId (string, optional): 订阅事件的设备 ,
 deviceId (string, optional): 分机号 ,
-agentId (string, optional): 坐席号 ,
-agentMode (string, optional): 坐席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
+agentId (string, optional): 座席号 ,
+agentMode (string, optional): 座席状态 = ['Ready', 'NotReady', 'WorkNotReady', 'Logout', 'Unknown'],
 devices (object, optional): 登录设备 ,
 eventTopics (Array[string], optional),
 propertyNames (Array[string], optional)
@@ -1476,3 +1675,154 @@ propertyNames (Array[string], optional)
   }
 }
 ```
+
+### 6.15  agentAllocated：座席预占事件
+`数据模型`
+
+
+`示例`
+
+```
+
+{
+  "eventName": "agentAllocated",
+  "eventTime": "2017.05.10 13:54:29",
+  "eventType": "agent",
+  "serial": 2012088,
+  "params": {
+    "_amqpTopic": "event.csta.final.cc",
+    "agent": "5001@final.cc",
+    "subscriptionId": "http%3A%2F%2Fsdkserver.paas%3A58080%2Fevent-sink%2Fcsta"
+  },
+  "_type": "component.cti.event.AgentAllocatedEvent",
+  "topics": [
+    "device:8001@final.cc",
+    "CtiRouter_ctirouter-kz4a7",
+    "agent:5001@final.cc",
+    "agent:final.cc",
+    "agentAllocated",
+    "agent",
+    "csta"
+  ],
+  "namespace": "final.cc",
+  "srcDeviceId": "8001@final.cc",
+  "deviceId": "8001@final.cc",
+  "agentId": "5001@final.cc",
+  "agentMode": "Allocated",
+  "devices": {
+    "Voice": "8001@final.cc"
+  }
+}
+
+```
+
+# 7 收到事件的顺序
+
+## 7.1 情景1：座席登陆
+1. 收到 `agentLoggedOn`
+2. 收到 `agentReady` 或者 `agentNotReady`
+
+## 7.2 情景2：座席呼出后外线接通然后挂断
+1. 收到`serviceInitiated`
+2. 收到`originated`
+3. 收到`delivered`
+4. 收到`established`(如果是通话建立的情况)
+5. 收到`connectionCleared`
+
+## 7.3 情景3：座席呼入后接听然后挂断
+1. 收到`delivered`
+2. 收到`established`(如果是通话建立的情况)
+3. 收到`connectionCleared`
+
+
+# 8 FAQ
+
+## 8.1  点了某个按钮后，页面没有任何反应
+
+页面上的每一按钮其实对应一个HTTP请求，例如一个挂断按钮，其实对应一个挂断的http请求。点击任何一个可点击的按钮，都会触发一个请求。
+例如你点击了挂断请求，按理说会发送挂断的请求，但是有时候点击了挂断按钮，但是页面也没有任何反应，这是候应该按照以下思路去排查。
+
+- 1. 问题能否可重现：如果问题只是偶然出现一次，有可能是环境的问题，有可能的网络的问题。
+
+- 2. 检查HTTP请求：如果请求都没有发送，那么页面是不会有任何变化的。这时候要检查前端js的逻辑，打开控制台看看有没有报错信息。 如果请求发送了，但是状态码在400以上，这说明请求发送了。但是请求出错了。这时候要看看请求的状态码
+
+- 3. 检查有没有收到事件： 如果请求发送了，状态码是200或者204，这说明请求成功了，但是请求成功了，页面并不会有任何变化。因为页面的变化是由事件驱动的。例如你发送一个登陆请求，请求也成功了，但是页面没有任何变化。这只能说明没有收到登录成功事件。同理，如果你点击了挂断，但是页面没有任何变化，这可能是你没有收到挂断事件。请记住，页面的变化是由事件驱动的。
+
+
+## 8.2 为什么我的页面没有wellClient的全局变量
+首先，先判断你有没有引入well-client.js，如果这个文件没有引入，那么自然是没有wellClient的全局变量。
+
+其次，你有没有使用iframe的方式引入软电话的所有文件，如果是以iframe的方式引入的，那么wellClient的变量在当前页面是无法获取的，因为这是跨iframe。变量是无法互相通信的，除非借助特殊的方法。（关于跨iframe通信，可以自行google一下）
+
+## 8.3 为什么我在电脑上登录了wellPhone，但是页面软电话登录的时候，还是报错说分机未注册
+首先，请确保wellPhone是正常在线状态。
+其他，wellPhone的状态和服务端的状态可能存在状态延迟，就是说虽然你的wellPhone是在线的，可能服务端还没有刷新它的状态。你可以稍等片刻，再次尝试登录。
+
+## 8.4 页面刷新或者关闭后，软电话（即指wellClient）是否会自动登出？
+wellClient注册了windows.onunload事件，页面关闭或者刷新的时候，会自动登出。
+
+## 8.5 如果断网了，软电话是否会自动登出？
+软电话每隔2分钟会向服务端发送一次心跳请求，如果服务端在3分钟之内没有收到座席的心跳，会强制将座席登出。
+
+## 8.5 软电话使用了websocket，如果因为网络不稳定，websocket断开后，是否会自动重连。
+软电话会自动重连，最多重连5次，每隔1秒钟去重连1次。如果5次都重连失败，那么会发送wsDisconnected事件，调用wsDisconnect的事件处理函数。
+
+## 8.6 软电话对浏览器有什么要求，IE浏览器支持到什么版本？
+wellClient支持大部分现代浏览器，目前暂时支持IE11。IE8暂时不支持。
+其他不支持websocket的浏览器，前端可以使用ajax等其他方式来模拟websocket，但是这需要后端也要支持。
+
+![image](./docs/websocket-support.jpg)
+
+
+## 8.7 直接转分机的号码形式
+
+```
+总机号-[W|w]分机号
+```
+规则说明：
+
+符号 | 是否必须 | 描述
+---|---|---
+- | 是 | 转接分机符号，总机号和分机号之间有且仅有一个英文短横"-"
+W | 否 | W代表1s后转分机，WW代表两秒后转分机
+w | 否 | w代表0.5秒转分机，ww代表1秒后转分机
+Ww都没有 | 否 | Ww符号都没有，表示接通总机后直接转分机，不做等待
+
+示例：
+
+```
+<option value="">转接到</option>
+<option value="938834600-WW8001">先拨打38834600，等待2s后转8001分机</option>
+<option value="938834600-Ww8002">先拨打38834600，等待1.5s后转8001分机</option>
+```
+
+## 8.8 我的浏览器支持websocket, 为什么无法建立websocekt连接
+
+- 如果你电脑开了vpn, 请关闭vpn后，再试试websocket能否建立连接。
+- 如果还是不能建立连接，可以打开控制台，将错误信息截图发给我，或者复制信息后发给我
+
+## 8.9 从日志看收到了某个事件，但是页面没有变化。例如收到接通事件，页面按钮都没变
+
+收到事件后，页面没有变化，有以下可能原因
+1. 事件的callId和之前的事件的callId不一致
+2. 事件重复，一个事件发过来多次
+3. 事件的顺序混乱。一般来说打电话时，第一个收到的事件应该是serviceIniriated，如果这个事件在最后在发过来。
+这样肯定会出现问题。
+
+
+## 8.10 如何下载日志？
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
