@@ -583,7 +583,7 @@ var wellClient = (function($) {
                 return;
             }
 
-            var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath;
+            var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath + "/websocket";
             var socket = new WebSocket(url);
             ws = Stomp.over(socket);
 
