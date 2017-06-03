@@ -18,7 +18,7 @@
 `以下依赖项是必须的，并且必须按照指定的顺序加载`
 
 1. jquery-1.11.3.min.js：建议使用不低于1.11.3版本的jquery
-2. websocket-suport.min.js: websocket的支持组件
+2. stomp.min.js: websocket的支持组件
 3. well-client.js: 软电话主要的逻辑处理
 4. well-client-ui.js: 软电话的UI事件
 
