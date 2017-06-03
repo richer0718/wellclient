@@ -30,6 +30,8 @@ var wellClient = (function($) {
         eventPort: '',
         TPI: 'mbtpi.wellcloud.cc/login',
         protocol: 'https://',
+        wsProtocol: 'wss://'
+        wsPort: ':443'
 
         // aws config
         // SDK: 'tpisdk.wellcloud.cc',
@@ -581,8 +583,8 @@ var wellClient = (function($) {
                 return;
             }
 
-            var url = Config.protocol + Config.SDK + ':' + Config.eventPort + Config.eventBasePath;
-            var socket = new SockJS(url);
+            var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath;
+            var socket = new WebSocket(url);
             ws = Stomp.over(socket);
 
             if(!Config.useWsLog){
