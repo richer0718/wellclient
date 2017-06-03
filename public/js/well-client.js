@@ -213,7 +213,7 @@ var wellClient = (function($) {
     var user = {
         number: '',
         password: 'Aa123456',
-        domain: 'cmbyc.cc',
+        domain: 'cmb.cc',
         ext: '',
         loginMode: 'force',
         agentMode: 'NotReady'
@@ -593,11 +593,19 @@ var wellClient = (function($) {
             }
 
             var socket = new WebSocket(url);
+            var wsHeartbeatId = '';
+
             ws = Stomp.over(socket);
+            // ws.heartbeat.outgoing = 20000;
+            // ws.heartbeat.incoming = 0;
 
             if(!Config.useWsLog){
                 ws.debug = null;
             }
+
+            wsHeartbeatId = setInterval(function(){
+                ws.ws.send('h');
+            },25000);
 
             ws.connect({}, function(frame) {
 
@@ -619,6 +627,7 @@ var wellClient = (function($) {
                 // this condition will emit wsDisconnected event
                 util.log(frame);
                 util.error(new Date() + 'websocket disconnect');
+                clearInterval(wsHeartbeatId);
 
                 if(Config.currentReconnectTimes < Config.maxReconnectTimes){
                     Config.currentReconnectTimes++;
