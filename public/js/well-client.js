@@ -31,7 +31,7 @@ var wellClient = (function($) {
         TPI: 'mbtpi.wellcloud.cc/login',
         protocol: 'https://',
         wsProtocol: 'wss://'
-        wsPort: ':443'
+        wsPort: ':443',
 
         // aws config
         // SDK: 'tpisdk.wellcloud.cc',
