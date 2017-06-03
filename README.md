@@ -28,7 +28,7 @@
   <meta charset="utf-8">
   <link rel="stylesheet" href="public/css/well-client.css">
   <script src="public/js/jquery-1.11.3.min.js"></script>
-  <script src="public/js/websocket-support.min.js"></script>
+  <script src="public/js/stomp.min.js"></script>
   <script src="public/js/well-client.js"></script>
   <script src="public/js/well-client-ui.js"></script>
 </head>

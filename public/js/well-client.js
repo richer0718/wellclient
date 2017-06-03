@@ -32,6 +32,7 @@ var wellClient = (function($) {
         protocol: 'https://',
         wsProtocol: 'wss://',
         wsPort: ':443',
+        autoAnswer: true, // whether auto answer, need well-client-ui support
 
         // aws config
         // SDK: 'tpisdk.wellcloud.cc',
@@ -39,6 +40,9 @@ var wellClient = (function($) {
         // eventPort: '',
         // TPI:'tpi.wellcloud.cc/login',
         // protocol: 'http://',
+        // wsProtocol: 'ws://',
+        // wsPort: ':80',
+        // autoAnswer: false, // whether auto answer, need well-client-ui support
 
         // test env
         // SDK: '192.168.40.79',
@@ -69,7 +73,6 @@ var wellClient = (function($) {
         heartbeatLength: 2*60*1000, // herart beat frequency
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
-        autoAnswer: true, // whether auto answer, need well-client-ui support
         useEventLog: true // whether use event log
     };
 

@@ -4,15 +4,10 @@
 <head>
 	<meta charset="utf-8">
 	<link rel="stylesheet" href="public/css/well-client.css">
-
 	<script src="public/js/jquery-1.11.3.min.js"></script>
-	<!-- <script src="public/js/websocket-support-1.1.4.js"></script> -->
-	<!-- <script src="public/js/websocket-support.min.js"></script> -->
-	<!-- <script src="public/js/ws-sp2.min.js"></script> -->
-	<script src="public/js/sockjs-1.1.4.js"></script>
-	<script src="public/js/stomp.js"></script>
-	<!-- <script src="public/js/well-client-st.js"></script> -->
+	<script src="public/js/stomp.min.js"></script>
 	<script src="public/js/well-client.js"></script>
+	<script src="public/js/well-client-ui.js"></script>
 </head>
 
 <body>
@@ -90,6 +85,54 @@
 </div>
 
 <script type="text/javascript">
+	(function(){
+		// this part is use to config the user info and other config
+		// for the test and dev environment
+		// you can just remove it, or just ignore it
+		var href = location.href;
+		var needUseLocalStorage = /file:|coding/.test(href);
+		if(!window.localStorage){return;}
+		if(!needUseLocalStorage){return;}
+
+		var code = localStorage.getItem('code');
+		if(code){
+			$('#well-code').val(code);
+		}
+
+		var password = localStorage.getItem('password');
+		if(password){
+			$('#well-password').val(password);
+		}
+
+		var namespace = localStorage.getItem('namespace');
+		if(namespace){
+			$('#well-namespace').val(namespace);
+		}
+
+		var deviceId = localStorage.getItem('deviceId');
+		if(deviceId){
+			$('#well-deviceId').val(deviceId);
+		}
+
+		var sdk = localStorage.getItem('sdk');
+		if(sdk){
+			$('#sdk').val(sdk);
+		}
+
+		var port = localStorage.getItem('port');
+		if(port){
+			$('#port').val(port);
+		}
+
+		var tpi = localStorage.getItem('tpi');
+		if(tpi){
+			$('#tpi').val(tpi);
+		}
+	})();
+
+
+
+
 	$('#login').click(function(){
 		var $login = $('#login');
 
@@ -205,7 +248,7 @@
 	});
 </script>
 
-<script src="public/js/well-client-ui.js"></script>
+
 
 </body>
 </html>
