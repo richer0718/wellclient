@@ -3,11 +3,9 @@
 ## -1: 请注意事项
 1. 不经本人同意，请不要修改well-client.js, well-client-ui.js的任何代码。擅自修改源代码，很可能导致意外的问题。
 2. 请使用在`wellClient`方法说明中含有的方法，使用没有说明文档的方法，并不能保证这些方法的功能稳定性。
-3. 如果你需要一个方法，但是wellClient并没有提供，你可以在[讨论页面](https://coding.net/u/wangduanduan/p/wellClient/topic)
-提出你的需求。
 
-## 0 运行项目
-直接用浏览器打开根目录下的index.html。或者你也可以访问[在线的demo](http://wangduanduan.coding.me/wellClient/)
+## 0 运行项目  or  [在线的demo](https://wangduanduan.github.io/wellclient/)
+直接用浏览器打开根目录下的index.html。或者你也可以访问
 
 然后在浏览器里打开： 可以看到如下basic分支的界面。
 ![image](./public/img/demo2.jpg)
