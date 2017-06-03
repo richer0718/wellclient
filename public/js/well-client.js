@@ -587,6 +587,11 @@ var wellClient = (function($) {
             }
 
             var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath + "/websocket";
+            if(typeof WebSocket !== 'function'){
+                alert('您的浏览器版本太太太老了，请升级你的浏览器到IE11，或使用任何支持原生WebSocket的浏览器');
+                return;
+            }
+
             var socket = new WebSocket(url);
             ws = Stomp.over(socket);
 

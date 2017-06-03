@@ -1,11 +1,13 @@
 [TOC]
 
 ## -1: 请注意事项
+0. IE浏览器最低要要求IE11, 以及其他任何支持原生websocket的浏览器
 1. 不经本人同意，请不要修改well-client.js, well-client-ui.js的任何代码。擅自修改源代码，很可能导致意外的问题。
 2. 请使用在`wellClient`方法说明中含有的方法，使用没有说明文档的方法，并不能保证这些方法的功能稳定性。
 
 ## 0 运行项目  or  [在线的demo](https://wangduanduan.github.io/wellclient/)
 直接用浏览器打开根目录下的index.html。或者你也可以访问
+
 
 然后在浏览器里打开： 可以看到如下basic分支的界面。
 ![image](./public/img/demo2.jpg)
