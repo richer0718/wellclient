@@ -609,7 +609,12 @@ var wellClient = (function($) {
             }
 
             wsHeartbeatId = setInterval(function(){
-                ws.ws.send('h');
+                if(ws && ws.connected){
+                    ws.ws.send('h');
+                }
+                else{
+                    clearInterval(wsHeartbeatId);
+                }
             },25000);
 
             ws.connect({}, function(frame) {
