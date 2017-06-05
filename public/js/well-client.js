@@ -623,7 +623,13 @@ var wellClient = (function($) {
 
                 var dest = '/topic/csta/agent/' + env.loginId;
                 ws.subscribe(dest, function(event) {
-                    var eventInfo = JSON.parse(event.body);
+
+                    try{
+                        var eventInfo = JSON.parse(event.body);
+                    }
+                    catch(e){
+                        console.log(e);
+                    }
 
                     if(Config.useEventLog){
                         util.debugout.log(event.body);
