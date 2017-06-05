@@ -75,16 +75,29 @@
 </div>
 
 
-<div class="well-dn">
-	<p>工号：<input type="text" id="code" value=""></p>
-	<p>密码：<input type="text" id="password" value=""></p>
-	<p>域名：<input type="text" id="namespace" value=""></p>
-	<p>分机号：<input type="text" id="deviceId" value=""></p>
+<div class="">
+	<p>
+		请输入手机号：<input type="text" id="test-deviceId" value="">
+		<button id="test-makeCall">拨打</button>
+	</p>
 
-	<button id="login">登录</button>
 </div>
 
 <script type="text/javascript">
+	(function(){
+		$('#test-makeCall').click(function(){
+			var phone = $('#test-deviceId').val();
+
+			if(/^[0-9-wW]{3,20}$/.test(phone)){
+				wellClient.makeCall(phone);
+			}
+			else{
+				alert('手机号格式不对');
+			}
+		});
+	})();
+
+
 	(function(){
 		// this part is use to config the user info and other config
 		// for the test and dev environment
