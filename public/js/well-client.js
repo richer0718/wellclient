@@ -1,7 +1,7 @@
 //-----------------------------------------------------------------------------+
 //+                                                                            +
 //+                               core                                         +
-//+ version: 1.17.2                                                                         +
+//+ version: 2.6.5
 //-----------------------------------------------------------------------------+
 var wellClient = (function($) {
     jQuery.support.cors = true;
@@ -61,6 +61,7 @@ var wellClient = (function($) {
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
 
         // default config
+        isManCloseWs: false,
         debug: true,
         useWsLog: true,
         eventBasePath: '/mvc/stomp',
@@ -581,10 +582,14 @@ var wellClient = (function($) {
         },
 
         // start init websocket
-        initWebSocket: function() {
+        initWebSocket: function(callback) {
+            callback = callback || function(){};
+
             if(ws && ws.connected){
                 return;
             }
+
+            Config.isManCloseWs = false;
 
             var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath + "/websocket";
 
@@ -637,10 +642,14 @@ var wellClient = (function($) {
 
                     eventHandler.deliverEvent(eventInfo);
                 });
+                callback();
+
             }, function(frame) {
                 // websocket upexpected disconnected
                 // maybe network disconnection, or browser in offline
                 // this condition will emit wsDisconnected event
+                if(Config.isManCloseWs){return;}
+
                 util.log(frame);
                 util.error(new Date() + 'websocket disconnect');
                 clearInterval(wsHeartbeatId);
@@ -676,6 +685,8 @@ var wellClient = (function($) {
             if(!$.isFunction(ws.disconnect)){
                 return;
             }
+
+            Config.isManCloseWs = true;
 
             ws.disconnect(function(res){
                 util.log(res);
@@ -1237,15 +1248,18 @@ var wellClient = (function($) {
 
             app.pt.heartbeat()
             .done(function(){
-                util.initWebSocket();
+                util.initWebSocket(function(){
 
-                util.login(env.user.loginMode)
-                .done(function(res){
-                    $dfd.resolve(res);
-                })
-                .fail(function(res){
-                    $dfd.reject(res);
+                    util.login(env.user.loginMode)
+                    .done(function(res){
+                        $dfd.resolve(res);
+                    })
+                    .fail(function(res){
+                        $dfd.reject(res);
+                    });
+
                 });
+
             });
 
         })
