@@ -580,6 +580,11 @@ wellClient.ctrl.conferenceCall = function(){
 };
 
 wellClient.ctrl.logout = function(){
+	if(callModel.length != 0){
+		alert('当前正在通话中，无法签出!');
+		return;
+	}
+
 	wellClient.logout();
 };
 
