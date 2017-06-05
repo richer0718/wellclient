@@ -1,3 +1,16 @@
+(function(){
+    // console logs polyfill for some browser does support console
+    if(typeof console === 'undefined'){
+        var f = function(){};
+        console = {
+            log: f,
+            debug: f,
+            error: f,
+            info: f
+        };
+    }
+})();
+
 //-----------------------------------------------------------------------------+
 //+                                                                            +
 //+                               core                                         +
@@ -1276,14 +1289,16 @@ var wellClient = (function($) {
 
         var dfd = $.Deferred();
 
-        if(env.isAgentAllocated){
+        util.logCallMemory();
+
+        if(env.isAgentAllocated || callMemory.length != 0){
+            console.log('当前正在通话中，或者预占中，无法退出');
+
             dfd.reject({
                 reason: 'you can not logout when you are in agentAllocated state',
                 responseText: 'negative'
             });
         }
-
-        util.logCallMemory();
 
         var req = {
             func: 'Logout',
