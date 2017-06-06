@@ -691,6 +691,7 @@ var wellClient = (function($) {
                     }
                     catch(e){
                         console.log(e);
+                        return;
                     }
 
                     if(Config.useEventLog){
