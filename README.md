@@ -46,7 +46,7 @@
 envName | string | 是 | 无 | 使用某个环境的配置。
 
 
-eventName | 使用范围
+eventName | 使用范围 | 说明
 --- | --- | ---
 CMB-PRO | cmb生产环境 | 使用生产的配置, 并且默认的域名会被设置成cmb.cc
 CMB-DEV | cmb开发环境和测试环境 | 使用测试和生产的环境，并且默认域名会被设置成cmbyc.cc
