@@ -57,18 +57,6 @@ var wellClient = (function($) {
         // wsPort: ':80',
         // autoAnswer: false, // whether auto answer, need well-client-ui support
 
-        // test env
-        // SDK: '192.168.40.79',
-        // cstaPort: '58080',
-        // eventPort: '58080',
-        // TPI:'192.168.40.79:8090/login',
-        // protocol: 'http://',
-
-        // new sdk env
-        // SDK: '192.168.2.130',
-        // cstaPort: '58080',
-        // eventPort: '58080',
-        // TPI:'192.168.2.130:58080/login',
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
@@ -88,6 +76,49 @@ var wellClient = (function($) {
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
         useEventLog: true // whether use event log
+    };
+
+    var CONF = {
+        'CMB-PRO':{
+            SDK: 'mbsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI: 'mbtpi.wellcloud.cc/login',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            wsPort: ':443',
+            autoAnswer: true
+        },
+        'CMB-DEV':{
+            SDK: '163.53.88.183',
+            cstaPort: '8088',
+            eventPort: '8088',
+            TPI:'163.53.88.183:5003/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            wsPort: ':',
+            autoAnswer: true
+        },
+        'AWS-PRO':{
+            SDK: 'tpisdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'tpi.wellcloud.cc/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            wsPort: ':80',
+            autoAnswer: false
+        },
+        'OUR-TEST':{
+            SDK: '192.168.40.79',
+            cstaPort: '58080',
+            eventPort: '58080',
+            TPI:'192.168.40.79:8090/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            wsPort: ':80',
+            autoAnswer: true
+        }
     };
 
     var ErrorTip = {
@@ -1195,6 +1226,27 @@ var wellClient = (function($) {
         }
     };
 
+    app.pt.useConfig = function(selfEnv){
+        if(typeof selfEnv != 'string'){return;}
+        if(!CONF[selfEnv]){return;}
+
+        Config.SDK = CONF[selfEnv].SDK;
+        Config.cstaPort = CONF[selfEnv].cstaPort;
+        Config.eventPort = CONF[selfEnv].eventPort;
+        Config.TPI = CONF[selfEnv].TPI;
+        Config.protocol = CONF[selfEnv].protocol;
+        Config.wsProtocol = CONF[selfEnv].wsProtocol;
+        Config.wsPort = CONF[selfEnv].wsPort;
+        Config.autoAnswer = CONF[selfEnv].autoAnswer;
+
+        if(selfEnv === 'CMB-DEV'){
+            user.namespace = 'cmbyc.cc';
+        }
+        else if(selfEnv === 'CMB-DEV'){
+            user.namespace = 'cmb.cc';
+        }
+    };
+
     // login
     app.pt.login = function(number, password, domain, ext, loginMode) {
         var $dfd = $.Deferred();
@@ -1732,13 +1784,27 @@ var wellClient = (function($) {
     };
 
     // 拨打电话，无论外部有没有验证，接口自己都必须做验证
+
     app.pt.makeCall = function(phoneNumber, options) {
         util.logCallMemory();
 
         options = options || {};
         var length = app.pt.getCallMemory().length;
 
-        if (!util.isPhoneNumber(phoneNumber)) {
+        if(env.isMakingCall){
+            util.error('短时间内，请勿多次拨号！');
+
+            (function(env){
+                setTimeout(function(){
+                    env.isMakingCall = false;
+                },2000);
+            })(env);
+        }
+        else if(!Config.isLogined){
+            alert('当前未登录，无法拨号!');
+            util.error('当前未登录，无法拨号!');
+        }
+        else if (!util.isPhoneNumber(phoneNumber)) {
             util.error('输入号码不合法');
         }
         else if (phoneNumber === env.user.ext) {
@@ -1753,6 +1819,9 @@ var wellClient = (function($) {
             util.error('you can not logout when you are in agentAllocated state');
         }
         else {
+
+            env.isMakingCall = true;
+
             var payload = {
                     from: env.deviceId,
                     to: (options.prefix || '') + phoneNumber
