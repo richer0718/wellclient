@@ -39,6 +39,17 @@
 2. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
 
 ## 2 wellClient方法说明
+### 2.0 wellClient.useConfig(envName): 使用配置
+
+参数 | 类型 | 是否必须 |  默认值 | 描述
+---|---|---|---|---
+envName | string | 是 | 无 | 使用某个环境的配置。
+
+eventName | 使用范围 |
+--- | --- | ---
+CMB-PRO | cmb生产环境 | 使用生产的配置, 并且默认的域名会被设置成cmb.cc
+CMB-DEV | cmb开发环境和测试环境 | 使用测试和生产的环境，并且默认域名会被设置成cmbyc.cc
+
 ### 2.1 wellClient.setConfig(config)：设置配置信息
 
 config是js对象，具有以下字段

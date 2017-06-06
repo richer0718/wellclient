@@ -1240,10 +1240,10 @@ var wellClient = (function($) {
         Config.autoAnswer = CONF[selfEnv].autoAnswer;
 
         if(selfEnv === 'CMB-DEV'){
-            user.namespace = 'cmbyc.cc';
+            user.domain = 'cmbyc.cc';
         }
         else if(selfEnv === 'CMB-DEV'){
-            user.namespace = 'cmb.cc';
+            user.domain = 'cmb.cc';
         }
     };
 
