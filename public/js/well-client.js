@@ -637,11 +637,15 @@ var wellClient = (function($) {
 
             var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath + "/websocket";
 
+            if(typeof WebSocket != 'function'){
+                alert('您的浏览器版本太太太老了，请升级你的浏览器到IE11，或使用任何支持原生WebSocket的浏览器');
+                return;
+            }
+
             try{
                 var socket = new WebSocket(url);
             }
             catch(e){
-                alert('您的浏览器版本太太太老了，请升级你的浏览器到IE11，或使用任何支持原生WebSocket的浏览器');
                 console.log(e);
                 return;
             }
@@ -671,7 +675,16 @@ var wellClient = (function($) {
                 Config.currentReconnectTimes = 0;
 
                 var dest = '/topic/csta/agent/' + env.loginId;
+                var lastEvent = '';
+
                 ws.subscribe(dest, function(event) {
+                    if( lastEvent === event.body ){
+                        util.log('Error: event repeat sent !');
+                        return;
+                    }
+                    else{
+                        lastEvent = event.body;
+                    }
 
                     try{
                         var eventInfo = JSON.parse(event.body);
