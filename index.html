@@ -180,11 +180,13 @@
 </script>
 
 <div>
-	<h2>如果需要配置，首先请配置一下（默认是指向招银云环境的）</h2>
-	<p>SDK地址：<input type="text" id="sdk" value="cmbyc.wellcloud.cc"></p>
-	<p>SDK端口：<input type="text" id="port" value="8088"></p>
-	<p>TPI地址及端口：<input type="text" id="tpi" value="cmbyc.wellcloud.cc:5003/login"></p>
-
+	<span>选择环境</span> (默认是已经配置好的CMB-PRO)
+	<select name="" id="config-env">
+		<option value="CMB-PRO">CMB-PRO</option>
+		<option value="CMB-DEV">CMB-DEV</option>
+		<option value="OUR-TEST">OUR-TEST</option>
+		<option value="AWS-PRO">AWS-PRO</option>
+	</select>
 	<button id="config">配置</button> <span id="tip"></span>
 
 	<br>
@@ -224,24 +226,10 @@
 
 	$('#config').click(function(){
 		var $login = $('#config');
+		var env = $('#config-env').val();
 
-		var sdk = $('#sdk').val();
-		var port = $('#port').val();
-		var tpi = $('#tpi').val();
-
-		var config = {
-			SDK: sdk,
-			cstaPort: port,
-			eventPort: port,
-			TPI: tpi
-		};
-
-		wellClient.setConfig(config);
+		wellClient.useConfig(env);
 		$('#tip').text('配置成功');
-
-		// localStorage.setItem('sdk', sdk);
-		// localStorage.setItem('port', port);
-		// localStorage.setItem('tpi', tpi);
 
 		setTimeout(function(){
 			$('#tip').text('');
