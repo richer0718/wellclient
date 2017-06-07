@@ -116,7 +116,7 @@ var wellClient = (function($) {
             TPI:'192.168.40.79:8090/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
-            wsPort: ':80',
+            wsPort: ':',
             autoAnswer: true
         }
     };
