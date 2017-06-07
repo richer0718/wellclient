@@ -35,8 +35,7 @@
 ```
 
 ### 1.1 注意事项：
-1. websocket-support.min.js 是 sockjs.js 和 stomp.js 合并并压缩在一起的。你也可以用sockjs.js和stomp.js来代替websocket-support.min.js
-2. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
+1. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
 
 ## 2 wellClient方法说明
 ### 2.0 wellClient.useConfig(envName): 使用配置
