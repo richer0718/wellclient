@@ -142,13 +142,14 @@ var wellClient = (function($) {
             path: '/agent/state',
             method: 'post',
             status: {
-                204: 'success',
-                401: 'username or password is error',
-                451: 'not login your wellPhone, or just wait a moment',
-                453: 'error deviceId',
-                454: 'agent already logined',
-                455: 'device already logined',
-                456: 'device state',
+                204: 'login success',
+                401: 'username or password error',
+                426: 'get AccessToken failed',
+                451: 'device unregistered',
+                453: 'illegal deviceId',
+                454: 'agent already logined other place',
+                455: 'agent already logined others device',
+                456: 'illegal device state',
                 457: 'unauthorized device',
                 459: 'the device you want to use is useing by other agent',
                 460: 'can not set agent state when you are calling',
@@ -517,6 +518,8 @@ var wellClient = (function($) {
                     dfd.resolve(res);
                 })
                 .fail(function(res) {
+                    var statusCode = res.status;
+                    util.error(apis.setAgentState.status[statusCode]);
                     dfd.reject(res);
                 });
 
