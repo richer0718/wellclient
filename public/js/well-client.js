@@ -89,13 +89,26 @@ var wellClient = (function($) {
             wsPort: ':443',
             autoAnswer: true
         },
+        // 'CMB-DEV':{
+        //     SDK: '163.53.88.183',
+        //     cstaPort: '8088',
+        //     eventPort: '8088',
+        //     TPI:'163.53.88.183:5003/login',
+        //     protocol: 'http://',
+        //     wsProtocol: 'ws://',
+        //     wsPort: ':',
+        //     autoAnswer: true
+        // },
+        // https://uatsdk.wellcloud.cc
+        // https://uattpi.wellcloud.cc
+
         'CMB-DEV':{
-            SDK: '163.53.88.183',
-            cstaPort: '8088',
-            eventPort: '8088',
-            TPI:'163.53.88.183:5003/login',
-            protocol: 'http://',
-            wsProtocol: 'ws://',
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uattpi.wellcloud.cc/login',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
             wsPort: ':',
             autoAnswer: true
         },
@@ -1810,12 +1823,6 @@ var wellClient = (function($) {
 
         if(env.isMakingCall){
             util.error('短时间内，请勿多次拨号！');
-
-            (function(env){
-                setTimeout(function(){
-                    env.isMakingCall = false;
-                },2000);
-            })(env);
         }
         else if(!Config.isLogined){
             alert('当前未登录，无法拨号!');
@@ -1838,6 +1845,11 @@ var wellClient = (function($) {
         else {
 
             env.isMakingCall = true;
+            (function(env){
+                setTimeout(function(){
+                    env.isMakingCall = false;
+                }, 2000);
+            })(env);
 
             var payload = {
                     from: env.deviceId,

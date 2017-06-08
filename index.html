@@ -3,6 +3,7 @@
 
 <head>
 	<meta charset="utf-8">
+	<title>wellClient 软电话</title>
 	<link rel="stylesheet" href="public/css/well-client.css">
 	<script src="public/js/jquery-1.11.3.min.js"></script>
 	<script src="public/js/stomp.min.js"></script>
@@ -84,99 +85,7 @@
 </div>
 
 <script type="text/javascript">
-	(function(){
-		$('#test-makeCall').click(function(){
-			var phone = $('#test-deviceId').val();
 
-			if(/^[0-9-wW]{3,20}$/.test(phone)){
-				wellClient.makeCall(phone);
-			}
-			else{
-				alert('手机号格式不对');
-			}
-		});
-	})();
-
-
-	(function(){
-		// this part is use to config the user info and other config
-		// for the test and dev environment
-		// you can just remove it, or just ignore it
-		var href = location.href;
-		var needUseLocalStorage = /file:|coding/.test(href);
-		if(!window.localStorage){return;}
-		if(!needUseLocalStorage){return;}
-
-		var code = localStorage.getItem('code');
-		if(code){
-			$('#well-code').val(code);
-		}
-
-		var password = localStorage.getItem('password');
-		if(password){
-			$('#well-password').val(password);
-		}
-
-		var namespace = localStorage.getItem('namespace');
-		if(namespace){
-			$('#well-namespace').val(namespace);
-		}
-
-		var deviceId = localStorage.getItem('deviceId');
-		if(deviceId){
-			$('#well-deviceId').val(deviceId);
-		}
-
-		var sdk = localStorage.getItem('sdk');
-		if(sdk){
-			$('#sdk').val(sdk);
-		}
-
-		var port = localStorage.getItem('port');
-		if(port){
-			$('#port').val(port);
-		}
-
-		var tpi = localStorage.getItem('tpi');
-		if(tpi){
-			$('#tpi').val(tpi);
-		}
-	})();
-
-
-
-
-	$('#login').click(function(){
-		var $login = $('#login');
-
-		var code = $('#code').val();
-		var password = $('#password').val();
-		var namespace = $('#namespace').val();
-		var deviceId = $('#deviceId').val();
-
-		if(!code || !password || !namespace || !deviceId){
-			alert('工号，密码，域名，分机号都是必填项');
-			return;
-		}
-
-		$login.attr('disabled', 'disabled');
-
-		wellClient.login(code, password, namespace, deviceId)
-		.done(function(res){
-			if(!window.localStorage){return;}
-			localStorage.setItem('code', code);
-			localStorage.setItem('password', password);
-			localStorage.setItem('password', password);
-			localStorage.setItem('namespace', namespace);
-			localStorage.setItem('namespace', namespace);
-			localStorage.setItem('deviceId', deviceId);
-		})
-		.always(function(){
-			$login.removeAttr('disabled');
-		});
-
-		$('#tip').text('');
-	});
 </script>
 
 <div>
@@ -200,61 +109,9 @@
 	<button onclick="wellClient.clearLog()">清空所有事件日志</button>
 </div>
 
+<script src="public/js/well-client-demo.js"></script>
 
 <a href="./index-iframe.html">iframe方式引入</a>
-
-<script type="text/javascript">
-(function(){
-	if(!window.localStorage){return;}
-
-	var code = localStorage.getItem('code');
-	if(code){
-		$('#code').val(code);
-	}
-
-	var password = localStorage.getItem('password');
-	if(password){
-		$('#password').val(password);
-	}
-
-	var namespace = localStorage.getItem('namespace');
-	if(namespace){
-		$('#namespace').val(namespace);
-	}
-
-	var deviceId = localStorage.getItem('deviceId');
-	if(deviceId){
-		$('#deviceId').val(deviceId);
-	}
-})();
-
-
-	$('#config').click(function(){
-		var $login = $('#config');
-		var env = $('#config-env').val();
-
-		wellClient.useConfig(env);
-		$('#tip').text('配置成功');
-
-		setTimeout(function(){
-			$('#tip').text('');
-		},2000);
-	});
-
-	wellClient.innerOn('connectionCleared', function(res){
-		console.log(res);
-	});
-
-	wellClient.innerOn('loginFailed', function(res){
-		console.log(res);
-	});
-
-	wellClient.innerOn('wsDisconnected', function(res){
-		console.log(res);
-	});
-</script>
-
-
 
 </body>
 </html>
