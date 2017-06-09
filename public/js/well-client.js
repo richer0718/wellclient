@@ -30,13 +30,6 @@ var wellClient = (function($) {
         // eventPort: '8088',
         // TPI:'163.53.88.183:5003/login',
 
-        // cmbyc production http config
-        // SDK: '163.53.94.163',
-        // cstaPort: '5088',
-        // eventPort: '5088',
-        // TPI:'163.53.94.163:5089/login',
-        // protocol: 'http://',
-
         // cmbyc production https config
         SDK: 'mbsdk.wellcloud.cc',
         cstaPort: '',
@@ -56,7 +49,6 @@ var wellClient = (function($) {
         // wsProtocol: 'ws://',
         // wsPort: ':80',
         // autoAnswer: false, // whether auto answer, need well-client-ui support
-
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
@@ -78,7 +70,9 @@ var wellClient = (function($) {
         useEventLog: true // whether use event log
     };
 
+
     var CONF = {
+
         'CMB-PRO':{
             SDK: 'mbsdk.wellcloud.cc',
             cstaPort: '',
@@ -89,19 +83,6 @@ var wellClient = (function($) {
             wsPort: ':443',
             autoAnswer: true
         },
-        // 'CMB-DEV':{
-        //     SDK: '163.53.88.183',
-        //     cstaPort: '8088',
-        //     eventPort: '8088',
-        //     TPI:'163.53.88.183:5003/login',
-        //     protocol: 'http://',
-        //     wsProtocol: 'ws://',
-        //     wsPort: ':',
-        //     autoAnswer: true
-        // },
-        // https://uatsdk.wellcloud.cc
-        // https://uattpi.wellcloud.cc
-
         'CMB-DEV':{
             SDK: 'uatsdk.wellcloud.cc',
             cstaPort: '',
