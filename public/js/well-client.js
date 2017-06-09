@@ -14,7 +14,7 @@
 //-----------------------------------------------------------------------------+
 //+                                                                            +
 //+                               core                                         +
-//+ version: 2.6.5
+//+ version: 2.6.9
 //-----------------------------------------------------------------------------+
 var wellClient = (function($) {
     jQuery.support.cors = true;
@@ -24,12 +24,6 @@ var wellClient = (function($) {
 
     // config info
     var Config = {
-        // cmbyc dev config
-        // SDK: '163.53.88.183',
-        // cstaPort: '8088',
-        // eventPort: '8088',
-        // TPI:'163.53.88.183:5003/login',
-
         // cmbyc production https config
         SDK: 'mbsdk.wellcloud.cc',
         cstaPort: '',
