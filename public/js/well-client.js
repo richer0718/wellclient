@@ -93,6 +93,16 @@ var wellClient = (function($) {
             wsPort: ':',
             autoAnswer: true
         },
+        'CMB-UAT':{
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uattpi.wellcloud.cc/login',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            wsPort: ':',
+            autoAnswer: true
+        },
         'AWS-PRO':{
             SDK: 'tpisdk.wellcloud.cc',
             cstaPort: '',
@@ -1255,6 +1265,9 @@ var wellClient = (function($) {
         }
         else if(selfEnv === 'CMB-DEV'){
             user.domain = 'cmb.cc';
+        }
+        else if(selfEnv === 'CMB-UAT'){
+            user.domain = 'cmb.uat';
         }
     };
 
