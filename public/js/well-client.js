@@ -84,7 +84,7 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':',
+            wsPort: ':443',
             autoAnswer: true
         },
         'CMB-UAT':{
@@ -94,7 +94,7 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':',
+            wsPort: ':443',
             autoAnswer: true
         },
         'AWS-PRO':{
