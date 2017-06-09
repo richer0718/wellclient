@@ -1263,7 +1263,7 @@ var wellClient = (function($) {
         if(selfEnv === 'CMB-DEV'){
             user.domain = 'cmbyc.cc';
         }
-        else if(selfEnv === 'CMB-DEV'){
+        else if(selfEnv === 'CMB-PRO'){
             user.domain = 'cmb.cc';
         }
         else if(selfEnv === 'CMB-UAT'){
