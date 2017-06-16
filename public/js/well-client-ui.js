@@ -207,9 +207,13 @@ wellClient.ui.refreshButtonStatus = function(){
 	}
 	else if(length === 1){
 		// 一条线路在通话中
-		if(call.state === 'established' || call.state === 'held'){
+		if(call.state === 'established'){
 			this.enableBtn(['drop','hold','consult','single','dest']);
 			this.disabledBtn(['answer','make','conference','transfer','cancel']);
+		}
+		else if(call.state === 'held'){
+			this.enableBtn(['hold']);
+			this.disabledBtn(['drop','answer','make','conference','transfer','cancel','consult','single','dest']);
 		}
 		else if(call.state === 'delivered'){
 			this.handleDeliveredState();
@@ -295,6 +299,7 @@ wellClient.ui.agentLoggedOff = function(event){
 	$('#well-login-info').show();
 	$('#well-login').show();
 	$('#well-logout').addClass('well-dn');
+	$('#well-hold').text('保持');
 };
 
 wellClient.ui.delivered = function(event){

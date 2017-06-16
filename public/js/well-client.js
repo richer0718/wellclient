@@ -58,7 +58,7 @@ var wellClient = (function($) {
         maxReconnectTimes: 5, // max reconnect times
         currentReconnectTimes: 0, // current reconnect times
         isLogined: false,
-        heartbeatLength: 2*60*1000, // herart beat frequency
+        heartbeatLength: 1*60*1000, // herart beat frequency
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
         useEventLog: true // whether use event log
@@ -95,6 +95,16 @@ var wellClient = (function($) {
             protocol: 'https://',
             wsProtocol: 'wss://',
             wsPort: ':443',
+            autoAnswer: true
+        },
+        'OUR-DEV':{
+            SDK: '172.16.200.152',
+            cstaPort: '58080',
+            eventPort: '58080',
+            TPI:'172.16.200.152:58080/login',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            wsPort: ':',
             autoAnswer: true
         },
         'AWS-PRO':{
