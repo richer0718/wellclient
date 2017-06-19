@@ -122,8 +122,8 @@ var wellClient = (function($) {
             cstaPort: '58080',
             eventPort: '58080',
             TPI:'192.168.40.79:8090/login',
-            protocol: 'http://',
-            wsProtocol: 'ws://',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
             wsPort: ':',
             autoAnswer: true
         }
