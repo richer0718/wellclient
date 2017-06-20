@@ -118,10 +118,10 @@ var wellClient = (function($) {
             autoAnswer: false
         },
         'OUR-TEST':{
-            SDK: '192.168.40.79',
+            SDK: 'sdk.wecloud.cn',
             cstaPort: '58080',
             eventPort: '58080',
-            TPI:'192.168.40.79:58080/login',
+            TPI:'sdk.wecloud.cn:58080/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
             wsPort: ':',
