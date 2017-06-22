@@ -103,7 +103,7 @@ var wellClient = (function($) {
             SDK: 'sdk.wecloud.cn',
             cstaPort: ':58080',
             eventPort: ':58080',
-            TPI:'sdk.wecloud.cn:58080/login',
+            TPI:'sdk.wecloud.cn:58080/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true
