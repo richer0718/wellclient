@@ -38,7 +38,7 @@
 1. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
 
 ## 2 wellClient方法说明
-### 2.0 wellClient.useConfig(envName): 使用配置
+### 2.1 wellClient.useConfig(envName): 使用配置
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
@@ -58,35 +58,16 @@ config是js对象，具有以下字段
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
 debug | boolean | 否 | true | debug模式会写详细的日志信息，设置成false可以关闭日志
-SDK | string | 是 | 'tpisdk.wellcloud.cc' | 呼叫控制和事件服务的地址,80端口可不写
-SDKPort | string | 是 | '' | 呼叫控制和事件服务的端口号,‘域名+端口’,80端口可不写
-TPI | string | 是 | 'tpi.wellcloud.cc/login' | TPI 登录地址，'域名+端口+登录路径'
 useWsLog | boolean | 否 | true | 是否输出详细的websocket信息
-clickCallClass | string | 否 | well-canBeCalled | 设置点击呼叫的类,例如某个span标签包裹一串数字“8001sd12”,当这个类被点击的时候，首先会把这个字符串里的非数字部分剔除，然后对数字部分800112拨号。
-hideButton | array | 否 |　［］| 设置隐藏某个按钮。例如['sConf','conf']，代表隐藏单步会议与会议按钮,
+clickCallClass | string | 否 | well-canBeCalled | 设置点击呼叫的类,例如某个span标签包裹一串数字“8001sd12”,当这个类被点击的时候，
 enableAlert | boolean | 否 | false | 决定是否启用alert。如果是ture，那么某些异常会用alert的形式弹出。默认不使用alert提示错误信息。
 autoAnswer | boolean | 是 | true | 自动接听默认为true。即当有电话呼入时，软电话会自动接听这个电话。设置为false时，需要手动点击接听按钮才能接听。
 
 `Example`
 
 ```
-wellClient.setConfig({host:'192.168.2.233',debug:false});
+wellClient.setConfig({debug:false});
 ```
-
-控件与id对应关系
-
-名称 | id
---- | ---
-设置座席状态 | well-changestate
-号码输入框 | well-input
-拨号按钮 | well-make
-接听按钮 | well-answer
-保持按钮 | well-hold
-单步转移按钮 | well-single
-咨询按钮 | well-consult
-会议按钮 | well-conference
-挂断按钮 | well-drop
-登出按钮 | well-logout
 
 
 ### 2.2 wellClient.agentLogin(agent): 座席登录
