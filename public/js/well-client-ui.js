@@ -27,6 +27,10 @@ $document.on('change', '#well-changestate', function(event){
 	$select.val('');
 });
 
+$document.on('click', '.well-show-state', function(){
+	wellClient.uploadLog();
+});
+
 //**************************************************************************************************
 //事件驱动ui
 wellClient.ui = {};
@@ -300,6 +304,7 @@ wellClient.ui.agentLoggedOff = function(event){
 	$('#well-login').show();
 	$('#well-logout').addClass('well-dn');
 	$('#well-hold').text('保持');
+	$('#well-device').text('分机号');
 };
 
 wellClient.ui.delivered = function(event){

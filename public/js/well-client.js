@@ -31,7 +31,6 @@ var wellClient = (function($) {
         TPI: 'mbtpi.wellcloud.cc/login',
         protocol: 'https://',
         wsProtocol: 'wss://',
-        wsPort: ':443',
         autoAnswer: true, // whether auto answer, need well-client-ui support
 
         // aws config
@@ -41,7 +40,6 @@ var wellClient = (function($) {
         // TPI:'tpi.wellcloud.cc/login',
         // protocol: 'http://',
         // wsProtocol: 'ws://',
-        // wsPort: ':80',
         // autoAnswer: false, // whether auto answer, need well-client-ui support
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
@@ -74,7 +72,6 @@ var wellClient = (function($) {
             TPI: 'mbtpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':443',
             autoAnswer: true
         },
         'CMB-DEV':{
@@ -84,7 +81,6 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':443',
             autoAnswer: true
         },
         'CMB-UAT':{
@@ -94,17 +90,15 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':443',
             autoAnswer: true
         },
         'OUR-DEV':{
             SDK: '172.16.200.152',
-            cstaPort: '58080',
-            eventPort: '58080',
+            cstaPort: ':58080',
+            eventPort: ':58080',
             TPI:'172.16.200.152:58080/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':',
             autoAnswer: true
         },
         'AWS-PRO':{
@@ -114,17 +108,15 @@ var wellClient = (function($) {
             TPI:'tpi.wellcloud.cc/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
-            wsPort: ':80',
             autoAnswer: false
         },
         'OUR-TEST':{
             SDK: 'sdk.wecloud.cn',
-            cstaPort: '58080',
-            eventPort: '58080',
+            cstaPort: ':58080',
+            eventPort: ':58080',
             TPI:'sdk.wecloud.cn:58080/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            wsPort: ':',
             autoAnswer: true
         }
     };
@@ -414,7 +406,7 @@ var wellClient = (function($) {
 
         sendRequest: function(path, method, payload) {
             var dfd = $.Deferred();
-            var url = Config.protocol+ Config.SDK + ':' + Config.cstaPort + Config.cstaBasePath + path;
+            var url = Config.protocol+ Config.SDK + Config.cstaPort + Config.cstaBasePath + path;
 
             $.ajax({
                 url: url,
@@ -450,9 +442,21 @@ var wellClient = (function($) {
             return dfd.promise();
         },
 
+        ajax: function(url, method, payload, contentType){
+            return $.ajax({
+                url: url,
+                method: method,
+                data: payload,
+                contentType: contentType,
+                headers:{
+                    sessionId: env.sessionId || ''
+                }
+            });
+        },
+
         sendRequestSync: function(path, method, payload) {
             var dfd = $.Deferred();
-            var url = Config.protocol+ Config.SDK + ':' + Config.cstaPort + Config.cstaBasePath + path;
+            var url = Config.protocol+ Config.SDK + Config.cstaPort + Config.cstaBasePath + path;
 
             $.ajax({
                 url: url,
@@ -646,7 +650,7 @@ var wellClient = (function($) {
 
             Config.isManCloseWs = false;
 
-            var url = Config.wsProtocol + Config.SDK + Config.wsPort + Config.eventPort + Config.eventBasePath + "/websocket";
+            var url = Config.wsProtocol + Config.SDK + Config.eventPort + Config.eventBasePath + "/websocket";
 
             if(typeof WebSocket != 'function'){
                 alert('您的浏览器版本太太太老了，请升级你的浏览器到IE11，或使用任何支持原生WebSocket的浏览器');
@@ -1261,7 +1265,6 @@ var wellClient = (function($) {
         Config.TPI = CONF[selfEnv].TPI;
         Config.protocol = CONF[selfEnv].protocol;
         Config.wsProtocol = CONF[selfEnv].wsProtocol;
-        Config.wsPort = CONF[selfEnv].wsPort;
         Config.autoAnswer = CONF[selfEnv].autoAnswer;
 
         if(selfEnv === 'CMB-DEV'){
@@ -1925,6 +1928,31 @@ var wellClient = (function($) {
     // event log------------------------------------------------------------------------------------
     util.debugout = new debugout();
 
+    app.pt.uploadLog = function(){
+        if(!Config.isLogined){return;}
+
+        var log = util.debugout.output;
+        var filename = app.pt.createLogName();
+        // download log path /client-log/download?filename={{filename}}
+        var url =  Config.protocol + Config.SDK + Config.cstaPort + '/client-log/upload?filename='+filename;
+
+        if(log === ''){return;}
+        util.ajax(url, 'post', log, 'text/xml');
+    };
+
+    app.pt.createLogName = function(){
+        var number = env.user.number;
+        var domain = env.user.domain;
+        var timestamp = new Date();
+
+        var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
+        var date = ('0'+timestamp.getDate()).slice(-2);
+        var hrs = ('0' + timestamp.getHours()).slice(-2);
+        var filename = domain+'w'+number+'w'+month+date+hrs+'txt';
+
+        return filename.replace(/[^A-Za-z0-9]/g, '');
+    };
+
     // save all the console.logs
     function debugout() {
         var self = this;
@@ -2042,8 +2070,8 @@ var wellClient = (function($) {
         this.formatTimestamp = function() {
             var timestamp = new Date();
             var year = timestamp.getFullYear();
-            var date = timestamp.getDate();
             var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
+            var date = ('0'+timestamp.getDate()).slice(-2);
             var hrs = ('0' + timestamp.getHours()).slice(-2);
             var mins = ('0' + timestamp.getMinutes()).slice(-2);
             var secs = ('0' + timestamp.getSeconds()).slice(-2);
