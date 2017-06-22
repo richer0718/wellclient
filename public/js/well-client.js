@@ -11,20 +11,18 @@
     }
 })();
 
-//-----------------------------------------------------------------------------+
-//+                                                                            +
-//+                               core                                         +
-//+ version: 2.6.9
-//-----------------------------------------------------------------------------+
 var wellClient = (function($) {
     jQuery.support.cors = true;
 
     var app = function() {};
     app.pt = app.prototype;
+    app.pt.getVersion = function(){
+        return Config.version;
+    };
 
-    // config info
     var Config = {
-        // cmbyc production https config
+        version: '2.6.22',
+
         SDK: 'mbsdk.wellcloud.cc',
         cstaPort: '',
         eventPort: '',
@@ -32,15 +30,6 @@ var wellClient = (function($) {
         protocol: 'https://',
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support
-
-        // aws config
-        // SDK: 'tpisdk.wellcloud.cc',
-        // cstaPort: '',
-        // eventPort: '',
-        // TPI:'tpi.wellcloud.cc/login',
-        // protocol: 'http://',
-        // wsProtocol: 'ws://',
-        // autoAnswer: false, // whether auto answer, need well-client-ui support
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
