@@ -100,10 +100,10 @@ var wellClient = (function($) {
             autoAnswer: false
         },
         'OUR-TEST':{
-            SDK: 'sdk.wecloud.cn',
+            SDK: 'testsdk.wellcloud.cc',
             cstaPort: ':58080',
             eventPort: ':58080',
-            TPI:'sdk.wecloud.cn:58080/loginTrusted',
+            TPI:'testsdk.wellcloud.cc:58080/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true
