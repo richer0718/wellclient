@@ -1937,6 +1937,8 @@ var wellClient = (function($) {
         var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
         var date = ('0'+timestamp.getDate()).slice(-2);
         var hrs = ('0' + timestamp.getHours()).slice(-2);
+        // https://mbsdk.wellcloud.cc:5088/client-log/download?filename=
+        // 域名只保留数字和字母w工号w月份天时
         var filename = domain+'w'+number+'w'+month+date+hrs+'txt';
 
         return filename.replace(/[^A-Za-z0-9]/g, '');

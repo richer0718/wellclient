@@ -72,3 +72,29 @@ wellClient.innerOn('loginFailed', function(res){
 wellClient.innerOn('wsDisconnected', function(res){
     console.log(res);
 });
+
+wellClient.exports = function(event){
+    var msg = JSON.stringify(event);
+    msg = new Date() + msg;
+    msg = '<p>'+msg+'</p>';
+    $('#log').prepend(msg);
+};
+
+function GetCallData(){
+
+    var callId = $('#user-data').val();
+    if(!callId){return;}
+
+    wellClient.getCallData(callId)
+    .done(function(res){
+        if(typeof res === 'object'){
+            alert(JSON.stringify(res));
+        }
+        if(typeof res === 'string'){
+            alert(res)
+        }
+    })
+    .fail(function(res){
+        console.log('获取路数据失败');
+    })
+}

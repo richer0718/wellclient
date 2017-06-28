@@ -105,10 +105,12 @@
 		两个环境，<br>那么必须将本页面的所有代码下载到本地运行。
 		<a href="https://github.com/wangduanduan/wellclient/archive/master.zip">点击此处下载项目</a>
 	</p>
-	<br>
-	<br>
 	<button onclick="wellClient.downloadLog()">下载所有事件日志</button>
 	<button onclick="wellClient.clearLog()">清空所有事件日志</button>
+	<input id="user-data" placeholder="输入callId"> <button onclick="GetCallData()">获取随路数据</button>
+	<div id="log" style="height:500px;background:#eeeeee;overflow:scroll;">
+
+	</div>
 </div>
 
 <script src="public/js/well-client-demo.js"></script>
