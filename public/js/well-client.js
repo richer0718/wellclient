@@ -56,9 +56,9 @@ var wellClient = (function($) {
 
         'CMB-PRO':{
             SDK: 'mbsdk.wellcloud.cc',
-            cstaPort: '',
-            eventPort: '',
-            TPI: 'mbsdk.wellcloud.cc/login',
+            cstaPort: ':5088',
+            eventPort: ':5088',
+            TPI: 'mbsdk.wellcloud.cc:5088/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true
