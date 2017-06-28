@@ -678,7 +678,7 @@ var wellClient = (function($) {
 
                 Config.currentReconnectTimes = 0;
 
-                var dest = '/topic/csta/agent/' + env.loginId;
+                var dest = '/topic/csta/device/' + env.deviceId;
                 var lastEvent = '';
 
                 ws.subscribe(dest, function(event) {
@@ -1354,6 +1354,12 @@ var wellClient = (function($) {
         });
 
         return $dfd.promise();
+    };
+
+    app.pt.deviceLogin = function(device){
+        env.user.domain = device.domain || user.domain;
+        env.user.ext = divice.ext || user.ext;
+        env.deviceId = env.user.ext + '@' + env.user.domain;
     };
 
     // logout

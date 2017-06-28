@@ -21,47 +21,7 @@
 	<button id="well-drop" class="well-btn well-drop well-drop-on well-disabled">挂断</button>
 	<button id="well-hold" class="well-btn well-hold well-hold-on well-disabled">保持</button>
 
-	<input id="well-input" class="well-dn" type="" name="" placeholder="输入号码" maxlength="15">
-	<select id="well-phone-number">
-		<option value="">--未选择--</option>
-		<option value="8003">8003</option>
-		<option value="918061929558">918061929558</option>
-		<option value="8004">8004</option>
-		<option value="8014">8014</option>
-		<option value="8015">8015</option>
-		<option value="918221365463">918221365463</option>
-	</select>
-
-	<button id="well-make" class="well-btn well-make well-make-on well-disabled well-dn">拨打</button>
-
-	<button id="well-consult" class="well-btn well-consult well-consult-on well-disabled">咨询</button>
-	<button id="well-conference" class="well-btn well-conference well-conference-on well-disabled">会议</button>
-	<button id="well-transfer" class="well-btn well-transfer well-transfer-on well-disabled">转接</button>
-	<button id="well-cancel" class="well-btn well-cancel well-cancel-on well-disabled">接回</button>
-	<button id="well-single" title="直接转需要先输入对方的号码" class="well-btn well-single well-single-on well-disabled">直接转</button>
-
-	<select id="well-dest" class="well-disabled">
-		<option value="">转接到</option>
-		<option value="8004">转8004</option>
-		<option value="8013">转客户金卡维护</option>
-		<option value="8014">转客户普卡维护</option>
-		<option value="918221365463">918221365463</option>
-	</select>
-
-
-	<button class="well-btn well-show-state">
-		<span id="well-now-state" title="当前坐席状态">未登录</span>
-	</button>
-
-	<select id="well-changestate" class="well-disabled" onchange="console.log('change')">
-		<option value="Ready:">就绪</option>
-		<option value="NotReady:1">示忙</option>
-		<option value="NotReady:2">手工外呼</option>
-	</select>
-
 	<span id="well-login-info">
-		工号：<input type="text" id="well-code" value="" class="well-login-info" maxlength="10">
-		密码：<input type="text" id="well-password" value="" class="well-login-info" maxlength="20">
 		域名：<input type="text" id="well-namespace" value="" class="well-login-info" maxlength="20">
 		分机号：<input type="text" id="well-deviceId" value="" class="well-login-info" maxlength="10">
 		<button id="well-loading" class="well-btn well-loading well-dn" title="正在登录..."></button>
@@ -100,20 +60,13 @@
 	</select>
 	<button id="config">配置</button> <span id="tip"></span>
 
-	<p>
-		注意：github pages 服务使用的是https协议。<br> 而 OUT-TEST和AWS-PRO环境是使用的http协议。<br>如果你想测试这
-		两个环境，<br>那么必须将本页面的所有代码下载到本地运行。
-		<a href="https://github.com/wangduanduan/wellclient/archive/master.zip">点击此处下载项目</a>
-	</p>
-	<br>
-	<br>
+	<br><br>
 	<button onclick="wellClient.downloadLog()">下载所有事件日志</button>
 	<button onclick="wellClient.clearLog()">清空所有事件日志</button>
 </div>
 
 <script src="public/js/well-client-demo.js"></script>
 
-<a href="./index-iframe.html">iframe方式引入</a>
 
 </body>
 </html>
