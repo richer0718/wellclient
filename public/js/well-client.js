@@ -24,9 +24,9 @@ var wellClient = (function($) {
         version: '2.6.22',
 
         SDK: 'mbsdk.wellcloud.cc',
-        cstaPort: '',
-        eventPort: '',
-        TPI: 'mbtpi.wellcloud.cc/login',
+        cstaPort: ':5088',
+        eventPort: ':5088',
+        TPI: 'mbsdk.wellcloud.cc:5088/login',
         protocol: 'https://',
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support
@@ -58,7 +58,7 @@ var wellClient = (function($) {
             SDK: 'mbsdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI: 'mbtpi.wellcloud.cc/login',
+            TPI: 'mbsdk.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true
