@@ -23,12 +23,12 @@ var wellClient = (function($) {
     var Config = {
         version: '2.6.22',
 
-        SDK: 'mbsdk.wellcloud.cc',
-        cstaPort: '',
-        eventPort: '',
-        TPI: 'mbtpi.wellcloud.cc/login',
-        protocol: 'https://',
-        wsProtocol: 'wss://',
+        SDK: '172.16.200.226',
+        cstaPort: ':58080',
+        eventPort: ':58080',
+        TPI: '',
+        protocol: 'http://',
+        wsProtocol: 'ws://',
         autoAnswer: true, // whether auto answer, need well-client-ui support
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
@@ -44,7 +44,7 @@ var wellClient = (function($) {
         timeout: 1, //  1s later will be reconnect
         maxReconnectTimes: 5, // max reconnect times
         currentReconnectTimes: 0, // current reconnect times
-        isLogined: false,
+        isLogined: true,
         heartbeatLength: 1*60*1000, // herart beat frequency
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
@@ -453,7 +453,6 @@ var wellClient = (function($) {
                 headers: {
                     sessionId: env.sessionId || ''
                 },
-                async: false,
                 data: JSON.stringify(payload),
                 dataType: "json",
                 contentType: 'application/json; charset=UTF-8',
@@ -630,7 +629,7 @@ var wellClient = (function($) {
         },
 
         // start init websocket
-        initWebSocket: function(callback) {
+        initWebSocket: function(callback, errorCallback) {
             callback = callback || function(){};
 
             if(ws && ws.connected){
@@ -710,6 +709,8 @@ var wellClient = (function($) {
                 // websocket upexpected disconnected
                 // maybe network disconnection, or browser in offline
                 // this condition will emit wsDisconnected event
+                errorCallback();
+
                 if(Config.isManCloseWs){return;}
 
                 util.log(frame);
@@ -731,6 +732,8 @@ var wellClient = (function($) {
 
                     wellClient.triggerInnerOn(errorMsg);
                 }
+
+                errorCallback();
             });
         },
 
@@ -1357,9 +1360,19 @@ var wellClient = (function($) {
     };
 
     app.pt.deviceLogin = function(device){
+        var $dfd = $.Deferred();
+
         env.user.domain = device.domain || user.domain;
-        env.user.ext = divice.ext || user.ext;
+        env.user.ext = device.ext || user.ext;
         env.deviceId = env.user.ext + '@' + env.user.domain;
+
+        util.initWebSocket(function(){
+            $dfd.resolve();
+        }, function(){
+            $dfd.reject();
+        });
+
+        return $dfd.promise();
     };
 
     // logout

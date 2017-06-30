@@ -496,7 +496,7 @@ wellClient.ctrl.deliverMethod = function(id){
 		case 'well-transfer': return wellClient.ctrl.transferCall();
 		case 'well-conference': return wellClient.ctrl.conferenceCall();
 		case 'well-logout': return wellClient.ctrl.logout();
-		case 'well-login': return wellClient.ctrl.login();
+		case 'well-login': return wellClient.ctrl.deviceLogin();
 		default: return;
 	}
 };
@@ -638,6 +638,48 @@ wellClient.ctrl.login = function(){
 		};
 
 		// console.log(JSON.stringify(res));
+
+		wellClient.triggerInnerOn(errorMsg);
+	})
+	.always(function(){
+		if(!wellClient.isLogined()){
+			$login.show();
+		}
+		$loading.addClass('well-dn');
+		$login.removeAttr('disabled');
+	});
+};
+
+wellClient.ctrl.deviceLogin = function(){
+	var $login = $('#well-login');
+	var $loading = $('#well-loading');
+
+	var namespace = $('#well-namespace').val();
+	var deviceId = $('#well-deviceId').val();
+
+	if(!namespace || !deviceId){
+		alert('域名，分机号都是必填项');
+		return;
+	}
+
+	$loading.removeClass('well-dn');
+	$login.hide();
+
+	wellClient.deviceLogin({
+		domain: namespace,
+		ext: deviceId
+	})
+	.done(function(res){
+		if(!window.localStorage){return;}
+		localStorage.setItem('namespace', namespace);
+		localStorage.setItem('deviceId', deviceId);
+	})
+	.fail(function(res){
+		var errorMsg = {
+			eventName: 'loginFailed',
+			status: res.status,
+			responseText: res.responseText,
+		};
 
 		wellClient.triggerInnerOn(errorMsg);
 	})
