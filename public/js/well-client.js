@@ -453,7 +453,6 @@ var wellClient = (function($) {
                 headers: {
                     sessionId: env.sessionId || ''
                 },
-                async: false,
                 data: JSON.stringify(payload),
                 dataType: "json",
                 contentType: 'application/json; charset=UTF-8',
