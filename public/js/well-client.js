@@ -1349,7 +1349,7 @@ var wellClient = (function($) {
 
         })
         .fail(function(err){
-            util.error('登录失败，请检查用户名、密码、域名是否正确');
+            util.error(err);
             $dfd.reject(err);
         });
 
