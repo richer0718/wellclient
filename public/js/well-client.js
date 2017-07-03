@@ -272,11 +272,9 @@ var wellClient = (function($) {
             var self = this;
             this.startTimeStramp = new Date().getTime();
 
-            (function(self){
-                self.id = setInterval(function(){
-                    self.updateClock();
-                }, 1000);
-            })(self);
+            self.id = setInterval(function(){
+                self.updateClock();
+            }, 1000);
         },
         resetClock: function(){
             clock.startTimeStramp = new Date().getTime();
