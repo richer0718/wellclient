@@ -34,6 +34,7 @@ var wellClient = (function($) {
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
 
+
         // default config
         isManCloseWs: false,
         debug: true,
