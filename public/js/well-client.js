@@ -265,6 +265,56 @@ var wellClient = (function($) {
     // websocket
     var ws = {};
 
+    var clock = {
+        id: '',
+        startTimeStramp: '',
+        startClock: function(){
+            var self = this;
+            this.startTimeStramp = new Date().getTime();
+
+            (function(self){
+                self.id = setInterval(function(){
+                    self.updateClock();
+                }, 1000);
+            })(self);
+        },
+        resetClock: function(){
+            clock.startTimeStramp = new Date().getTime();
+        },
+        dealDruation: function(){
+            var length = new Date().getTime() - this.startTimeStramp;
+            length = Math.floor(length/1000);
+            return length;
+        },
+        updateClock: function(){
+            var clockTime = this.formatTime(this.dealDruation());
+            $('#well-time-clock').text(clockTime);
+        },
+        formatTime: function(second){
+            var secondType = typeof second;
+
+            if(secondType === 'number' || secondType === 'string'){
+                second = parseInt(second);
+
+                var hours = Math.floor(second/3600);
+                second = second - hours*3600;
+                var mimute = Math.floor(second/60);
+                second = second - mimute*60;
+
+                return hours+':'+ ('0'+mimute).slice(-2)+':'+('0'+second).slice(-2);
+            }
+            else{
+                return '0:00:00';
+            }
+        },
+        restartClock: function(){
+
+        },
+        closeClock: function(){
+            clearInterval(this.id);
+        },
+    };
+
     // inner tool functions
     var util = {
         getCallId: function(){
