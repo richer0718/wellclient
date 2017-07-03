@@ -308,10 +308,12 @@ var wellClient = (function($) {
             }
         },
         restartClock: function(){
-
+            this.closeClock();
+            this.startClock();
         },
         closeClock: function(){
             clearInterval(this.id);
+            $('#well-time-clock').text('0:00:00');
         },
     };
 
@@ -845,6 +847,13 @@ var wellClient = (function($) {
         deliverEvent: function(eventInfo) {
             env.isAgentAllocated = eventInfo.eventName === 'agentAllocated' ? true : false;
 
+            if(eventInfo.eventName === 'agentReady' || eventInfo.eventName === 'agentAllocated'){
+                clock.restartClock();
+            }
+            else{
+                clock.closeClock();
+            }
+
             if($.isFunction(innerEventLogic[eventInfo.eventName])){
                 innerEventLogic[eventInfo.eventName](eventInfo);
             }
@@ -908,12 +917,14 @@ var wellClient = (function($) {
         },
 
         agentWorkingAfterCall: function(data){
+
             wellClient.ui.main({
                 eventName: 'agentWorkingAfterCall'
             });
         },
 
         agentLoggedOff:function(data){
+
             // if agent have no login successful, don't handle this event
             if(!Config.isLogined){
                 return;
@@ -928,6 +939,7 @@ var wellClient = (function($) {
         },
 
         agentReady:function(data){
+
             wellClient.ui.main({
                 eventName: 'agentReady',
                 reason: data.reason || ''
@@ -935,6 +947,7 @@ var wellClient = (function($) {
         },
 
         agentNotReady: function(data){
+
             wellClient.ui.main({
                 eventName: 'agentNotReady',
                 reason: data.reason || ''
