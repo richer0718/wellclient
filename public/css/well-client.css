@@ -127,7 +127,7 @@
 	border-radius: 4px;
 	background-color: #2f94eb;
 	display: inline-block;
-	
+
 }
 .well-select-icon{
 	width: 0px;
@@ -200,4 +200,18 @@
 .well-pending{
 	border: 1px solid #ffa500;
 	outline: none;
+}
+.well-status-light{}
+.well-status-light>span{
+	width: 16px;
+	height: 16px;
+	border-radius: 8px;
+	background: #999999;
+	display: inline-block;
+}
+.well-status-light>.helding{
+	background: #ffc107;
+}
+.well-status-light>.talking{
+	background: #4caf50;
 }
