@@ -38,6 +38,7 @@ wellClient.ui.status = {
 	agentStatus: '',
 	deviceStatus: '',
 	mixStatus: '',
+	reason: '',
 	statusList:{
 		// agent status
 		'agentReady': '就绪',
@@ -56,7 +57,10 @@ wellClient.ui.status = {
 		'retrieved': '通话中'
 	},
 	renderAgentStatus: function(reason){
+
 		if(this.agentStatus === 'agentNotReady'){
+			this.reason = reason || this.reason;
+
 			if(reason === '2'){
 				wellClient.ui.manualCallOut();
 			}
@@ -68,6 +72,7 @@ wellClient.ui.status = {
 			wellClient.ui.setAgentStateReady();
 		}
 		else if(this.agentStatus === 'agentWorkingAfterCall'){
+			this.reason = 1;
 			wellClient.ui.setAgentStateNotReady();
 		}
 	},
@@ -268,8 +273,11 @@ wellClient.ui.retrieveCall = function(){
 
 wellClient.ui.setAgentStateNotReady = function(){
 	this.removePendingMode();
-	var $select = $('#well-changestate')
-	$select.val('NotReady:1');
+
+	var reason = wellClient.ui.status.reason || 1;
+
+	var $select = $('#well-changestate');
+	$select.val('NotReady:'+reason);
 };
 
 // from event
@@ -409,7 +417,7 @@ wellClient.ui.conferenced = function(event){
 wellClient.ui.agentWorkingAfterCall = function(event){
 
 	this.removePendingMode();
-	this.status.receiveEvent(event.eventName);
+	this.status.receiveEvent(event.eventName, 1);
 };
 
 wellClient.ui.createWebNotification = function(msg){
