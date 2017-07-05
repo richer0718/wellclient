@@ -94,6 +94,9 @@ wellClient.ui.status = {
 	},
 	transferStatus: function(status){
 		if(this.statusList[status]){
+			if(status === 'agentNotReady' && this.reason == '2'){
+				return '手工外呼';
+			}
 			return this.statusList[status];
 		}
 		else{
