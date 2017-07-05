@@ -78,6 +78,7 @@ wellClient.ui.status = {
 	},
 	receiveEvent: function(eventName, reason){
 		if(/agent/.test(eventName)){
+			this.reason = reason || this.reason;
 			this.agentStatus = eventName;
 			this.mixStatus =  eventName;
 		}
@@ -302,7 +303,7 @@ wellClient.ui.agentReady = function(event){
 };
 
 wellClient.ui.agentNotReady = function(event){
-	this.setAgentStateNotReady();
+	// this.setAgentStateNotReady();
 	this.status.receiveEvent(event.eventName, event.reason);
 };
 
