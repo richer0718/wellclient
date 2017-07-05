@@ -1390,6 +1390,12 @@ var wellClient = (function($) {
         return $dfd.promise();
     };
 
+    app.pt.insertClock = function(){
+        if($('#well-time-clock').length === 0){
+            $('#well-now-state').after('<span id="well-time-clock" title="当前状态计时">0:00:00</span>');
+        }
+    };
+
     // new login
     // user.jobNumber
     // user.password
@@ -1398,6 +1404,8 @@ var wellClient = (function($) {
     // user.loginMode
     // user.agentMode
     app.pt.agentLogin = function(User) {
+        app.pt.insertClock();
+
         var $dfd = $.Deferred();
 
         util.logCallMemory();

@@ -83,8 +83,16 @@ wellClient.ui.status = {
 			this.mixStatus =  eventName;
 		}
 		else if(eventName === 'connectionCleared'){
-			this.deviceStatus = eventName;
-			this.mixStatus = this.agentStatus;
+
+			var call = wellClient.ui.getActiveCall();
+			if(call === -1){
+				this.deviceStatus = eventName;
+				this.mixStatus = this.agentStatus;
+			}
+			else{
+				this.deviceStatus = call.state;
+				this.mixStatus = call.state;
+			}
 		}
 		else{
 			this.deviceStatus = eventName;
@@ -360,17 +368,28 @@ wellClient.ui.connectionCleared = function(event){
 	var call = wellClient.findItem(callModel, 'deviceId', event.deviceId);
 	if(call === -1){return;}
 
-	this.removeOneCall(call);
-	if(callModel.length !== 2){
-
-		this.status.receiveEvent(event.eventName);
-	}
-
-	this.refreshButtonStatus();
-	this.retrieveCall();
 
 	if(event.isClearAll){
 		this.clearAllCalls();
+		this.status.receiveEvent(event.eventName);
+		return;
+	}
+	else{
+		this.removeOneCall(call);
+		this.status.receiveEvent(event.eventName);
+		this.refreshButtonStatus();
+	}
+
+	call = this.getActiveCall();
+
+	if(call === -1){return;}
+
+	if(call.state === 'held'){
+		this.retrieveCall();
+	}
+	else if(call.state === 'conferenced'){
+		call.state = 'established';
+		this.status.receiveEvent(event.eventName);
 	}
 };
 
