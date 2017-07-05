@@ -458,8 +458,11 @@ var wellClient = (function($) {
                 contentType: 'application/json; charset=UTF-8',
                 success: function(data) {
                     var okMsg = {
+                        status: 'OK',
                         url: url,
-                        method: method
+                        method: method,
+                        payload: payload,
+                        res: data
                     };
                     util.debugout.log(okMsg);
 
@@ -467,6 +470,7 @@ var wellClient = (function($) {
                 },
                 error: function(data) {
                     var errorMsg = {
+                        status:'ERROR',
                         url: url,
                         method: method,
                         payload: payload,
@@ -507,9 +511,27 @@ var wellClient = (function($) {
                 dataType: "json",
                 contentType: 'application/json; charset=UTF-8',
                 success: function(data) {
+                    var okMsg = {
+                        status: 'OK',
+                        url: url,
+                        method: method,
+                        payload: payload,
+                        res: data
+                    };
+                    util.debugout.log(okMsg);
+
                     dfd.resolve(data);
                 },
                 error: function(data) {
+                    var errorMsg = {
+                        status: 'ERROR',
+                        url: url,
+                        method: method,
+                        payload: payload,
+                        res: data
+                    };
+                    util.debugout.log(errorMsg);
+
                     dfd.reject(data);
                 }
             });
@@ -533,8 +555,9 @@ var wellClient = (function($) {
                 contentType: 'application/x-www-form-urlencoded; charset=UTF-8',
                 success: function(data) {
                     var okMsg = {
+                        status: 'OK',
                         url: url,
-                        method: 'post',
+                        method: 'post'
                     };
                     util.debugout.log(okMsg);
                     dfd.resolve(data);
@@ -542,9 +565,9 @@ var wellClient = (function($) {
                 error: function(data) {
                     // util.log(data);
                     var errorMsg = {
+                        status: 'ERROR',
                         url: url,
                         method: 'post',
-                        payload: Data,
                         res: data
                     };
                     util.debugout.log(errorMsg);
