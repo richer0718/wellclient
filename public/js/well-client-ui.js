@@ -303,7 +303,6 @@ wellClient.ui.agentReady = function(event){
 };
 
 wellClient.ui.agentNotReady = function(event){
-	// this.setAgentStateNotReady();
 	this.status.receiveEvent(event.eventName, event.reason);
 };
 
