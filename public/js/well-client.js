@@ -868,11 +868,13 @@ var wellClient = (function($) {
         deliverEvent: function(eventInfo) {
             env.isAgentAllocated = eventInfo.eventName === 'agentAllocated' ? true : false;
 
-            if(eventInfo.eventName === 'agentReady' || eventInfo.eventName === 'agentAllocated'){
-                clock.restartClock();
-            }
-            else{
-                clock.closeClock();
+            if(eventInfo.eventName !== 'held' && eventInfo.eventName !== 'retrieved'){
+                if(eventInfo.eventName === 'agentLoggedOff'){
+                    clock.closeClock();
+                }
+                else{
+                    clock.restartClock();
+                }
             }
 
             if($.isFunction(innerEventLogic[eventInfo.eventName])){
