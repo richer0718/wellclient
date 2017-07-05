@@ -98,3 +98,7 @@ function GetCallData(){
         console.log('获取路数据失败');
     })
 }
+
+function clearPageLog(){
+    $('#log').empty();
+}
