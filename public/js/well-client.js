@@ -760,16 +760,16 @@ var wellClient = (function($) {
                 Config.currentReconnectTimes = 0;
 
                 var dest = '/topic/csta/agent/' + env.loginId;
-                var lastEvent = '';
+                var lastEventSerial = '';
 
                 ws.subscribe(dest, function(event) {
-                    if( lastEvent === event.body ){
-                        util.log('Error: event repeat sent !');
-                        return;
-                    }
-                    else{
-                        lastEvent = event.body;
-                    }
+                    // if( lastEvent === event.body ){
+                    //     util.log('Error: event repeat sent !');
+                    //     return;
+                    // }
+                    // else{
+                    //     lastEvent = event.body;
+                    // }
 
                     try{
                         var eventInfo = JSON.parse(event.body);
@@ -777,6 +777,14 @@ var wellClient = (function($) {
                     catch(e){
                         console.log(e);
                         return;
+                    }
+
+                    if(lastEventSerial === eventInfo.serial){
+                        util.log('Error: event repeat sent !');
+                        return;
+                    }
+                    else{
+                        lastEventSerial = eventInfo.serial;
                     }
 
                     if(Config.useEventLog){
@@ -1742,6 +1750,8 @@ var wellClient = (function($) {
         var pathParm = {
             agentId:env.loginId
         };
+
+        if(!env.loginId){return;}
 
         return apis.heartbeat.fire(pathParm);
     };
