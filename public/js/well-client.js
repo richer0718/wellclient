@@ -763,13 +763,6 @@ var wellClient = (function($) {
                 var lastEventSerial = '';
 
                 ws.subscribe(dest, function(event) {
-                    // if( lastEvent === event.body ){
-                    //     util.log('Error: event repeat sent !');
-                    //     return;
-                    // }
-                    // else{
-                    //     lastEvent = event.body;
-                    // }
 
                     try{
                         var eventInfo = JSON.parse(event.body);
@@ -780,7 +773,7 @@ var wellClient = (function($) {
                     }
 
                     if(lastEventSerial === eventInfo.serial){
-                        util.log('Error: event repeat sent !');
+                        util.error('Error: event repeat sent !');
                         return;
                     }
                     else{
