@@ -1359,6 +1359,8 @@ var wellClient = (function($) {
         else if(selfEnv === 'CMB-UAT'){
             user.domain = 'cmb.uat';
         }
+
+        app.pt.ieInit();
     };
 
     // login
@@ -1405,6 +1407,10 @@ var wellClient = (function($) {
         }
     };
 
+    app.pt.ieInit = function(){
+        return $.get(Config.protocol + Config.TPI);
+    };
+
     // new login
     // user.jobNumber
     // user.password
@@ -1413,6 +1419,7 @@ var wellClient = (function($) {
     // user.loginMode
     // user.agentMode
     app.pt.agentLogin = function(User) {
+
         app.pt.insertClock();
 
         var $dfd = $.Deferred();
