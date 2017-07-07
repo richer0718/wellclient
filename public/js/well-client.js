@@ -749,6 +749,7 @@ var wellClient = (function($) {
             wsHeartbeatId = setInterval(function(){
                 if(ws && ws.connected){
                     ws.ws.send('h');
+                    util.debugout.log('websocket send heartbeat');
                 }
                 else{
                     clearInterval(wsHeartbeatId);
