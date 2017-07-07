@@ -811,6 +811,7 @@ var wellClient = (function($) {
                     wellClient.ui.main({
                         eventName:'wsDisconnected'
                     });
+                    util.debugout.log('>>> websocket disconnect');
 
                     wellClient.triggerInnerOn(errorMsg);
                 }
@@ -820,6 +821,7 @@ var wellClient = (function($) {
         reconnectWs: function(){
             setTimeout(function(){
                 util.log('>>> try to reconnect');
+                util.debugout.log('>>> try to reconnect');
                 util.initWebSocket();
 
             }, Config.timeout * 1000);
