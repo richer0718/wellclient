@@ -109,12 +109,12 @@ var wellClient = (function($) {
             autoAnswer: false
         },
         'OUR-TEST':{
-            SDK: 'testsdk.wellcloud.cc',
+            SDK: '192.168.40.79',
             cstaPort: ':58080',
             eventPort: ':58080',
-            TPI:'testsdk.wellcloud.cc:58080/loginTrusted',
-            protocol: 'https://',
-            wsProtocol: 'wss://',
+            TPI:'192.168.40.79:58080/loginTrusted',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
             autoAnswer: true
         }
     };
