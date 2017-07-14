@@ -50,7 +50,7 @@ var wellClient = (function($) {
         enableAlert: false, // whether enabled alert error msg
         useEventLog: true, // whether use event log,
 
-        logPrefix: 'http://localhost:8089',
+        logPrefix: 'localhost:8089',
         logPath: '/log/wellclient',
         logConfPath: '/log/conf',
         token: 'welljoint',
@@ -121,7 +121,8 @@ var wellClient = (function($) {
             TPI:'192.168.40.79:8090/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
-            autoAnswer: true
+            autoAnswer: true,
+            logPrefix: '192.168.40.107:31043'
         }
     };
 
@@ -513,15 +514,18 @@ var wellClient = (function($) {
         },
 
         sendLog: function(log){
-            var url = Config.logPrefix + Config.logPath + '?token=' + Config.token;
+            var url = Config.protocol + Config.logPrefix + Config.logPath + '?token=' + Config.token;
             return this.ajax(url, 'post', log, 'application/json; charset=UTF-8').fail(function(){ Config.sendLog = false; });
         },
 
         getConf: function(){
-            var url = Config.logPrefix + Config.logConfPath + '?token=' + Config.token;
+            var url = Config.protocol + Config.logPrefix + Config.logConfPath + '?token=' + Config.token;
             $.get(url)
             .done(function(res){
                 Config.sendLog = res === 'yes'? true : false;
+            })
+            .fail(function(){
+                Config.sendLog = false;
             });
         },
 
@@ -1372,6 +1376,7 @@ var wellClient = (function($) {
         Config.protocol = CONF[selfEnv].protocol;
         Config.wsProtocol = CONF[selfEnv].wsProtocol;
         Config.autoAnswer = CONF[selfEnv].autoAnswer;
+        Config.logPrefix = CONF[selfEnv].logPrefix;
 
         if(selfEnv === 'CMB-DEV'){
             user.domain = 'cmbyc.cc';
