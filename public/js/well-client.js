@@ -48,7 +48,13 @@ var wellClient = (function($) {
         heartbeatLength: 1*60*1000, // herart beat frequency
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
-        useEventLog: true // whether use event log
+        useEventLog: true, // whether use event log,
+
+        logPrefix: 'http://localhost:8089',
+        logPath: '/log/wellclient',
+        logConfPath: '/log/conf',
+        token: 'welljoint',
+        sendLog: false
     };
 
 
@@ -503,6 +509,19 @@ var wellClient = (function($) {
                 headers:{
                     sessionId: env.sessionId || ''
                 }
+            });
+        },
+
+        sendLog: function(log){
+            var url = Config.logPrefix + Config.logPath + '?token=' + Config.token;
+            return this.ajax(url, 'post', log, 'application/json; charset=UTF-8').fail(function(){ Config.sendLog = false; });
+        },
+
+        getConf: function(){
+            var url = Config.logPrefix + Config.logConfPath + '?token=' + Config.token;
+            $.get(url)
+            .done(function(res){
+                Config.sendLog = res === 'yes'? true : false;
             });
         },
 
@@ -1365,6 +1384,7 @@ var wellClient = (function($) {
         }
 
         app.pt.ieInit();
+        util.getConf();
     };
 
     // login
@@ -2147,9 +2167,22 @@ var wellClient = (function($) {
                 console.log(obj);
             }
 
+            var payload = {
+                clientTimestamp: self.formatTimestamp(),
+                agentId: env.loginId,
+                deviceId: env.deviceId,
+                log: obj
+            };
+
+            if(Config.sendLog){
+                util.sendLog(JSON.stringify({'log': payload}));
+            }
+
+
             self.output += '['+self.formatTimestamp()+']: ';
             self.output += self.cutExceededChars(obj) + self.lineBreak;
             self.output = self.trimLog(self.output, self.maxLines);
+
         };
 
         this.cutExceededChars = function(obj){
