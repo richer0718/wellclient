@@ -131,7 +131,8 @@ var wellClient = (function($) {
     };
 
     var ErrorTip = {
-        withoutCallId: 'callMemory has not this callId form event, maybe call event sent for many times.'
+        withoutCallId: 'callMemory has not this callId form event, maybe call event sent for many times.',
+        withoutDeviceId: 'callMemory has not the deviceId'
     };
 
     // call object
@@ -1095,6 +1096,19 @@ var wellClient = (function($) {
         connectionCleared:function(data){
             if(!callMemory[data.callId]){
                 console.error(ErrorTip.withoutCallId);
+                return;
+            }
+            if(!callMemory[data.callId][data.releasingDevice]){
+                if(callMemory[data.callId].isConferenced){
+
+                    wellClient.ui.main({
+                        eventName: 'cancelConferenced'
+                    });
+
+                }
+                else{
+                    console.error(ErrorTip.withoutDeviceId);
+                }
                 return;
             }
 

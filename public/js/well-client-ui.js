@@ -438,6 +438,13 @@ wellClient.ui.conferenced = function(event){
 	this.refreshButtonStatus();
 };
 
+wellClient.ui.cancelConferenced = function(event){
+	if(callModel.length === 1){
+		callModel[0].state = 'established';
+		wellClient.ui.setAgentNowState('通话中');
+	}
+};
+
 wellClient.ui.agentWorkingAfterCall = function(event){
 
 	this.removePendingMode();
