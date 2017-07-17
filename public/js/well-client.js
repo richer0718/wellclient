@@ -67,7 +67,8 @@ var wellClient = (function($) {
             TPI: 'mbsdk.wellcloud.cc:5088/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            autoAnswer: true
+            autoAnswer: true,
+            logPrefix: 'mbsdk.wellcloud.cc:5088',
         },
         'CMB-PRO-443':{
             SDK: 'mbsdk.wellcloud.cc',
@@ -76,7 +77,8 @@ var wellClient = (function($) {
             TPI: 'mbsdk.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            autoAnswer: true
+            autoAnswer: true,
+            logPrefix: 'mbsdk.wellcloud.cc:5088',
         },
         'CMB-DEV':{
             SDK: 'uatsdk.wellcloud.cc',
@@ -85,7 +87,8 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            autoAnswer: true
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc',
         },
         'CMB-UAT':{
             SDK: 'uatsdk.wellcloud.cc',
@@ -94,7 +97,8 @@ var wellClient = (function($) {
             TPI:'uattpi.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
-            autoAnswer: true
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc',
         },
         'OUR-DEV':{
             SDK: '172.16.200.152',
@@ -514,11 +518,13 @@ var wellClient = (function($) {
         },
 
         sendLog: function(log){
+            // var url = 'http://localhost:8089' + Config.logPath + '?token=' + Config.token;
             var url = Config.protocol + Config.logPrefix + Config.logPath + '?token=' + Config.token;
             return this.ajax(url, 'post', log, 'application/json; charset=UTF-8').fail(function(){ Config.sendLog = false; });
         },
 
         getConf: function(){
+            // var url = 'http://localhost:8089' + Config.logConfPath + '?token=' + Config.token;
             var url = Config.protocol + Config.logPrefix + Config.logConfPath + '?token=' + Config.token;
             $.get(url)
             .done(function(res){

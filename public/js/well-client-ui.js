@@ -365,9 +365,9 @@ wellClient.ui.clearAllCalls = function(){
 };
 
 wellClient.ui.connectionCleared = function(event){
-	var call = wellClient.findItem(callModel, 'deviceId', event.deviceId);
-	if(call === -1){return;}
-
+	// var call = wellClient.findItem(callModel, 'deviceId', event.deviceId);
+	// if(call === -1){return;}
+	var call;
 
 	if(event.isClearAll){
 		this.clearAllCalls();
@@ -375,6 +375,8 @@ wellClient.ui.connectionCleared = function(event){
 		return;
 	}
 	else{
+		call = wellClient.findItem(callModel, 'deviceId', event.deviceId);
+		if(call === -1){return;}
 		this.removeOneCall(call);
 		this.status.receiveEvent(event.eventName);
 		this.refreshButtonStatus();
