@@ -21,7 +21,7 @@ var wellClient = (function($) {
     };
 
     var Config = {
-        version: '2.7.5',
+        version: '2.7.18',
 
         SDK: 'mbsdk.wellcloud.cc',
         cstaPort: ':5088',
