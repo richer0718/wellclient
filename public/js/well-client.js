@@ -68,7 +68,7 @@ var wellClient = (function($) {
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.wellcloud.cc:5088',
+            logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-PRO-443':{
             SDK: 'mbsdk.wellcloud.cc',
@@ -78,7 +78,7 @@ var wellClient = (function($) {
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.wellcloud.cc:5088',
+            logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-DEV':{
             SDK: 'uatsdk.wellcloud.cc',
@@ -88,7 +88,7 @@ var wellClient = (function($) {
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'uattpi.wellcloud.cc',
+            logPrefix: 'uattpi.wellcloud.cc'
         },
         'CMB-UAT':{
             SDK: 'uatsdk.wellcloud.cc',
@@ -98,7 +98,7 @@ var wellClient = (function($) {
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'uattpi.wellcloud.cc',
+            logPrefix: 'uattpi.wellcloud.cc'
         },
         'OUR-DEV':{
             SDK: '172.16.200.152',
