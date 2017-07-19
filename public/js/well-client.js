@@ -363,7 +363,7 @@ var wellClient = (function($) {
                 util.log('>>> STATUS: '+ nowStatus);
             }
             catch(e){
-                util.error(e)
+                util.error(e);
             }
         },
         isOutCall: function(d1, d2){
@@ -546,6 +546,7 @@ var wellClient = (function($) {
                 headers: {
                     sessionId: env.sessionId || ''
                 },
+                async: false,
                 data: JSON.stringify(payload),
                 dataType: "json",
                 contentType: 'application/json; charset=UTF-8',
@@ -779,7 +780,6 @@ var wellClient = (function($) {
             wsHeartbeatId = setInterval(function(){
                 if(ws && ws.connected){
                     ws.ws.send('h');
-                    util.debugout.log('websocket send heartbeat');
                 }
                 else{
                     clearInterval(wsHeartbeatId);
