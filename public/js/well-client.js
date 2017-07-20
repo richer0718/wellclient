@@ -127,6 +127,16 @@ var wellClient = (function($) {
             wsProtocol: 'ws://',
             autoAnswer: true,
             logPrefix: '192.168.40.107:31043'
+        },
+        'OUR-TEST-SDK':{
+            SDK: '192.168.40.79',
+            cstaPort: ':58080',
+            eventPort: ':58080',
+            TPI:'192.168.40.79:58080/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            autoAnswer: true,
+            logPrefix: '192.168.40.107:31043'
         }
     };
 
