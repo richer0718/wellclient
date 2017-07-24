@@ -1467,7 +1467,7 @@ var wellClient = (function($) {
     };
 
     app.pt.ieInit = function(){
-        return $.get(Config.protocol + Config.TPI);
+        return $.get(Config.protocol + Config.SDK);
     };
 
     // new login
