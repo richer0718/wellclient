@@ -306,11 +306,13 @@ wellClient.ui.agentLoggedOn = function(event){
 };
 
 wellClient.ui.agentReady = function(event){
+	this.removePendingMode();
 	this.setAgentStateReady();
 	this.status.receiveEvent(event.eventName);
 };
 
 wellClient.ui.agentNotReady = function(event){
+	this.removePendingMode();
 	this.status.receiveEvent(event.eventName, event.reason);
 };
 
