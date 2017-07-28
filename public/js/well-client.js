@@ -46,6 +46,7 @@ var wellClient = (function($) {
         currentReconnectTimes: 0, // current reconnect times
         isLogined: false,
         heartbeatLength: 1*60*1000, // herart beat frequency
+        wsSendHTimeout: 15 * 1000,
         heartbeatId: '',    // heartbeat Id
         enableAlert: false, // whether enabled alert error msg
         useEventLog: true, // whether use event log,
@@ -794,7 +795,7 @@ var wellClient = (function($) {
                 else{
                     clearInterval(wsHeartbeatId);
                 }
-            },25000);
+            }, Config.wsSendHTimeout);
 
             ws.connect({}, function(frame) {
 
