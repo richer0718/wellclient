@@ -138,6 +138,16 @@ var wellClient = (function($) {
             wsProtocol: 'ws://',
             autoAnswer: true,
             logPrefix: '192.168.40.107:31043'
+        },
+        'TIANAN':{
+            SDK: '10.100.32.215',
+            cstaPort: ':58080',
+            eventPort: ':58080',
+            TPI:'10.100.32.215:58080/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            autoAnswer: true,
+            logPrefix: '10.100.32.215:31043'
         }
     };
 
