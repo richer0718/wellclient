@@ -143,7 +143,7 @@ var wellClient = (function($) {
             SDK: '10.100.32.215',
             cstaPort: ':58080',
             eventPort: ':58080',
-            TPI:'10.100.32.215:58080/login',
+            TPI:'10.100.32.215:8090/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: true,
