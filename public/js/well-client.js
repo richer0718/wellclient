@@ -29,7 +29,8 @@ var wellClient = (function($) {
         TPI: 'mbsdk.wellcloud.cc:5088/login',
         protocol: 'https://',
         wsProtocol: 'wss://',
-        autoAnswer: true, // whether auto answer, need well-client-ui support
+        autoAnswer: true, // whether auto answer, need well-client-ui support,
+        useErrorAlert: true,
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
@@ -359,6 +360,11 @@ var wellClient = (function($) {
 
     // inner tool functions
     var util = {
+        showErrorAlert: function(msg){
+            if(Config.useErrorAlert){
+                alert(msg);
+            }
+        },
         getCallId: function(){
             if(callMemory.length !== 1){
                 return '';
@@ -625,6 +631,10 @@ var wellClient = (function($) {
                 },
                 error: function(data) {
                     // util.log(data);
+                    if(data.status === 401){
+                        util.showErrorAlert('登录失败！原因：工号或密码或域名错误！请检查后再登录。');
+                    }
+
                     var errorMsg = {
                         status: 'ERROR',
                         url: url,
@@ -699,7 +709,7 @@ var wellClient = (function($) {
                 mode = mode || 'ask';
 
                 // for device already logined
-                if (res.status == '454') {
+                if (res.status === 454) {
 
                     // stop next
                     if(mode === 'stop'){
@@ -743,10 +753,23 @@ var wellClient = (function($) {
                 }
 
                 // for agent already logined
-                else if(res.status == '455'){
-                    var agentMode =  JSON.parse(res.responseText).agentMode;
-                    if(agentMode === 'Allocated'){
+                else if(res.status === 455){
 
+                    var deviceId = res.responseJSON.deviceId;
+
+                    if(deviceId && deviceId.split('@')[0]){
+                        deviceId = deviceId.split('@')[0];
+                        util.showErrorAlert('登录失败！原因：座席'+req.loginId.split('@')[0]+'已在'+deviceId+'上登录。');
+                    }
+                    util.closeWebSocket();
+                    $dfd.reject(res);
+                }
+                else if(res.status === 459){
+                    var agentId = res.responseJSON.agent;
+
+                    if(agentId && agentId.split('@')[0]){
+                        agentId = agentId.split('@')[0];
+                        util.showErrorAlert('登录失败！原因：分机'+req.device.split('@')[0]+'已被座席'+agentId+'登录。');
                     }
                     util.closeWebSocket();
                     $dfd.reject(res);
@@ -763,7 +786,7 @@ var wellClient = (function($) {
         },
 
         // start init websocket
-        initWebSocket: function(callback) {
+        initWebSocket: function(callback, errorCallback) {
             callback = callback || function(){};
 
             if(ws && ws.connected){
@@ -845,6 +868,7 @@ var wellClient = (function($) {
                 // maybe network disconnection, or browser in offline
                 // this condition will emit wsDisconnected event
                 if(Config.isManCloseWs){return;}
+                errorCallback();
 
                 util.log(frame);
                 util.error(new Date() + 'websocket disconnect');
@@ -873,7 +897,7 @@ var wellClient = (function($) {
             setTimeout(function(){
                 util.log('>>> try to reconnect');
                 util.debugout.log('>>> try to reconnect');
-                util.initWebSocket();
+                util.initWebSocket(function(){},function(){});
 
             }, Config.timeout * 1000);
         },
@@ -1522,8 +1546,12 @@ var wellClient = (function($) {
                         $dfd.reject(res);
                     });
 
+                },function(){
+                    util.showErrorAlert('登录失败！ 原因：WebSocket连接失败。');
                 });
-
+            })
+            .fail(function(err){
+                util.showErrorAlert('登录失败！ 原因：心跳失败。');
             });
 
         })
