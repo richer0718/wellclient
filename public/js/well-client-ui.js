@@ -639,6 +639,18 @@ wellClient.ctrl.logout = function(){
 	wellClient.logout();
 };
 
+wellClient.ctrl.superLogout = function(){
+	var agentCode = $('#super-logout-code').val();
+
+	wellClient.superLogout(agentCode)
+	.done(function(res){
+		alert('强制登出成功');
+	})
+	.fail(function(res){
+		alert('强制登出失败');
+	});
+};
+
 wellClient.ctrl.login = function(){
 	var $login = $('#well-login');
 	var $loading = $('#well-loading');

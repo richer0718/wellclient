@@ -113,6 +113,34 @@
 	<button onclick="wellClient.clearLog()">清空wellClient所有事件日志</button>
 	<button onclick="clearPageLog()">清空当前页面上所有事件日志</button>
 	<input id="user-data" placeholder="输入callId"> <button onclick="GetCallData()">获取随路数据</button>
+	<p>
+		<span>
+			注意：使用强制登出之前，必须先登录，不然会登出失败。
+			<strong>
+				务必要确认好该座席没有在使用，
+			</strong>
+			否则强制登出会影响到座席的业务。
+		</span>
+
+		<input type="" name="" placeholder="输入以5开头的座席工号" id="super-logout-code">
+		<button onclick="wellClient.ctrl.superLogout()">强制登出</button>
+	</p>
+	<p>
+		报错处理：
+		<h5>
+
+		1 如果提示：登录失败！原因：分机xxx已被座席bbbb登录, <br>
+		(解决方案1)：换其他分机号登录<br>
+		(解决方案2)：使用强制登出功能，把bbbb座席强制登出。<br>
+
+		2 如果提示：登录失败！原因：座席bbbb已在分机：xxxx 上登录。<br>
+		(解决方案1)：使用分机xxxx登录<br>
+		(解决方案2)：使用强制登出功能，把bbbb座席强制登出。<br>
+		</h5>
+
+
+	</p>
+
 	<div id="log" style="height:500px;background:#eeeeee;overflow:scroll;">
 
 	</div>

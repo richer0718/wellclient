@@ -755,12 +755,11 @@ var wellClient = (function($) {
                 // for agent already logined
                 else if(res.status === 455){
 
-                    var deviceId = res.responseJSON.deviceId;
+                    var deviceId = res.responseJSON.deviceId || "";
 
-                    if(deviceId && deviceId.split('@')[0]){
-                        deviceId = deviceId.split('@')[0];
-                        util.showErrorAlert('登录失败！原因：座席'+req.loginId.split('@')[0]+'已在'+deviceId+'上登录。');
-                    }
+                    deviceId = deviceId.split('@')[0];
+                    util.showErrorAlert('登录失败！原因：座席'+req.loginId.split('@')[0]+'已在分机：'+deviceId+' 上登录。');
+
                     util.closeWebSocket();
                     $dfd.reject(res);
                 }
@@ -771,6 +770,21 @@ var wellClient = (function($) {
                         agentId = agentId.split('@')[0];
                         util.showErrorAlert('登录失败！原因：分机'+req.device.split('@')[0]+'已被座席'+agentId+'登录。');
                     }
+                    util.closeWebSocket();
+                    $dfd.reject(res);
+                }
+                else if(res.status === 451){
+                    util.showErrorAlert('登录失败！原因：分机未注册');
+                    util.closeWebSocket();
+                    $dfd.reject(res);
+                }
+                else if(res.status === 452){
+                    util.showErrorAlert('登录失败！原因：非法座席工号');
+                    util.closeWebSocket();
+                    $dfd.reject(res);
+                }
+                else if(res.status === 453){
+                    util.showErrorAlert('登录失败！原因：非法分机号');
                     util.closeWebSocket();
                     $dfd.reject(res);
                 }
@@ -1561,6 +1575,15 @@ var wellClient = (function($) {
         });
 
         return $dfd.promise();
+    };
+
+    app.pt.superLogout = function(agentCode){
+        var payload = {
+            "func":"Logout",
+            "agentId": agentCode + '@' + env.user.domain
+        };
+
+        return apis.setAgentState.fire({},payload);
     };
 
     // logout
