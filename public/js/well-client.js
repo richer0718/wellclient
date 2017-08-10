@@ -526,6 +526,10 @@ var wellClient = (function($) {
                     };
                     util.debugout.log(errorMsg);
 
+                    if(data.status === 426){
+                        app.pt.relogin();
+                    }
+
                     dfd.reject(data);
                 }
             });
@@ -1469,6 +1473,17 @@ var wellClient = (function($) {
 
         app.pt.ieInit();
         util.getConf();
+    };
+
+    app.pt.relogin = function(){
+
+        util.TPILogin(env.user.number, env.user.password, env.user.domain)
+        .done(function(res){
+            env.sessionId = res.sessionId;
+        })
+        .fail(function(err){
+            util.error('登录失败，请检查用户名、密码、域名是否正确');
+        });
     };
 
     // login
