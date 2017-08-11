@@ -1434,6 +1434,7 @@ var wellClient = (function($) {
     app.pt.setConfig = function(conf){
 
         Config.debug = conf.debug === false? false : Config.debug;
+        Config.useErrorAlert = conf.useErrorAlert === false ? false : Config.useErrorAlert;
         Config.SDK = conf.SDK || Config.SDK;
 
         Config.cstaPort = typeof(conf.cstaPort) === 'undefined' ? Config.cstaPort : conf.cstaPort;
