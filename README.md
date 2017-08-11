@@ -60,8 +60,9 @@ config是js对象，具有以下字段
 debug | boolean | 否 | true | debug模式会写详细的日志信息，设置成false可以关闭日志
 useWsLog | boolean | 否 | true | 是否输出详细的websocket信息
 clickCallClass | string | 否 | well-canBeCalled | 设置点击呼叫的类,例如某个span标签包裹一串数字“8001sd12”,当这个类被点击的时候，
-enableAlert | boolean | 否 | false | 决定是否启用alert。如果是ture，那么某些异常会用alert的形式弹出。默认不使用alert提示错误信息。
-autoAnswer | boolean | 是 | true | 自动接听默认为true。即当有电话呼入时，软电话会自动接听这个电话。设置为false时，需要手动点击接听按钮才能接听。
+autoAnswer | boolean | 否 | true | 自动接听默认为true。即当有电话呼入时，软电话会自动接听这个电话。设置为false时，需要手动点击接听按钮才能接听。
+useErrorAlert | boolean | 否 | true | 是否使用alert弹出错误信息，例如在登录时候，出现错误。默认会使用友好的提示信息告知座席。例如：座席5003已在分机：8004上登录。
+如果你想自己处理登录的各种错误，你需要把这一样设置为false.
 
 `Example`
 
@@ -98,6 +99,26 @@ wellClient.agentLogin({
   console.log('登录失败');
 });
 ```
+
+`错误处理`
+如果发生错误，你可以从`res.status`中获取错误的状态码，不同状态码有不同的含义
+
+状态码 | 出现频率 | 含义 | 备注
+--- | --- | --- | ---
+401 | = | 密码不匹配 |
+426 | = | 获取AccessToken失败 |
+452 | = | 非法坐席工号 |
+453 | = | 非法分机号 |
+454 | = | 坐席已登录 |
+455 | ===== | 坐席已登录另外一个分机 | 可以从 res.responseJSON.deviceId（例如：8001@test.cc） 获取这个座席之前登录了哪个分机
+456 | = | 分机状态不合法 |
+457 | = | 未授权分机 |
+458 | = | 坐席已登出 |
+459 | ===== | 分机已经被别的坐席登陆 | 可以从 res.responseJSON.agentId（例如：5001@test.cc） 获取这个分机被哪个座席登录了
+460 | = | 分机忙碌 |
+461 | = | 坐席登陆的个数已达最大数 |
+462 | = | 预占坐席失败 |
+
 
 ### 2.3 wellClient.logout()：座席登出
 
