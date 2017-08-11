@@ -62,6 +62,16 @@ var wellClient = (function($) {
 
     var CONF = {
 
+        'superCluster':{
+            SDK: '192.168.40.234',
+            cstaPort: ':58080',
+            eventPort: ':58080',
+            TPI: '192.168.40.234:8090/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            autoAnswer: true,
+            logPrefix: '192.168.40.234:31043'
+        },
         'CMB-PRO':{
             SDK: 'mbsdk.wellcloud.cc',
             cstaPort: ':5088',
