@@ -723,7 +723,7 @@ var wellClient = (function($) {
                 mode = mode || 'ask';
 
                 // for device already logined
-                if (res.status === 454) {
+                if (res.status === 454 || res.status === 455) {
 
                     // stop next
                     if(mode === 'stop'){
@@ -766,17 +766,6 @@ var wellClient = (function($) {
                     }
                 }
 
-                // for agent already logined
-                else if(res.status === 455){
-
-                    var deviceId = res.responseJSON.deviceId || "";
-
-                    deviceId = deviceId.split('@')[0];
-                    util.showErrorAlert('登录失败！原因：座席'+req.loginId.split('@')[0]+'已在分机：'+deviceId+' 上登录。');
-
-                    util.closeWebSocket();
-                    $dfd.reject(res);
-                }
                 else if(res.status === 459){
                     var agentId = res.responseJSON.agent;
 
@@ -1630,8 +1619,6 @@ var wellClient = (function($) {
 
         var req = {
             func: 'Logout',
-            device: env.deviceId,
-            namespace: env.user.domain,
             agentId: env.user.number + '@' + env.user.domain
         };
 
