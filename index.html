@@ -105,6 +105,11 @@
 	</select>
 	<button id="config">配置</button> <span id="tip"></span>
 
+	<p style="border: 1px solid #999;padding: 10px;">
+		<strong>其他配置</strong>
+		<button onclick="wellClient.setConfig({useErrorAlert: true})">开启登录错误弹框</button>
+	</p>
+
 	<p>
 		注意：github pages 服务使用的是https协议。<br> 而 OUT-TEST和AWS-PRO环境是使用的http协议。<br>如果你想测试这
 		两个环境，<br>那么必须将本页面的所有代码下载到本地运行。
@@ -147,6 +152,8 @@
 
 	</div>
 </div>
+
+<a href="https://github.com/wangduanduan/wellclient"><img style="position: fixed; bottom: 0; right: 0; border: 0;" src="https://camo.githubusercontent.com/8b6b8ccc6da3aa5722903da7b58eb5ab1081adee/68747470733a2f2f73332e616d617a6f6e6177732e636f6d2f6769746875622f726962626f6e732f666f726b6d655f6c6566745f6f72616e67655f6666373630302e706e67" alt="Fork me on GitHub" data-canonical-src="https://s3.amazonaws.com/github/ribbons/forkme_left_orange_ff7600.png"></a>
 
 <script src="public/js/well-client-demo.js"></script>
 
