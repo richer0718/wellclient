@@ -30,7 +30,7 @@ var wellClient = (function($) {
         protocol: 'https://',
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support,
-        useErrorAlert: true,
+        useErrorAlert: false,
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
@@ -771,7 +771,7 @@ var wellClient = (function($) {
 
                     if(agentId && agentId.split('@')[0]){
                         agentId = agentId.split('@')[0];
-                        util.showErrorAlert('登录失败！原因：分机'+req.device.split('@')[0]+'已被座席'+agentId+'登录。');
+                        util.showErrorAlert('登录失败！原因：您想使用的分机'+req.device.split('@')[0]+'正在被座席'+agentId+'使用。');
                     }
                     util.closeWebSocket();
                     $dfd.reject(res);
@@ -1423,7 +1423,7 @@ var wellClient = (function($) {
     app.pt.setConfig = function(conf){
 
         Config.debug = conf.debug === false? false : Config.debug;
-        Config.useErrorAlert = conf.useErrorAlert === false ? false : Config.useErrorAlert;
+        Config.useErrorAlert = conf.useErrorAlert === true ? true : Config.useErrorAlert;
         Config.SDK = conf.SDK || Config.SDK;
 
         Config.cstaPort = typeof(conf.cstaPort) === 'undefined' ? Config.cstaPort : conf.cstaPort;

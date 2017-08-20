@@ -412,8 +412,11 @@ callback | function | 是 |  | 事件的回调函数
 
 ```
 // 订阅服务初始化事件
-wellClient.on('serviceInitiated',function(data){
-    wellClient.log('事件处理-服务初始化');
+wellClient.on('delivered',function(data){
+    wellClient.log('主叫号码'+ data.callingDevice);
+    wellClient.log('被叫号码'+ data.calledDevice);
+
+    做你想做的事情
 });
 ```
 
