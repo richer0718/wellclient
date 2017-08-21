@@ -22,6 +22,7 @@ var wellClient = (function($) {
 
     var Config = {
         version: '2.8.16',
+        ENV_NAME: 'CMB-PRO',
 
         SDK: 'mbsdk.wellcloud.cc',
         cstaPort: ':5088',
@@ -1452,6 +1453,8 @@ var wellClient = (function($) {
         if(typeof selfEnv != 'string'){return;}
         if(!CONF[selfEnv]){return;}
 
+        Config.ENV_NAME = selfEnv;
+
         Config.SDK = CONF[selfEnv].SDK;
         Config.cstaPort = CONF[selfEnv].cstaPort;
         Config.eventPort = CONF[selfEnv].eventPort;
@@ -2281,6 +2284,10 @@ var wellClient = (function($) {
 
             if(Config.sendLog){
                 util.sendLog(JSON.stringify({'log': msg}));
+            }
+
+            if(Config.ENV_NAME === 'CMB-PRO'){
+                return;
             }
 
             self.output += '['+self.formatTimestamp()+']: ';
