@@ -2277,17 +2277,11 @@ var wellClient = (function($) {
                 console.log(obj);
             }
 
-            var payload = {
-                clientTimestamp: self.formatTimestamp(),
-                agentId: env.loginId,
-                deviceId: env.deviceId,
-                log: obj
-            };
+            var msg = self.formatTimestamp() +' '+ env.loginId +' '+ env.deviceId +' '+ obj;
 
             if(Config.sendLog){
-                util.sendLog(JSON.stringify({'log': payload}));
+                util.sendLog(JSON.stringify({'log': msg}));
             }
-
 
             self.output += '['+self.formatTimestamp()+']: ';
             self.output += self.cutExceededChars(obj) + self.lineBreak;
@@ -2318,14 +2312,13 @@ var wellClient = (function($) {
 
         this.formatTimestamp = function() {
             var timestamp = new Date();
-            var year = timestamp.getFullYear();
             var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
             var date = ('0'+timestamp.getDate()).slice(-2);
             var hrs = ('0' + timestamp.getHours()).slice(-2);
             var mins = ('0' + timestamp.getMinutes()).slice(-2);
             var secs = ('0' + timestamp.getSeconds()).slice(-2);
-            var ms = timestamp.getMilliseconds();
-            return year + '-' + month + '-' + date + ' ' + hrs + ':' + mins + ':'+secs+'.'+ms;
+            var ms = ('00' + timestamp.getMilliseconds()).slice(-3);
+            return month + '-' + date + ' ' + hrs + ':' + mins + ':'+secs+'.'+ms;
         };
     }
 
