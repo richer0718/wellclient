@@ -105,11 +105,11 @@ var wellClient = (function($) {
         },
         'CMB-TEST':{
             SDK: 'uatsdk.wellcloud.cc',
-            cstaPort: '58080',
-            eventPort: '58080',
-            TPI:'uatsdk.wellcloud.cc:58080/login',
-            protocol: 'http://',
-            wsProtocol: 'ws://',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uatsdk.wellcloud.cc/login',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
             autoAnswer: true,
             logPrefix: 'uattpi.wellcloud.cc'
         },
