@@ -32,6 +32,8 @@ var wellClient = (function($) {
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support,
         useErrorAlert: false,
+        wsTopic: '/topic/csta/agent/',
+        newWsTopic: '/topic/event.agent.*.',
 
         // innerDeviceReg: /8\d{3,5}@/, // reg for inner deviceId; the ^8
         innerDeviceReg: /^8\d{3,5}|902138784800|902138834600/, // reg for inner deviceId
@@ -862,7 +864,12 @@ var wellClient = (function($) {
 
                 Config.currentReconnectTimes = 0;
 
-                var dest = '/topic/csta/agent/' + env.loginId;
+                var dest = Config.wsTopic + env.loginId;
+
+                if(Config.ENV_NAME === 'CMB-TEST'){
+                    dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
+                }
+
                 var lastEventSerial = '';
 
                 ws.subscribe(dest, function(event) {
