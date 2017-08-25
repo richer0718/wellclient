@@ -851,14 +851,14 @@ var wellClient = (function($) {
                 ws.debug = null;
             }
 
-            wsHeartbeatId = setInterval(function(){
-                if(ws && ws.connected){
-                    ws.ws.send('h');
-                }
-                else{
-                    clearInterval(wsHeartbeatId);
-                }
-            }, Config.wsSendHTimeout);
+            // wsHeartbeatId = setInterval(function(){
+            //     if(ws && ws.connected){
+            //         ws.ws.send('h');
+            //     }
+            //     else{
+            //         clearInterval(wsHeartbeatId);
+            //     }
+            // }, Config.wsSendHTimeout);
 
             ws.connect({}, function(frame) {
 
@@ -907,7 +907,7 @@ var wellClient = (function($) {
 
                 util.log(frame);
                 util.error(new Date() + 'websocket disconnect');
-                clearInterval(wsHeartbeatId);
+                // clearInterval(wsHeartbeatId);
 
                 if(Config.currentReconnectTimes < Config.maxReconnectTimes){
                     Config.currentReconnectTimes++;
