@@ -1481,13 +1481,13 @@ var wellClient = (function($) {
         Config.autoAnswer = CONF[selfEnv].autoAnswer;
         Config.logPrefix = CONF[selfEnv].logPrefix;
 
-        if(selfEnv === 'CMB-DEV'){
+        if(selfEnv === 'CMB-DEV' || selfEnv === 'CMB-TEST'){
             user.domain = 'cmbyc.cc';
         }
         else if(selfEnv === 'CMB-PRO'){
             user.domain = 'cmb.cc';
         }
-        else if(selfEnv === 'CMB-UAT'){
+        else if(selfEnv === 'CMB-UAT' || selfEnv === 'CMB-TEST'){
             user.domain = 'cmb.uat';
         }
 
