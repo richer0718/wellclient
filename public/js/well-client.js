@@ -866,7 +866,7 @@ var wellClient = (function($) {
 
                 var dest = Config.wsTopic + env.loginId;
 
-                if(Config.ENV_NAME === 'CMB-TEST'){
+                if(Config.ENV_NAME === 'CMB-TEST' || Config.ENV_NAME === 'OUR-TEST'){
                     dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
                 }
 
