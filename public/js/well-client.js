@@ -147,7 +147,7 @@ var wellClient = (function($) {
             SDK: '192.168.40.79',
             cstaPort: ':58080',
             eventPort: ':58080',
-            TPI:'192.168.40.79:58080/login',
+            TPI:'192.168.40.79:58080/loginTrusted',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: true,
