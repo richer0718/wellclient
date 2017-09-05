@@ -40,8 +40,8 @@ var wellClient = (function($) {
 
         // default config
         isManCloseWs: false,
-        debug: true,
-        useWsLog: true,
+        debug: false,
+        useWsLog: false,
         eventBasePath: '/mvc/stomp',
         cstaBasePath: '/api/csta',
         clickCallClass: 'well-canBeCalled',
@@ -1510,6 +1510,12 @@ var wellClient = (function($) {
         }
         else if(selfEnv === 'CMB-UAT'){
             user.domain = 'cmb.uat';
+        }
+
+        if($('#well-client').length === 0){
+            wellClient.ui = {
+                main: function(){}
+            };
         }
 
         app.pt.ieInit();

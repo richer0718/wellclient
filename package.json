@@ -4,6 +4,7 @@
     "start": "node ./bin/www",
     "build": "node ./bin/www"
   },
+  "version": "2.9.5",
   "dependencies": {},
   "devDependencies": {
     "gulp": "^3.9.1",
