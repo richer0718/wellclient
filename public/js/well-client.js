@@ -333,8 +333,15 @@ var wellClient = (function($) {
 
     var clock = {
         id: '',
+        el: '#well-time-clock',
         startTimeStramp: '',
         startClock: function(){
+            if($(this.el).length === 0){
+                this.startClock = function(){};
+                this.restartClock = function(){};
+                this.closeClock = function(){};
+            }
+
             var self = this;
             this.startTimeStramp = new Date().getTime();
 
@@ -377,7 +384,7 @@ var wellClient = (function($) {
         },
         closeClock: function(){
             clearInterval(this.id);
-            $('#well-time-clock').text('0:00:00');
+            $(this.el).text('0:00:00');
         },
     };
 
