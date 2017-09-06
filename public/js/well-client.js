@@ -40,8 +40,8 @@ var wellClient = (function($) {
 
         // default config
         isManCloseWs: false,
-        debug: true,
-        useWsLog: true,
+        debug: false,
+        useWsLog: false,
         eventBasePath: '/mvc/stomp',
         cstaBasePath: '/api/csta',
         clickCallClass: 'well-canBeCalled',
@@ -74,6 +74,16 @@ var wellClient = (function($) {
             wsProtocol: 'ws://',
             autoAnswer: true,
             logPrefix: '192.168.40.234:31043'
+        },
+        'CMB-PRO2':{
+           SDK: 'prd2sdk.wellcloud.cc:5082',
+           cstaPort: '',
+           eventPort: '',
+           TPI:'prd2tpi.wellcloud.cc:5081/login',
+           protocol: 'http://',
+           wsProtocol: 'ws://',
+           autoAnswer: true,
+           logPrefix: 'prd2tpi.wellcloud.cc'
         },
         'CMB-PRO':{
             SDK: 'mbsdk.wellcloud.cc',
@@ -1510,6 +1520,13 @@ var wellClient = (function($) {
         }
         else if(selfEnv === 'CMB-UAT'){
             user.domain = 'cmb.uat';
+        }
+
+
+        if($('#well-client').length === 0){
+            wellClient.ui = {
+                main: function(){}
+            };
         }
 
         app.pt.ieInit();
