@@ -105,6 +105,16 @@ var wellClient = (function($) {
             autoAnswer: true,
             logPrefix: 'uattpi.wellcloud.cc'
         },
+        'CMB-PRO2':{
+            SDK: 'prd2sdk.wellcloud.cc:5082',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'prd2tpi.wellcloud.cc:5081/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            autoAnswer: true,
+            logPrefix: 'prd2tpi.wellcloud.cc'
+        },
         'CMB-TEST':{
             SDK: 'uatsdk.wellcloud.cc',
             cstaPort: '',
