@@ -59,7 +59,8 @@ var wellClient = (function($) {
         logPath: '/log/wellclient',
         logConfPath: '/log/conf',
         token: 'welljoint',
-        sendLog: false
+        sendLog: false,
+        useClock: false
     };
 
 
@@ -346,7 +347,8 @@ var wellClient = (function($) {
         el: '#well-time-clock',
         startTimeStramp: '',
         startClock: function(){
-            if($(this.el).length === 0){
+
+            if(!Config.useClock || $(this.el).length === 0){
                 this.startClock = function(){};
                 this.restartClock = function(){};
                 this.closeClock = function(){};
@@ -1504,12 +1506,15 @@ var wellClient = (function($) {
 
         if(selfEnv === 'CMB-DEV'){
             user.domain = 'cmbyc.cc';
+            Config.useClock = true;
         }
         else if(selfEnv === 'CMB-PRO'){
             user.domain = 'cmb.cc';
+            Config.useClock = true;
         }
         else if(selfEnv === 'CMB-UAT'){
             user.domain = 'cmb.uat';
+            Config.useClock = true;
         }
 
 
