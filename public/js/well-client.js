@@ -894,19 +894,9 @@ var wellClient = (function($) {
 
                     try{
                         eventInfo = JSON.parse(event.body);
-
-                        delete eventInfo.eventSrc;
-                        delete eventInfo.eventType;
                         delete eventInfo.params;
                         delete eventInfo._type;
                         delete eventInfo.topics;
-                        delete eventInfo.namespace;
-                        delete eventInfo.srcDeviceId;
-                        delete eventInfo.localState;
-                        delete eventInfo.agentId;
-                        delete eventInfo.agentMode;
-                        delete eventInfo.devices;
-                        delete eventInfo.eventTime;
                     }
                     catch(e){
                         console.log(e);

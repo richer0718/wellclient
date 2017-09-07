@@ -864,21 +864,6 @@ AgentLoggedOnEvent {
   "eventTime": "2017.03.18 14:13:24",
   "eventType": "agent",
   "serial": 11050819,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.AgentLoggedOnEvent",
-  "topics": [
-    "CtiRouter_ctirouter-z40iv",
-    "agent:5002@zhen04.cc",
-    "agentLoggedOn",
-    "agent:zhen04.cc",
-    "device:8002@zhen04.cc",
-    "agent",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "deviceId": "8002@zhen04.cc",
@@ -917,21 +902,6 @@ AgentLoggedOffEvent {
   "eventTime": "2017.03.18 14:35:34",
   "eventType": "agent",
   "serial": 11066842,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.AgentLoggedOffEvent",
-  "topics": [
-    "CtiRouter_ctirouter-z40iv",
-    "agent:5002@zhen04.cc",
-    "agentLoggedOff",
-    "agent:zhen04.cc",
-    "device:8002@zhen04.cc",
-    "agent",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "deviceId": "8002@zhen04.cc",
@@ -969,21 +939,6 @@ AgentReadyEvent {
   "eventTime": "2017.03.18 14:13:24",
   "eventType": "agent",
   "serial": 11050820,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.AgentReadyEvent",
-  "topics": [
-    "CtiRouter_ctirouter-z40iv",
-    "agent:5002@zhen04.cc",
-    "agentReady",
-    "agent:zhen04.cc",
-    "device:8002@zhen04.cc",
-    "agent",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "deviceId": "8002@zhen04.cc",
@@ -1021,21 +976,6 @@ AgentNotReadyEvent {
   "eventTime": "2017.03.18 14:33:50",
   "eventType": "agent",
   "serial": 11065578,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5006@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.AgentNotReadyEvent",
-  "topics": [
-    "CtiRouter_ctirouter-z40iv",
-    "agent:5006@zhen04.cc",
-    "agent:zhen04.cc",
-    "device:8001@zhen04.cc",
-    "agent",
-    "agentNotReady",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8001@zhen04.cc",
   "deviceId": "8001@zhen04.cc",
@@ -1084,21 +1024,6 @@ OriginCallInfo {
   "eventTime": "2017.03.18 14:13:33",
   "eventType": "csta",
   "serial": 121019,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5006@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.ServiceInitiatedEvent",
-  "topics": [
-    "extension",
-    "agent:5006@zhen04.cc",
-    "serviceInitiated",
-    "CtiWorker_ctiworker-31dv7",
-    "crossRefId:2365",
-    "device:8001@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8001@zhen04.cc",
   "callId": "37db6efe-57cc-4053-b0ce-24c96eba66b0",
@@ -1149,21 +1074,6 @@ OriginCallInfo {
   "eventTime": "2017.03.18 14:13:33",
   "eventType": "csta",
   "serial": 121021,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5006@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.OriginatedEvent",
-  "topics": [
-    "extension",
-    "agent:5006@zhen04.cc",
-    "CtiWorker_ctiworker-31dv7",
-    "crossRefId:2365",
-    "device:8001@zhen04.cc",
-    "csta",
-    "originated"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8001@zhen04.cc",
   "callId": "37db6efe-57cc-4053-b0ce-24c96eba66b0",
@@ -1237,22 +1147,6 @@ UserData {}
   "eventTime": "2017.06.01 11:22:25",
   "eventType": "csta",
   "serial": 401,
-  "params": {
-    "_amqpTopic": "event.csta.test0016.cc",
-    "log": "false",
-    "agent": "5006@test0016.cc",
-    "subscriptionId": "http%3A%2F%2Fservices_sdkserver_1%3A58080%2Fevent-sink%2Fcsta"
-  },
-  "_type": "component.cti.event.DeliveredEvent",
-  "topics": [
-    "delivered",
-    "csta",
-    "device:8003@test0016.cc",
-    "extension",
-    "crossRefId:504",
-    "CtiWorker_a22b27648fb4",
-    "agent:5006@test0016.cc"
-  ],
   "namespace": "test0016.cc",
   "srcDeviceId": "8003@test0016.cc",
   "callId": "c7ed6c7b-4f03-4e2e-8e0b-0970a340d48c",
@@ -1274,22 +1168,6 @@ UserData {}
   "eventTime": "2017.06.01 11:26:24",
   "eventType": "csta",
   "serial": 421,
-  "params": {
-    "_amqpTopic": "event.csta.test0016.cc",
-    "log": "false",
-    "agent": "5006@test0016.cc",
-    "subscriptionId": "http%3A%2F%2Fservices_sdkserver_1%3A58080%2Fevent-sink%2Fcsta"
-  },
-  "_type": "component.cti.event.DeliveredEvent",
-  "topics": [
-    "delivered",
-    "csta",
-    "device:8003@test0016.cc",
-    "extension",
-    "crossRefId:504",
-    "CtiWorker_a22b27648fb4",
-    "agent:5006@test0016.cc"
-  ],
   "namespace": "test0016.cc",
   "srcDeviceId": "8003@test0016.cc",
   "callId": "17383bbc-467a-11e7-b3a5-39e394a1c1de",
@@ -1362,21 +1240,6 @@ UserData {}
   "eventTime": "2017.03.18 14:13:36",
   "eventType": "csta",
   "serial": 121037,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.EstablishedEvent",
-  "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "established",
-    "device:8002@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "callId": "37db6efe-57cc-4053-b0ce-24c96eba66b0",
@@ -1411,21 +1274,6 @@ UserData {}
   "eventTime": "2017.03.18 14:14:15",
   "eventType": "csta",
   "serial": 121051,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.ConnectionClearedEvent",
-  "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "connectionCleared",
-    "device:8002@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "callId": "37db6efe-57cc-4053-b0ce-24c96eba66b0",
@@ -1477,21 +1325,6 @@ OriginCallInfo {
   "eventTime": "2017.03.18 14:39:31",
   "eventType": "csta",
   "serial": 121645,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.TransferredEvent",
-  "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
-    "transferred",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "device:8002@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "callId": "10549a5f-41c8-4309-a1ad-faa61c8f3777",
@@ -1565,21 +1398,6 @@ calledDevice (string, optional)
   "eventTime": "2017.03.18 14:15:37",
   "eventType": "csta",
   "serial": 121110,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5006@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.ConferencedEvent",
-  "topics": [
-    "extension",
-    "agent:5006@zhen04.cc",
-    "conferenced",
-    "CtiWorker_ctiworker-31dv7",
-    "crossRefId:2365",
-    "device:8001@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8001@zhen04.cc",
   "callId": "b81b0af2-e40a-4e0e-a8ce-47be9474f245",
@@ -1633,21 +1451,6 @@ calledDevice (string, optional)
   "eventTime": "2017.03.18 14:38:39",
   "eventType": "csta",
   "serial": 121578,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.RetrievedEvent",
-  "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "device:8002@zhen04.cc",
-    "retrieved",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "callId": "10549a5f-41c8-4309-a1ad-faa61c8f3777",
@@ -1696,21 +1499,6 @@ calledDevice (string, optional)
   "eventTime": "2017.03.18 14:37:57",
   "eventType": "csta",
   "serial": 121511,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5002@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.HeldEvent",
-  "topics": [
-    "agent:5002@zhen04.cc",
-    "extension",
-    "held",
-    "crossRefId:1951",
-    "CtiWorker_ctiworker-31dv7",
-    "device:8002@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8002@zhen04.cc",
   "callId": "10549a5f-41c8-4309-a1ad-faa61c8f3777",
@@ -1747,21 +1535,6 @@ propertyNames (Array[string], optional)
   "eventTime": "2017.03.24 17:53:55",
   "eventType": "agent",
   "serial": 11468024,
-  "params": {
-    "_amqpTopic": "event.csta.zhen04.cc",
-    "agent": "5006@zhen04.cc",
-    "subscriptionId": "http%3A%2F%2F172.20.1.113%3A58080%2Fevent-sink%2Fcsta%2Fzhen04.cc"
-  },
-  "_type": "component.cti.event.AgentWorkingAfterCallEvent",
-  "topics": [
-    "agent:5006@zhen04.cc",
-    "agent:zhen04.cc",
-    "CtiRouter_ctirouter-cmvnl",
-    "agentWorkingAfterCall",
-    "agent",
-    "device:8005@zhen04.cc",
-    "csta"
-  ],
   "namespace": "zhen04.cc",
   "srcDeviceId": "8005@zhen04.cc",
   "deviceId": "8005@zhen04.cc",
@@ -1786,21 +1559,6 @@ propertyNames (Array[string], optional)
   "eventTime": "2017.05.10 13:54:29",
   "eventType": "agent",
   "serial": 2012088,
-  "params": {
-    "_amqpTopic": "event.csta.final.cc",
-    "agent": "5001@final.cc",
-    "subscriptionId": "http%3A%2F%2Fsdkserver.paas%3A58080%2Fevent-sink%2Fcsta"
-  },
-  "_type": "component.cti.event.AgentAllocatedEvent",
-  "topics": [
-    "device:8001@final.cc",
-    "CtiRouter_ctirouter-kz4a7",
-    "agent:5001@final.cc",
-    "agent:final.cc",
-    "agentAllocated",
-    "agent",
-    "csta"
-  ],
   "namespace": "final.cc",
   "srcDeviceId": "8001@final.cc",
   "deviceId": "8001@final.cc",
