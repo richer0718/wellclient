@@ -1,4 +1,4 @@
-[TOC]
+![image](./public/img/cate.jpg)
 
 ## 注意事项
 1. 不经本人同意，请不要修改well-client.js, well-client-ui.js的任何代码。擅自修改源代码，很可能导致意外的问题。
