@@ -1,4 +1,106 @@
-![image](./public/img/cate.jpg)
+- 0 运行项目 or 在线的demo
+
+- 1 环境要求
+
+    - 1.1 硬件要求
+    - 1.2 软件要求
+    - 1.3 引入JS文件
+    - 1.4 配置
+    - 1.5 登录
+    - 1.6 调试
+
+- 2 wellClient方法说明
+
+    - 2.1 wellClient.useConfig(envName): 使用配置
+    - 2.1 wellClient.setConfig(config)：设置配置信息
+    - 2.2 wellClient.agentLogin(agent): 座席登录
+    - 2.3 wellClient.logout()：座席登出
+    - 2.4 wellClient.setAgentMode(mode)：设置座席状态
+    - 2.5 wellClient.makeCall(phoneNumber, oprtions)：拨打电话
+    - 2.6 wellClient.answerCall(callId)：接听电话
+    - 2.7 wellClient.dropConnection(callId)：挂断链接
+    - 2.8 wellClient.holdCall(callId)：保持电话
+    - 2.9 wellClient.retrieveCall(callId)：取回电话
+    - 2.10 wellClient.singleStepTransfer(callId,phoneNumber)：单步转移
+    - 2.11 wellClient.singleStepConference(callId,phoneNumber,type)：单步会议
+    - 2.12 wellClient.consult(holdCallId,phoneNumber)：咨询
+    - 2.13 wellClient.conference(holdCallId, consultCallId)：会议
+    - 2.14 wellClient.cancelConsult(holdCallId, consultCallId)：取消咨询
+    - 2.15 wellClient.transferCall(holdCallId, consultCallId)：咨询后转移
+    - 2.16 wellClient.setCallData(callId, data)：设置随路数据
+    - 2.17 wellClient.getCallData(callId)：获取随路数据
+
+- 3 事件处理
+
+    - 3.1 wellClient.on(eventName,callback):事件订阅函数
+    - 3.2 wellClient.innerOn(evnentName, callback(data){}): 订阅内部事件
+    - 3.2.1 订阅挂断事件：connectionCleared
+    - 3.2.2 订阅登录失败事件：loginFailed
+    - 3.2.3 订阅websocket断开事件：wsDisconnected
+    - 3.3 wellClient.exports=function(event){}: 所有事件的回调函数
+    - 3.4 wellClient.onLog=function(msg){}: 所有日志的回调函数
+
+- 4 强制操作接口
+
+    - 4.1 wellClient.forceDrop(deviceId, callId): 强拆
+    - 4.2 wellClient.forceJoin(deviceId, callId, phoneNumber): 强插
+    - 4.3 wellClient.forceTake(deviceId, callId, phoneNumber): 接管
+    - 4.4 wellClient.forceListen(callId, deviceId): 监听
+    - 4.5 wellClient.forceReady(agentId, deviceId): 强制就绪
+    - 4.6 wellClient.forceNotReady(agentId, deviceId):强制离席
+    - 4.7 wellClient.forceLogout(agentId, deviceId): 强制签出
+
+- 5 调试工具
+
+    - 5.1 wellClient.getCallMemory(): 获取wellClient内部数据
+    - 5.2 wellClient.log(msg): 输出日志信息
+    - 5.3 wellClient.error(msg): 输出错误日志信息
+    - 5.3 wellClient.setDebug(isDebug): 输出错误日志信息
+    - 5.4 wellClient.isPhoneNumber(phoneNumber): 判断字符串是否是合法的号码
+    - 5.5 事件日志方法
+        - 5.5.1 wellClient.getLog(): 获取所有事件日志, 日志会在控制台输出
+        - 5.5.2 wellClient.downloadLog()：下载所有事件日志，日志文件会以txt格式下载
+        - 5.5.3 wellClient.enableLog(): 启用事件日志记录功能
+        - 5.5.4 wellClient.disableLog(): 禁用事件日志记录功能
+
+- 6 事件名及其数据结构
+
+    - 6.1 agentLoggedOn：座席登录事件
+    - 6.2 agentLoggedOff：座席登出事件
+    - 6.3 agentReady：座席就绪事件
+    - 6.4 agentNotReady：座席离席事件
+    - 6.5 serviceInitiated：摘机事件
+    - 6.6 originated：呼出事件
+    - 6.7 delivered：振铃事件
+    - 6.8 established：接通事件
+    - 6.9 connectionCleared：呼叫挂断事件
+    - 6.10 transferred：转移事件
+    - 6.11 conferenced：会议事件
+    - 6.12 retrieved：取回事件
+    - 6.13 held：保持事件
+    - 6.14 agentWorkingAfterCall：座席话后处理事件
+    - 6.15 agentAllocated：座席预占事件
+
+- 7 收到事件的顺序
+
+    - 7.1 情景1：座席登陆
+    - 7.2 情景2：座席呼出后外线接通然后挂断
+    - 7.3 情景3：座席呼入后接听然后挂断
+
+- 8 FAQ
+
+    - 8.1 点了某个按钮后，页面没有任何反应
+    - 8.2 为什么我的页面没有wellClient的全局变量
+    - 8.3 为什么我在电脑上登录了wellPhone，但是页面软电话登录的时候，还是报错说分机未注册
+    - 8.4 页面刷新或者关闭后，软电话（即指wellClient）是否会自动登出？
+    - 8.5 如果断网了，软电话是否会自动登出？
+    - 8.5 软电话使用了websocket，如果因为网络不稳定，websocket断开后，是否会自动重连。
+    - 8.6 软电话对浏览器有什么要求，IE浏览器支持到什么版本？
+    - 8.7 直接转分机的号码形式
+    - 8.8 我的浏览器支持websocket, 为什么无法建立websocekt连接
+    - 8.9 从日志看收到了某个事件，但是页面没有变化。例如收到接通事件，页面按钮都没变
+    - 8.10 如何下载日志？
+
 
 ## 注意事项
 1. 不经本人同意，请不要修改well-client.js, well-client-ui.js的任何代码。擅自修改源代码，很可能导致意外的问题。
