@@ -14,18 +14,31 @@
 
 
 
-## 1 依赖项
-`以下依赖项是必须的，并且必须按照指定的顺序加载`
+## 1 环境要求
+### 1.1 硬件要求
+软电话使用浏览器原生的WebSocket来接收事件，因此浏览器必须支持原生的WebSocket。所以对浏览器版本要求如下。
 
-1. jquery-1.11.3.min.js：建议使用不低于1.11.3版本的jquery
-2. stomp.min.js: websocket的支持组件
-3. well-client.js: 软电话主要的逻辑处理
-4. well-client-ui.js: 软电话的UI事件
+ - IE >= 10
+ - 谷歌浏览器 >= 49
+ - FireFox >= 54
+ - Edge >= 14
 
-`Example:`
+### 1.2 软件要求
+- jQuery >= 1.11.3
+
+### 1.3 引入JS文件
+`请不要在以下的js里修改任何代码，或者将自己的业务逻辑添加在里面`
+
+- 【必须】`stomp.min.js`: 解析stomp协议
+- 【必须】`well-client.js`： 软电话核心文件
+- 【可选】`well-client-ui.js`： 软电话UI层逻辑处理，如果你只需要调用软电话的接口，不需要软电话自带的UI的话，这个JS文件是不需要引入的
+- 【废弃】`websocket-support.min.js`: 最早的集成中引入了这个文件，但是由于其中存在一些无法修复的问题，所以废弃
+
+综上，在你HTML的头部可能是这个样子。
 ```
 <head>
   <meta charset="utf-8">
+  <title>wellClient 软电话</title>
   <link rel="stylesheet" href="public/css/well-client.css">
   <script src="public/js/jquery-1.11.3.min.js"></script>
   <script src="public/js/stomp.min.js"></script>
@@ -34,8 +47,75 @@
 </head>
 ```
 
-### 1.1 注意事项：
-1. 除了配置信息外，建议第三方不要在我们提供的js文件里写自己的业务逻辑。
+当然，`我强烈建议您使用我们提供的云端的js文件`, 只需要修改头部信息如下。
+```
+// 假如我们将js文件放在www.demo.com的域名下的话
+<head>
+  <meta charset="utf-8">
+  <title>wellClient 软电话</title>
+  <link rel="stylesheet" href="public/css/well-client.css">
+  <script src="public/js/jquery-1.11.3.min.js"></script>
+  <script src="public/js/stomp.min.js"></script>
+  <script src="https://www.demo.com/public/js/well-client.js"></script>
+  <script src="https://www.demo.com/public/js/well-client-ui.js"></script>
+</head>
+```
+
+### 1.4 配置
+由于软电话可以连接不同的服务端，所以在调用任何接口之前，必须先要配置一次。当然了，每次刷新页面后，都是需要再次配置一次的。配置的方法很简单。示例如下：
+
+```
+// 可以在页面的js文件加载完成后，执行下面的函数
+wellClient.useConfig('CMB-PRD2');
+```
+wellClient.useConfig(envName): 使用配置
+
+envName | 使用范围
+--- | ---
+CMB-PRO | cmb生产环境
+CMB-DEV | cmb开发环境和测试环境
+AWS-PRO | AWS环境 | 使用aws环境的配置
+CMB-PRO2 |prd2生产环境
+
+### 1.5 登录
+```
+// 订阅单个事件
+wellClient.on('agentLoggedOn',function(event){
+    console.log('此时真正登录成功');
+});
+
+// 订阅所有事件
+wellClient.exports = function(event){
+    console.log('receive event: >>>');
+    console.log(event.eventName);
+};
+
+
+wellClient.agentLogin({
+  jobNumber: '5001',
+  password: '123456',
+  domain: 'test.cc',
+  ext: '8001',
+  loginMode: 'ask',
+  agentMode: 'Ready'
+})
+.done(function(res){
+// 注意： 登录请求成功并不意味登录成功，收到agentLoggedOn事件后才算登录成功
+  console.log('登录请求成功');
+})
+.fail(function(res){
+  console.log('登录请求失败');
+});
+```
+
+### 1.6 调试
+默认情况下，软电话收到的事件是不会打印到控制台的，如果你想把所有的事件在收到时都可以在控制台打印，可以使用一下方式。
+```
+wellClient.setConfig({
+    useWsLog: true
+})
+```
+
 
 ## 2 wellClient方法说明
 ### 2.1 wellClient.useConfig(envName): 使用配置
@@ -57,8 +137,8 @@ config是js对象，具有以下字段
 
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
-debug | boolean | 否 | true | debug模式会写详细的日志信息，设置成false可以关闭日志
-useWsLog | boolean | 否 | true | 是否输出详细的websocket信息
+debug | boolean | 否 | false | debug模式会写详细的日志信息，设置成false可以关闭日志
+useWsLog | boolean | 否 | false | 是否输出详细的websocket信息
 clickCallClass | string | 否 | well-canBeCalled | 设置点击呼叫的类,例如某个span标签包裹一串数字“8001sd12”,当这个类被点击的时候，
 autoAnswer | boolean | 否 | true | 自动接听默认为true。即当有电话呼入时，软电话会自动接听这个电话。设置为false时，需要手动点击接听按钮才能接听。
 useErrorAlert | boolean | 否 | true | 是否使用alert弹出错误信息，例如在登录时候，出现错误。默认会使用友好的提示信息告知座席。例如：座席5003已在分机：8004上登录。
