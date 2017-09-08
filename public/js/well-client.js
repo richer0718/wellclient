@@ -68,9 +68,9 @@ var wellClient = (function($) {
 
         'superCluster':{
             SDK: '192.168.40.234',
-            cstaPort: ':58080',
-            eventPort: ':58080',
-            TPI: '192.168.40.234:8090/login',
+            cstaPort: ':30412',
+            eventPort: ':30412',
+            TPI: '192.168.40.234:30412/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: true,
@@ -885,8 +885,9 @@ var wellClient = (function($) {
 
                 var dest = Config.wsTopic + env.loginId;
 
-                if(Config.ENV_NAME === 'CMB-TEST'){
+                if(Config.ENV_NAME === 'CMB-TEST' || Config.ENV_NAME === 'superCluster'){
                     dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
+                    console.log(dest);
                 }
 
                 var lastEventSerial = '';
