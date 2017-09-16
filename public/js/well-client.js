@@ -59,8 +59,8 @@ var wellClient = (function($) {
         logPath: '/log/wellclient',
         logConfPath: '/log/conf',
         token: 'welljoint',
-        sendLog: false,
-        useClock: false
+        sendLog: true,
+        useClock: true
     };
 
 
@@ -90,7 +90,7 @@ var wellClient = (function($) {
             SDK: 'mbsdk.wellcloud.cc',
             cstaPort: ':5088',
             eventPort: ':5088',
-            TPI: 'mbsdk.wellcloud.cc:5088/login',
+            TPI: 'mbsdk.wellcloud.cc:5088/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
@@ -106,31 +106,11 @@ var wellClient = (function($) {
             autoAnswer: true,
             logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
-        'CMB-DEV':{
-            SDK: 'uatsdk.wellcloud.cc',
-            cstaPort: '',
-            eventPort: '',
-            TPI:'uattpi.wellcloud.cc/login',
-            protocol: 'https://',
-            wsProtocol: 'wss://',
-            autoAnswer: true,
-            logPrefix: 'uattpi.wellcloud.cc'
-        },
         'CMB-TEST':{
             SDK: 'uatsdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI:'uatsdk.wellcloud.cc/login',
-            protocol: 'https://',
-            wsProtocol: 'wss://',
-            autoAnswer: true,
-            logPrefix: 'uattpi.wellcloud.cc'
-        },
-        'CMB-UAT':{
-            SDK: 'uatsdk.wellcloud.cc',
-            cstaPort: '',
-            eventPort: '',
-            TPI:'uattpi.wellcloud.cc/login',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
@@ -1670,19 +1650,21 @@ var wellClient = (function($) {
                 responseText: 'negative'
             });
         }
+        else{
+            var req = {
+                func: 'Logout',
+                agentId: env.user.number + '@' + env.user.domain
+            };
 
-        var req = {
-            func: 'Logout',
-            agentId: env.user.number + '@' + env.user.domain
-        };
+            util.setAgentState(req)
+                .done(function(res) {
+                    dfd.resolve(res);
+                })
+                .fail(function(res) {
+                    dfd.reject(res);
+                });
+        }
 
-        util.setAgentState(req)
-            .done(function(res) {
-                dfd.resolve(res);
-            })
-            .fail(function(res) {
-                dfd.reject(res);
-            });
 
         return dfd.promise();
     };
