@@ -21,7 +21,7 @@ var wellClient = (function($) {
     };
 
     var Config = {
-        version: '2.9.7',
+        version: '3.9.16',
         ENV_NAME: 'CMB-PRO', // for different topic
 
         SDK: 'mbsdk.wellcloud.cc',
@@ -885,7 +885,7 @@ var wellClient = (function($) {
 
                 var dest = Config.wsTopic + env.loginId;
 
-                if(Config.ENV_NAME === 'CMB-TEST' || Config.ENV_NAME === 'superCluster'){
+                if(Config.ENV_NAME === 'CMB-PRO' || Config.ENV_NAME === 'CMB-TEST' || Config.ENV_NAME === 'superCluster'){
                     dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
                     console.log(dest);
                 }
