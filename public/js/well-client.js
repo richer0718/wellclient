@@ -852,7 +852,7 @@ var wellClient = (function($) {
             }
 
             // wsHeartbeatId = setInterval(functi
-            on(){
+            // on(){
             //     if(ws && ws.connected){
             //         ws.ws.send('h');
             //     }
