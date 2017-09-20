@@ -844,31 +844,19 @@ var wellClient = (function($) {
             var wsHeartbeatId = '';
 
             ws = Stomp.over(socket);
-            // ws.heartbeat.outgoing = 20000;
-            // ws.heartbeat.incoming = 0;
 
             if(!Config.useWsLog){
                 ws.debug = null;
             }
 
-            // wsHeartbeatId = setInterval(functi
-            // on(){
-            //     if(ws && ws.connected){
-            //         ws.ws.send('h');
-            //     }
-            //     else{
-            //         clearInterval(wsHeartbeatId);
-            //     }
-            // }, Config.wsSendHTimeout);
-
             ws.connect({}, function(frame) {
 
                 Config.currentReconnectTimes = 0;
 
-                var dest = Config.wsTopic + env.loginId;
+                var dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
 
-                if(Config.ENV_NAME === 'CMB-PRO' || Config.ENV_NAME === 'CMB-TEST' || Config.ENV_NAME === 'superCluster'){
-                    dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
+                if(Config.ENV_NAME === 'AWS-PRO'){
+                    dest = Config.wsTopic + env.loginId;
                     console.log(dest);
                 }
 
