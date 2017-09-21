@@ -8,6 +8,7 @@
     - 1.4 配置
     - 1.5 登录
     - 1.6 调试
+    - 1.7 wellPhone相关
 
 - 2 wellClient方法说明
 
@@ -217,6 +218,8 @@ wellClient.setConfig({
 })
 ```
 
+### 1.7 wellPhone相关
+- wellPhone下载，[点击此处下载](http://www.welljoint.com/wellPhone.zip)
 
 ## 2 wellClient方法说明
 ### 2.1 wellClient.useConfig(envName): 使用配置
