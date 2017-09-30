@@ -24,10 +24,10 @@ var wellClient = (function($) {
         version: '3.9.16',
         ENV_NAME: 'CMB-PRO', // for different topic
 
-        SDK: 'mbsdk.wellcloud.cc',
+        SDK: 'mbsdk.welljoint.com',
         cstaPort: ':5088',
         eventPort: ':5088',
-        TPI: 'mbsdk.wellcloud.cc:5088/login',
+        TPI: 'mbsdk.welljoint.com:5088/login',
         protocol: 'https://',
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support,
@@ -77,14 +77,14 @@ var wellClient = (function($) {
             logPrefix: '192.168.40.234:31043'
         },
         'CMB-PRO2':{
-           SDK: 'prd2sdk.wellcloud.cc:5082',
+           SDK: 'prd2sdk.welljoint.com:5082',
            cstaPort: '',
            eventPort: '',
-           TPI:'prd2tpi.wellcloud.cc:5081/login',
+           TPI:'prd2tpi.welljoint.com:5081/login',
            protocol: 'http://',
            wsProtocol: 'ws://',
            autoAnswer: true,
-           logPrefix: 'prd2tpi.wellcloud.cc'
+           logPrefix: 'prd2tpi.welljoint.com'
         },
         'CMB-PRO':{
             SDK: 'mbsdk.welljoint.com',
@@ -97,24 +97,24 @@ var wellClient = (function($) {
             logPrefix: 'mbsdk.welljoint.com:5088'
         },
         'CMB-PRO-443':{
-            SDK: 'mbsdk.wellcloud.cc',
+            SDK: 'mbsdk.welljoint.com',
             cstaPort: '',
             eventPort: '',
-            TPI: 'mbsdk.wellcloud.cc/login',
+            TPI: 'mbsdk.welljoint.com/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.wellcloud.cc:5088'
+            logPrefix: 'mbsdk.welljoint.com:5088'
         },
         'CMB-TEST':{
-            SDK: 'uatsdk.wellcloud.cc',
+            SDK: 'uatsdk.welljoint.com',
             cstaPort: '',
             eventPort: '',
-            TPI:'uatsdk.wellcloud.cc/loginTrusted',
+            TPI:'uatsdk.welljoint.com/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'uattpi.wellcloud.cc'
+            logPrefix: 'uattpi.welljoint.com'
         },
         'OUR-DEV':{
             SDK: '172.16.200.152',
@@ -126,10 +126,10 @@ var wellClient = (function($) {
             autoAnswer: true
         },
         'AWS-PRO':{
-            SDK: 'tpisdk.wellcloud.cc',
+            SDK: 'tpisdk.welljoint.com',
             cstaPort: '',
             eventPort: '',
-            TPI:'tpi.wellcloud.cc/login',
+            TPI:'tpi.welljoint.com/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: false
@@ -2208,7 +2208,7 @@ var wellClient = (function($) {
         var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
         var date = ('0'+timestamp.getDate()).slice(-2);
         var hrs = ('0' + timestamp.getHours()).slice(-2);
-        // https://mbsdk.wellcloud.cc:5088/client-log/download?filename=
+        // https://mbsdk.welljoint.com:5088/client-log/download?filename=
         // 域名只保留数字和字母w工号w月份天时
         var filename = domain+'w'+number+'w'+month+date+hrs+'txt';
 
