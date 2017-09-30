@@ -87,14 +87,14 @@ var wellClient = (function($) {
            logPrefix: 'prd2tpi.wellcloud.cc'
         },
         'CMB-PRO':{
-            SDK: 'mbsdk.wellcloud.cc',
+            SDK: 'mbsdk.welljoint.com',
             cstaPort: ':5088',
             eventPort: ':5088',
-            TPI: 'mbsdk.wellcloud.cc:5088/loginTrusted',
+            TPI: 'mbsdk.welljoint.com:5088/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.wellcloud.cc:5088'
+            logPrefix: 'mbsdk.welljoint.com:5088'
         },
         'CMB-PRO-443':{
             SDK: 'mbsdk.wellcloud.cc',
