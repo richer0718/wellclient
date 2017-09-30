@@ -21,7 +21,7 @@ var wellClient = (function($) {
     };
 
     var Config = {
-        version: '3.9.16',
+        version: '3.9.30',
         ENV_NAME: 'CMB-PRO', // for different topic
 
         SDK: 'mbsdk.welljoint.com',
