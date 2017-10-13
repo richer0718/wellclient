@@ -24,10 +24,10 @@ var wellClient = (function($) {
         version: '3.9.30',
         ENV_NAME: 'CMB-PRO', // for different topic
 
-        SDK: 'mbsdk.welljoint.com',
+        SDK: 'mbsdk.wellcloud.cc',
         cstaPort: ':5088',
         eventPort: ':5088',
-        TPI: 'mbsdk.welljoint.com:5088/login',
+        TPI: 'mbsdk.wellcloud.cc:5088/login',
         protocol: 'https://',
         wsProtocol: 'wss://',
         autoAnswer: true, // whether auto answer, need well-client-ui support,
@@ -77,44 +77,64 @@ var wellClient = (function($) {
             logPrefix: '192.168.40.234:31043'
         },
         'CMB-PRO2':{
-           SDK: 'prd2sdk.welljoint.com:5082',
+           SDK: 'prd2sdk.wellcloud.cc:5082',
            cstaPort: '',
            eventPort: '',
-           TPI:'prd2tpi.welljoint.com:5081/login',
+           TPI:'prd2tpi.wellcloud.cc:5081/login',
            protocol: 'http://',
            wsProtocol: 'ws://',
            autoAnswer: true,
-           logPrefix: 'prd2tpi.welljoint.com'
+           logPrefix: 'prd2tpi.wellcloud.cc'
         },
         'CMB-PRO':{
-            SDK: 'mbsdk.welljoint.com',
+            SDK: 'mbsdk.wellcloud.cc',
             cstaPort: ':5088',
             eventPort: ':5088',
-            TPI: 'mbsdk.welljoint.com:5088/loginTrusted',
+            TPI: 'mbsdk.wellcloud.cc:5088/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.welljoint.com:5088'
+            logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-PRO-443':{
-            SDK: 'mbsdk.welljoint.com',
+            SDK: 'mbsdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI: 'mbsdk.welljoint.com/login',
+            TPI: 'mbsdk.wellcloud.cc/login',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.welljoint.com:5088'
+            logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-TEST':{
-            SDK: 'uatsdk.welljoint.com',
+            SDK: 'uatsdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI:'uatsdk.welljoint.com/loginTrusted',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'uattpi.welljoint.com'
+            logPrefix: 'uattpi.wellcloud.cc'
+        },
+        'CMB-DEV':{
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc'
+        },
+        'CMB-UAT':{
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc'
         },
         'OUR-DEV':{
             SDK: '172.16.200.152',
@@ -126,10 +146,10 @@ var wellClient = (function($) {
             autoAnswer: true
         },
         'AWS-PRO':{
-            SDK: 'tpisdk.welljoint.com',
+            SDK: 'tpisdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI:'tpi.welljoint.com/login',
+            TPI:'tpi.wellcloud.cc/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: false
@@ -2208,7 +2228,7 @@ var wellClient = (function($) {
         var month = ('0' + (timestamp.getMonth() +1)).slice(-2);
         var date = ('0'+timestamp.getDate()).slice(-2);
         var hrs = ('0' + timestamp.getHours()).slice(-2);
-        // https://mbsdk.welljoint.com:5088/client-log/download?filename=
+        // https://mbsdk.wellcloud.cc:5088/client-log/download?filename=
         // 域名只保留数字和字母w工号w月份天时
         var filename = domain+'w'+number+'w'+month+date+hrs+'txt';
 
