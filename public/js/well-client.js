@@ -149,7 +149,7 @@ var wellClient = (function($) {
             SDK: 'tpisdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI:'tpisdk.wellcloud.cc/loginTrusted',
+            TPI:'tpi.wellcloud.cc/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: false
