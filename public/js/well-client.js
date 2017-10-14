@@ -21,7 +21,7 @@ var wellClient = (function($) {
     };
 
     var Config = {
-        version: '3.10.13',
+        version: '3.10.15',
         ENV_NAME: 'CMB-PRO', // for different topic
 
         SDK: 'mbsdk.wellcloud.cc',
