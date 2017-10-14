@@ -149,7 +149,7 @@ var wellClient = (function($) {
             SDK: 'tpisdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
-            TPI:'tpi.wellcloud.cc/login',
+            TPI:'tpisdk.wellcloud.cc/loginTrusted',
             protocol: 'http://',
             wsProtocol: 'ws://',
             autoAnswer: false
@@ -874,11 +874,6 @@ var wellClient = (function($) {
                 Config.currentReconnectTimes = 0;
 
                 var dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
-
-                if(Config.ENV_NAME === 'AWS-PRO'){
-                    dest = Config.wsTopic + env.loginId;
-                    console.log(dest);
-                }
 
                 var lastEventSerial = '';
 
