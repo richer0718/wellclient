@@ -21,7 +21,7 @@ var wellClient = (function($) {
     };
 
     var Config = {
-        version: '3.9.16',
+        version: '3.10.15',
         ENV_NAME: 'CMB-PRO', // for different topic
 
         SDK: 'mbsdk.wellcloud.cc',
@@ -87,14 +87,14 @@ var wellClient = (function($) {
            logPrefix: 'prd2tpi.wellcloud.cc'
         },
         'CMB-PRO':{
-            SDK: 'mbsdk.welljoint.com',
+            SDK: 'mbsdk.wellcloud.cc',
             cstaPort: ':5088',
             eventPort: ':5088',
-            TPI: 'mbsdk.welljoint.com:5088/loginTrusted',
+            TPI: 'mbsdk.wellcloud.cc:5088/loginTrusted',
             protocol: 'https://',
             wsProtocol: 'wss://',
             autoAnswer: true,
-            logPrefix: 'mbsdk.welljoint.com:5088'
+            logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-PRO-443':{
             SDK: 'mbsdk.wellcloud.cc',
@@ -107,6 +107,26 @@ var wellClient = (function($) {
             logPrefix: 'mbsdk.wellcloud.cc:5088'
         },
         'CMB-TEST':{
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc'
+        },
+        'CMB-DEV':{
+            SDK: 'uatsdk.wellcloud.cc',
+            cstaPort: '',
+            eventPort: '',
+            TPI:'uatsdk.wellcloud.cc/loginTrusted',
+            protocol: 'https://',
+            wsProtocol: 'wss://',
+            autoAnswer: true,
+            logPrefix: 'uattpi.wellcloud.cc'
+        },
+        'CMB-UAT':{
             SDK: 'uatsdk.wellcloud.cc',
             cstaPort: '',
             eventPort: '',
@@ -854,11 +874,6 @@ var wellClient = (function($) {
                 Config.currentReconnectTimes = 0;
 
                 var dest = Config.newWsTopic + env.loginId.replace(/\./g,'_');
-
-                if(Config.ENV_NAME === 'AWS-PRO'){
-                    dest = Config.wsTopic + env.loginId;
-                    console.log(dest);
-                }
 
                 var lastEventSerial = '';
 

@@ -17,7 +17,7 @@
     - 2.2 wellClient.agentLogin(agent): 座席登录
     - 2.3 wellClient.logout()：座席登出
     - 2.4 wellClient.setAgentMode(mode)：设置座席状态
-    - 2.5 wellClient.makeCall(phoneNumber, oprtions)：拨打电话
+    - 2.5 wellClient.makeCall(phoneNumber, options)：拨打电话
     - 2.6 wellClient.answerCall(callId)：接听电话
     - 2.7 wellClient.dropConnection(callId)：挂断链接
     - 2.8 wellClient.holdCall(callId)：保持电话
