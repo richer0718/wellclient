@@ -992,6 +992,7 @@ var wellClient = (function($) {
 
                 util.setAgentStateSync(req);
             };
+
         }
     };
 
