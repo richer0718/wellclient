@@ -1,12 +1,12 @@
-- 0 [运行项目 or 在线的demo](#user-content-注意事项)
-- 1 环境要求
-    - 1.1 硬件要求
-    - 1.2 软件要求
-    - 1.3 引入JS文件
-    - 1.4 配置
-    - 1.5 登录
-    - 1.6 调试
-    - 1.7 wellPhone相关
+- [0 运行项目 or 在线的demo](#user-content-注意事项)
+- [1 环境要求](#user-content-1-环境要求)
+    - [1.1 硬件要求](#user-content-11-硬件要求)
+    - [1.2 软件要求](#user-content-12-软件要求)
+    - [1.3 引入JS文件](#user-content-13-引入JS文件)
+    - [1.4 配置](#user-content-14-配置)
+    - [1.5 登录](#user-content-15-登录)
+    - [1.6 调试](#user-content-16-调试)
+    - [1.7 wellPhone相关](#user-content-17-wellPhone相关)
 - 2 wellClient方法说明
     - 2.1 wellClient.useConfig(envName): 使用配置
     - 2.1 wellClient.setConfig(config)：设置配置信息
