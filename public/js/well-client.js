@@ -152,7 +152,8 @@ var wellClient = (function($) {
             TPI:'tpi.wellcloud.cc/login',
             protocol: 'http://',
             wsProtocol: 'ws://',
-            autoAnswer: false
+            autoAnswer: false,
+            logPrefix: 'softphone1.wellcloud.cc:8088'
         },
         'OUR-TEST':{
             SDK: '192.168.40.79',
