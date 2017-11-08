@@ -905,7 +905,13 @@ var wellClient = (function($) {
 
                     eventHandler.deliverEvent(eventInfo);
                 });
-                callback();
+
+                (function(callback){
+                    setTimeout(function(){
+                        callback();
+                    }, 500);
+                })(callback);
+                // callback();
 
             }, function(frame) {
                 // websocket upexpected disconnected
