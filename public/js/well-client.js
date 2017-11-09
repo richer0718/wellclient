@@ -175,6 +175,15 @@ var wellClient = (function($) {
             autoAnswer: true,
             logPrefix: '192.168.40.107:31043'
         },
+        'STRESS-TEST':{
+            SDK: '192.168.40.141',
+            cstaPort: ':31024',
+            eventPort: ':31024',
+            TPI:'192.168.40.141:31024/login',
+            protocol: 'http://',
+            wsProtocol: 'ws://',
+            autoAnswer: true
+        },
         'TIANAN':{
             SDK: '10.100.32.215',
             cstaPort: ':58080',
