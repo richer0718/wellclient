@@ -9,9 +9,13 @@
 
 $('#test-makeCall').click(function(){
     var phone = $('#test-deviceId').val();
+    var option = {
+        originForDisplay: $('#test-originForDisplay').val(),
+        destForDisplay: $('#test-destForDisplay').val()
+    };
 
     if(/^[0-9-wW]{3,20}$/.test(phone)){
-        wellClient.makeCall(phone);
+        wellClient.makeCall(phone, option);
     }
     else{
         alert('手机号格式不对');
