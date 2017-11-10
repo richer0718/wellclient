@@ -26,6 +26,7 @@
     - 2.15 wellClient.transferCall(holdCallId, consultCallId)：咨询后转移
     - 2.16 wellClient.setCallData(callId, data)：设置随路数据
     - 2.17 wellClient.getCallData(callId)：获取随路数据
+    - 2.18 wellClient.getMyPrefix()：获取当前座席可用的前缀号码
 - 3 事件处理
     - 3.1 wellClient.on(eventName,callback):事件订阅函数
     - 3.2 wellClient.innerOn(evnentName, callback(data){}): 订阅内部事件
@@ -326,7 +327,9 @@ wellClient.setAgentMode('Ready')
 参数 | 类型 | 是否必须 |  默认值 | 描述
 ---|---|---|---|---
 phoneNumber | string | 是 |  | 被叫方号码
-options.prefix | string | 否 | 号码前缀, 例如有的分机拨打外线是加上9
+options.prefix | string | 否 | | 号码前缀, 例如有的分机拨打外线是加上9
+options.originForDisplay | string | 否 | | 外显主叫号
+options.destForDisplay | string | 否 | | 外显被叫号
 
 `Example`
 
@@ -565,6 +568,15 @@ wellClient.getCallData('6aee1dda-d4a2-4d3c-8fab-df7782a6c10f')
 .fail(function(res){
 	console.log('获取路数据失败');
 })
+```
+
+### 2.18 wellClient.getMyPrefix()：获取当前座席可用的前缀号码
+该方法务必在登录成功之后再使用，未登录成功就使用，则返回空数组。
+
+`Example`
+```
+wellClient.getMyPrefix()
+["9", "6"]
 ```
 
 

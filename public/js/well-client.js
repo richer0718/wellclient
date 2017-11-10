@@ -43,7 +43,6 @@ var wellClient = (function($) {
         debug: false,
         useWsLog: false,
         eventBasePath: '/mvc/stomp',
-        cstaBasePath: '/api/csta',
         clickCallClass: 'well-canBeCalled',
         timeout: 1, //  1s later will be reconnect
         maxReconnectTimes: 5, // max reconnect times
@@ -215,7 +214,7 @@ var wellClient = (function($) {
     var apis = {
         setAgentState: {
             desc: 'setAgentState login and logout',
-            path: '/agent/state',
+            path: '/api/csta/agent/state',
             method: 'post',
             status: {
                 204: 'login success',
@@ -235,91 +234,91 @@ var wellClient = (function($) {
         },
         heartbeat:{
             desc:'agnent heart beat',
-            path:'/agent/heartbeat/{{agentId}}',
+            path:'/api/csta/agent/heartbeat/{{agentId}}',
             method:'post',
             fire: fire
         },
         makeCall: {
             desc: 'call out',
-            path: '/callControl/calls',
+            path: '/api/csta/callControl/calls',
             method: 'post',
             fire: fire
         },
         answerCall:{
             desp:'answer call',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/answer',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/answer',
             method:'post',
             fire: fire
         },
         dropConnection:{
             desp:'hang up the call',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}',
             method:'delete',
             fire: fire
         },
         holdCall:{
             desp:'hold call',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/hold',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/hold',
             method:'post',
             fire: fire
         },
         retrieveCall:{
             desp:'retrieve a call',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/retrieve',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/retrieve',
             method:'post',
             fire: fire
         },
         singleStepTransfer:{
             desp:'single step transfer',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/singleStepTransfer',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/singleStepTransfer',
             method:'post',
             fire: fire
         },
         singleStepConference:{
             desp:'single step conference',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/singleStepConference',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/singleStepConference',
             method:'post',
             fire: fire
         },
         consult:{
             desp:'ask someome, hold current line',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/consult',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/consult',
             method:'post',
             fire: fire
         },
         conference:{
             desp:'talk to everybody',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/conference',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/conference',
             method:'post',
             fire: fire
         },
         cancelConsult:{
             desp:'cancel ask some',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/cancelConsult',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/cancelConsult',
             method:'post',
             fire: fire
         },
         transferCall:{
             desp:'ask someone, then transfer',
-            path:'/callControl/calls/{{callId}}/connections/{{connectionId}}/transfer',
+            path:'/api/csta/callControl/calls/{{callId}}/connections/{{connectionId}}/transfer',
             method:'post',
             fire: fire
         },
         setCallData:{
             desp:'set some data with callId',
-            path:'/callControl/calls/{{callId}}/user-data',
+            path:'/api/csta/callControl/calls/{{callId}}/user-data',
             method:'post',
             fire: fire
         },
         getCallData:{
             desp:'get all data of callId',
-            path:'/callControl/calls/{{callId}}/user-data/{{key}}',
+            path:'/api/csta/callControl/calls/{{callId}}/user-data/{{key}}',
             method:'get',
             fire: fire
         },
         spy: {
             desp: 'listen the agent talk',
-            path: '/callControl/calls/{{callId}}/spy?deviceId={{deviceId}}',
+            path: '/api/csta/callControl/calls/{{callId}}/spy?deviceId={{deviceId}}',
             method: 'post',
             fire: fire
         },
@@ -329,6 +328,12 @@ var wellClient = (function($) {
             method: 'post',
             fire: fire
         },
+        getMyPrefix: {
+            desp: 'release allocated agent',
+            path: '/api/operation/operation/tenants/{{domain}}/agents/{{agentId}}',
+            method: 'get',
+            fire: fire
+        }
     };
 
     // default info
@@ -338,7 +343,8 @@ var wellClient = (function($) {
         domain: 'cmb.cc',
         ext: '',
         loginMode: 'force',
-        agentMode: 'NotReady'
+        agentMode: 'NotReady',
+        prefix: []
     };
 
     var env = {
@@ -546,7 +552,7 @@ var wellClient = (function($) {
 
         sendRequest: function(path, method, payload) {
             var dfd = $.Deferred();
-            var url = Config.protocol+ Config.SDK + Config.cstaPort + Config.cstaBasePath + path;
+            var url = Config.protocol+ Config.SDK + Config.cstaPort + path;
 
             $.ajax({
                 url: url,
@@ -622,7 +628,7 @@ var wellClient = (function($) {
 
         sendRequestSync: function(path, method, payload) {
             var dfd = $.Deferred();
-            var url = Config.protocol+ Config.SDK + Config.cstaPort + Config.cstaBasePath + path;
+            var url = Config.protocol+ Config.SDK + Config.cstaPort + path;
 
             $.ajax({
                 url: url,
@@ -1468,14 +1474,7 @@ var wellClient = (function($) {
 
         Config.debug = conf.debug === false? false : Config.debug;
         Config.useErrorAlert = conf.useErrorAlert === true ? true : Config.useErrorAlert;
-        Config.SDK = conf.SDK || Config.SDK;
 
-        Config.cstaPort = typeof(conf.cstaPort) === 'undefined' ? Config.cstaPort : conf.cstaPort;
-        Config.eventPort = typeof(conf.eventPort) === 'undefined' ? Config.eventPort : conf.eventPort;
-
-        Config.eventBasePath = conf.eventBasePath || Config.eventBasePath;
-        Config.TPI = conf.TPI || Config.TPI;
-        Config.cstaBasePath = conf.cstaBasePath || Config.cstaBasePath;
         Config.useWsLog = conf.useWsLog === false? false: Config.useWsLog;
         Config.clickCallClass = conf.clickCallClass || Config.clickCallClass;
         Config.autoAnswer = conf.autoAnswer === false ? false : Config.autoAnswer;
@@ -1618,6 +1617,20 @@ var wellClient = (function($) {
         util.TPILogin(env.user.number, env.user.password, env.user.domain)
         .done(function(res){
             env.sessionId = res.sessionId;
+
+            apis.getMyPrefix.fire({domain: env.user.domain, agentId: env.loginId})
+            .done(function(res){
+                if(app.pt.isArray(res.agentTrunks)){
+                    user.prefix = [];
+
+                    for(var i=0; i<res.agentTrunks.length; i++){
+                        var prefix = res.agentTrunks[i].scanPrefix;
+                        if(user.prefix.indexOf(prefix) === -1){
+                            user.prefix.push(prefix);
+                        }
+                    }
+                }
+            });
 
             app.pt.heartbeat()
             .done(function(){
@@ -2148,6 +2161,13 @@ var wellClient = (function($) {
                     from: env.deviceId,
                     to: (options.prefix || '') + phoneNumber
                 };
+            if(options.originForDisplay){
+                payload.originForDisplay = options.originForDisplay;
+            }
+            if(options.destForDisplay){
+                payload.destForDisplay = options.destForDisplay;
+            }
+
             return apis.makeCall.fire({}, payload);
         }
     };
@@ -2214,6 +2234,10 @@ var wellClient = (function($) {
 
     app.pt.isLogined = function(){
         return Config.isLogined;
+    };
+
+    app.pt.getMyPrefix = function(){
+        return [].concat(user.prefix);
     };
 
 
